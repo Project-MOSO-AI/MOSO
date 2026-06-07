@@ -1,0 +1,4 @@
+llama-cpp-python>=0.2.60
+pydantic>=2.6.0
+numpy>=1.24.0
+tokenizers>=0.15.0
