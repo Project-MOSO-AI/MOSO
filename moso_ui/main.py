@@ -73,22 +73,12 @@ class AuraApp:
             self._bubble.raise_()
 
     def _toggle_voice(self):
-        if self._orb.state == OrbState.LISTENING:
+        if self._voice.is_listening:
             self._voice.stop_listening()
-        elif self._voice.mic_working is False:
-            self._show_text_input_direct()
         else:
             self._bubble.show()
             self._bubble.raise_()
             self._voice.start_listening()
-
-    def _show_text_input_direct(self):
-        self._bubble.show()
-        self._bubble.raise_()
-        self._bubble.set_text("MOSO: Type your message below.")
-        text, ok = QInputDialog.getText(self._orb, "MOSO", "Type your message:")
-        if ok and text.strip():
-            self._voice.process_text(text.strip())
 
     def _request_text_input(self) -> str:
         text, ok = QInputDialog.getText(self._orb, "MOSO", "Type your message:")
