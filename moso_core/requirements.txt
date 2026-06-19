@@ -14,3 +14,8 @@ soundfile>=0.12.1
 piper-tts>=1.2.0
 webrtcvad>=2.0.6
 TTS>=0.22.0
+
+# Identity Engine
+scipy>=1.12.0
+silero-vad>=4.0
+aiohttp>=3.9.0

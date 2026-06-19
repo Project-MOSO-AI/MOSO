@@ -2,7 +2,7 @@ import logging
 from enum import Enum
 from typing import Iterator, Optional, Type, Union
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 from moso_core.inference.base import InferenceConfig, ModelBackend
 from moso_core.inference.llama_cpp.backend import LlamaCPPBackend
@@ -12,6 +12,7 @@ from moso_core.safety.guardrails import OutputGuard, PromptGuard
 
 if TYPE_CHECKING:
     from moso_core.voice.pipeline import VoicePipeline
+    from moso_core.identity.verifier import IdentityVerifier
 
 logger = logging.getLogger(__name__)
 
@@ -60,6 +61,7 @@ class Orchestrator:
         self._pipelines[Modality.TEXT] = self._text_pipeline
 
         self._voice_pipeline = None
+        self._identity_verifier = None
 
     def process(self, prompt: str, modality: Modality = Modality.TEXT, **kwargs) -> PipelineResult:
         if self._prompt_guard:
@@ -70,6 +72,11 @@ class Orchestrator:
                     text=f"I cannot process that request. {guard_result.reason}",
                     generation=None,
                 )
+
+        if self._identity_verifier:
+            identity = self._identity_verifier.verify(text=prompt)
+            if not identity.verified and modality == Modality.VOICE:
+                logger.info("Voice processed with identity: %.1f%%", identity.confidence)
 
         pipeline = self._resolve_pipeline(modality)
         result = pipeline.run(prompt, **kwargs)
@@ -87,6 +94,9 @@ class Orchestrator:
             if not guard_result.allowed:
                 yield f"I cannot process that request. {guard_result.reason}"
                 return
+
+        if self._identity_verifier:
+            self._identity_verifier.verify(text=prompt)
 
         pipeline = self._resolve_pipeline(modality)
         yield from pipeline.run_stream(prompt, **kwargs)
@@ -116,6 +126,37 @@ class Orchestrator:
         self._pipelines[Modality.VOICE] = self._voice_pipeline
         logger.info("Voice pipeline enabled")
 
+        self._init_identity()
+
+    def _init_identity(self) -> None:
+        try:
+            from moso_core.identity.verifier import IdentityVerifier
+            self._identity_verifier = IdentityVerifier()
+            self._identity_verifier.load_models()
+            logger.info("Identity engine integrated with orchestrator")
+        except Exception as e:
+            logger.warning("Identity engine not available: %s", e)
+
+    def enable_identity(
+        self,
+        voice_verifier=None,
+        anti_spoof=None,
+        behavior=None,
+        device=None,
+        historical=None,
+    ) -> None:
+        from moso_core.identity.verifier import IdentityVerifier
+
+        self._identity_verifier = IdentityVerifier(
+            voice=voice_verifier,
+            anti_spoof=anti_spoof,
+            behavior=behavior,
+            device=device,
+            historical=historical,
+        )
+        self._identity_verifier.load_models()
+        logger.info("Identity engine enabled with custom components")
+
     def process_voice(self, audio, sample_rate: int = 16000):
         if self._voice_pipeline is None:
             raise RuntimeError(
@@ -133,6 +174,25 @@ class Orchestrator:
     @property
     def voice_pipeline(self):
         return self._voice_pipeline
+
+    @property
+    def identity_verifier(self):
+        return self._identity_verifier
+
+    def get_identity_confidence(self) -> float:
+        if self._identity_verifier is None:
+            return 0.0
+        return self._identity_verifier.get_confidence()
+
+    def get_identity_level(self):
+        if self._identity_verifier is None:
+            return None
+        return self._identity_verifier.get_identity_level()
+
+    def is_owner(self) -> bool:
+        if self._identity_verifier is None:
+            return False
+        return self._identity_verifier.is_owner()
 
     def reset_conversation(self, modality: Modality = Modality.TEXT) -> None:
         pipeline = self._pipelines.get(modality)

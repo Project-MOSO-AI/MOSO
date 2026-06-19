@@ -37,6 +37,7 @@
 <a href="https://github.com/MOSO-AI/moso-app/releases"><img src="https://img.shields.io/badge/Version-0.2.0--dev-00d2ff?style=flat-square&labelColor=1a1a2e&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZmZmIj48cG9seWdvbiBwb2ludHM9IjEyIDIgMTUgOSAyMiA5IDE2LjUgMTQuNSAxOSAyMiAxMiAxNyA1IDIyIDcuNSAxNC41IDIgOSA5IDkiLz48L3N2Zz4=" alt="Version"/></a>
 <a href="SECURITY.md"><img src="https://img.shields.io/badge/Security-Enforced-2ecc71?style=flat-square&labelColor=1a1a2e&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZmZmIj48cGF0aCBkPSJNMTIgMjJsLTctNC4xVjVjMC0zLjMgMi43LTYgNi02czYgMi43IDYgNnYxMi45TDcgMjJ6Ii8+PC9zdmc+" alt="Security"/></a>
 <a href="ROADMAP.md"><img src="https://img.shields.io/badge/Voice-Pipeline%20Ready-00d2ff?style=flat-square&labelColor=1a1a2e&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZmZmIj48cGF0aCBkPSJNMTIgMWEzIDMgMCAwIDAtMyAzdjhhMyAzIDAgMCAwIDYgMFY0YTMgMyAwIDAgMC0zLTN6Ii8+PHBhdGggZD0iTTE5IDEwdjJhNyA3IDAgMCAxLTE0IDB2LTIiLz48bGluZSB4MT0iMTIiIHkxPSIxOSIgeDI9IjEyIiB5Mj0iMjMiLz48bGluZSB4MT0iOCIgeTE9IjIzIiB4Mj0iMTYiIHkyPSIyMyIvPjwvc3ZnPg==" alt="Voice"/></a>
+<a href="SECURITY.md"><img src="https://img.shields.io/badge/Identity-Multi--Signal-2ecc71?style=flat-square&labelColor=1a1a2e&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZmZmIj48cGF0aCBkPSJNMTIgMjJsLTctNC4xVjVjMC0zLjMgMi43LTYgNi02czYgMi43IDYgNnYxMi45TDcgMjJ6Ii8+PC9zdmc+" alt="Identity"/></a>
 
 <br/>
 <br/>
@@ -80,6 +81,21 @@
 
 ---
 
+## ✧ What's New — Identity Engine v1
+
+The latest update introduces a **multi-signal identity verification engine** alongside a major repository cleanup:
+
+| Feature | Description |
+|---------|-------------|
+| **Identity Engine** | Continuous owner verification using 5 weighted signals: voice (35%), liveness (20%), behavior (20%), device (15%), history (10%) |
+| **Anti-Spoofing** | Replay, synthetic, and cloned voice detection via spectral + energy analysis |
+| **Behavioral Biometrics** | Vocabulary, cadence, and timing profiling that builds a baseline over 10+ interactions |
+| **Permission Levels** | Owner (95-100), Likely Owner (80-94), Guest (60-79), Unknown (<60) with tiered access |
+| **Repo Cleanup** | Removed 450+ dead scaffolding files (apps, cloud, datasets, tests, tools, docs, shared engines, backend stubs) |
+| **Tech Stack Pruned** | Removed unused: Rust, Terraform, SwiftUI, Kotlin, CoreML, MLX, ExecuTorch, Cloudflare Tunnel, Firebase |
+
+---
+
 ## ✧ Overview
 
 **MOSO** (M0S0) is a **privacy-first**, **local-first** adaptive AI assistant that runs entirely on your device. It learns from your behavior, adapts to your preferences, and grows with you — without ever compromising your privacy through cloud dependency.
@@ -98,7 +114,7 @@ MOSO AI is organized across multiple repositories for modularity and security:
 | Repository | Purpose | Visibility | Access |
 |------------|---------|------------|--------|
 | [`moso-app`](https://github.com/MOSO-AI/moso-app) | Cross-platform application (Flutter + native) | Public | Read-only |
-| [`moso-core`](https://github.com/MOSO-AI/moso-core) | AI inference runtime (llama.cpp, ONNX, CoreML) | Public | Read-only |
+| [`moso-core`](https://github.com/MOSO-AI/moso-core) | AI inference runtime (llama.cpp, ONNX) | Public | Read-only |
 | [`moso-memory-engine`](https://github.com/MOSO-AI/moso-memory-engine) | Memory & retrieval system (RAG, vector DB) | Public | Read-only |
 | [`moso-docs`](https://github.com/MOSO-AI/moso-docs) | Documentation, architecture, research | Public | Read-only |
 
@@ -124,16 +140,16 @@ MOSO AI is organized across multiple repositories for modularity and security:
                               │
 ┌─────────────────────────────┼────────────────────────────────────┐
 │                     MOSO CORE (AI Runtime)                        │
-│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐           │
-│  │ llama.cpp│ │  ONNX    │ │  CoreML  │ │   MLX    │  ExecuTorch│
-│  │  (CPU)   │ │ (GPU/CPU)│ │ (Neural) │ │(Apple Si)│  (PyTorch) │
-│  └──────────┘ └──────────┘ └──────────┘ └──────────┘           │
+│  ┌──────────┐ ┌──────────┐                                       │
+│  │ llama.cpp│ │  ONNX    │                                       │
+│  │  (CPU)   │ │ (GPU/CPU)│                                       │
+│  └──────────┘ └──────────┘                                       │
 │  ┌────────────────────────────────────────────────────────┐     │
 │  │              Pipeline Orchestrator                      │     │
-│  │  [Text] [Voice] [Image] [Multimodal] [Reasoning]       │     │
+│  │  [Text] [Voice] [Identity]                              │     │
 │  └────────────────────────────────────────────────────────┘     │
 │  ┌────────────────────────────────────────────────────────┐     │
-│  │  Agents  │  Safety  │  Scheduler  │  Resource Manager  │     │
+│  │  Agents  │  Safety  │  Identity Engine  │  Voice Engine │     │
 │  └────────────────────────────────────────────────────────┘     │
 └─────────────────────────────┼────────────────────────────────────┘
                               │
@@ -151,12 +167,7 @@ MOSO AI is organized across multiple repositories for modularity and security:
                               │
 ┌─────────────────────────────┼────────────────────────────────────┐
 │              SHARED ENGINES + BACKEND                             │
-│  [AI Engine] [Emotion] [Behavior] [Recommendation] [Sync]        │
-│  [Encryption] [Analytics] [Prompt Engine]                        │
-│                                                                   │
-│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐           │
-│  │ Gateway  │ │   Auth   │ │   Sync   │ │WebSocket │  Notif.   │
-│  └──────────┘ └──────────┘ └──────────┘ └──────────┘           │
+│  [HTTP API]                                                     │
 └────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -170,19 +181,20 @@ The foundational runtime that powers all AI inference across platforms with mult
 
 | Module | Backends | Purpose |
 |--------|----------|---------|
-| **Inference** | llama.cpp, ONNX, CoreML, MLX, ExecuTorch | Unified model loading & execution |
-| **Pipelines** | Text, Voice, Image, Multimodal, Reasoning | Modality-specific processing chains (Voice: wake word → verify → STT → LLM → TTS) |
-| **Orchestration** | Priority scheduling, model routing, fallback | Dynamic pipeline composition |
+| **Inference** | llama.cpp, ONNX Runtime | Unified model loading & execution |
+| **Pipelines** | Text, Voice, Identity | Modality-specific processing chains |
+| **Orchestration** | Modality routing, backend abstraction | Dynamic pipeline composition |
 | **Agents** | Goal decomposition, tool use, self-reflection | Autonomous task execution |
 | **Safety** | Prompt injection detection, output sanitization | Content filtering and guardrails |
 | **Voice** | Input, VAD, wake word, speaker verify, STT, TTS, cloning | Full voice interaction pipeline |
+| **Identity** | Voice (35%), Liveness (20%), Behavior (20%), Device (15%), History (10%) | Multi-signal owner verification engine |
 
 ### MoSo Memory Engine — Three-Tier Memory
 
 | Memory Type | Function | Storage | Retrieval |
 |-------------|----------|---------|-----------|
 | **Episodic** | Personal experiences & conversations | SQLite + Vector DB | Temporal + semantic |
-| **Semantic** | Facts, knowledge, concepts | Vector DB (ChromaDB/LanceDB) | Similarity search |
+| **Semantic** | Facts, knowledge, concepts | Vector DB | Similarity search |
 | **Procedural** | Skills, habits, routines | Behavioral model + SQLite | Pattern matching |
 
 ### M0S0 Assistant — Adaptive Personality
@@ -191,6 +203,52 @@ The foundational runtime that powers all AI inference across platforms with mult
 - **Emotional Intelligence** — Detects and adapts to emotional states
 - **Contextual Awareness** — Remembers past conversations and preferences
 - **Voice-First Interaction** — Natural conversation with wake word, speaker verification, STT, and TTS with voice cloning
+- **Identity Engine** — Continuous multi-signal owner verification (voice, liveness, behavior, device, history) with confidence scoring
+
+### Identity Engine
+
+The MOSO Identity Engine continuously determines who is interacting with the system using multiple weighted authentication signals.
+
+```
+Audio / Text Input
+    ↓
+┌────────────────────────────────────────────────┐
+│              Identity Verifier                  │
+│                                                  │
+│  ┌──────────┐  ┌──────────┐  ┌──────────────┐  │
+│  │ Voice    │  │ Liveness │  │ Behavioral   │  │
+│  │ (35%)    │  │ (20%)    │  │ (20%)         │  │
+│  │ ECAPA-   │  │ spectral │  │ vocabulary,  │  │
+│  │ TDNN     │  │ analysis │  │ cadence,     │  │
+│  │ embedding│  │ anti-    │  │ timing       │  │
+│  │ compare  │  │ spoofing │  │              │  │
+│  └────┬─────┘  └────┬─────┘  └──────┬───────┘  │
+│       └─────────┬───┴─────────┬─────┘           │
+│                 ▼             ▼                  │
+│  ┌──────────┐  ┌─────────────────────────────┐  │
+│  │ Device   │  │   Identity Scorer           │  │
+│  │ (15%)    │  │   Weighted: 0-100 score     │  │
+│  │ BT/WiFi  │  │   Owner 95+, Likely 80-94,  │  │
+│  │ presence │  │   Guest 60-79, Unknown <60  │  │
+│  └────┬─────┘  └──────────────┬──────────────┘  │
+│       │                       │                   │
+│  ┌────┴─────┐  ┌──────────────┴──────────────┐  │
+│  │Historical│  │   Permission Resolver        │  │
+│  │ (10%)    │  │   Full / Standard / Limited  │  │
+│  │ patterns │  │   / Guest Only               │  │
+│  └──────────┘  └─────────────────────────────┘  │
+└────────────────────────────────────────────────┘
+    ↓
+[IdentityState] session, confidence, level, permissions
+```
+
+| Signal | Weight | Model | Method |
+|--------|--------|-------|--------|
+| **Voice Biometrics** | 35% | ECAPA-TDNN | Embedding cosine similarity vs enrolled voiceprint |
+| **Liveness Detection** | 20% | Spectral + energy analysis | Replay/synthetic audio detection |
+| **Behavioral Biometrics** | 20% | Statistical models | Vocabulary, speaking cadence, command timing |
+| **Device Presence** | 15% | Bluetooth/WiFi scan | Trusted device proximity detection |
+| **Historical Context** | 10% | Pattern matching | Time-of-day, conversation continuity, usage patterns |
 
 ### Voice System
 
@@ -226,20 +284,6 @@ Microphone
 | **Continuous Auth** | ECAPA + cosine similarity | Periodic re-verification during sessions |
 | **Voice Cloning** | XTTS-v2 fine-tuning | Clone owner's voice (30min–5hr dataset) |
 
-### Vision System
-
-- **CLIP Embeddings** — Zero-shot image classification and search
-- **LLaVA** — Image understanding and description
-- **OCR** — Text extraction from images
-- **Multimodal Reasoning** — Combine vision + text for deep understanding
-
-### Recommendation Engine
-
-- **Behavioral Scoring** — Models your daily patterns
-- **Habit Tracking** — Identifies and reinforces positive habits
-- **Adaptive Recommendations** — Suggests actions based on context
-- **Productivity Optimization** — Learns your peak focus times
-
 ---
 
 ## ✧ Tech Stack
@@ -252,23 +296,13 @@ Microphone
     <th>Purpose</th>
   </tr>
   <tr>
-    <td rowspan="3"><b>Frontend</b></td>
+    <td rowspan="1"><b>Frontend</b></td>
     <td>Flutter</td>
     <td>3.16+</td>
     <td>Cross-platform UI shell</td>
   </tr>
   <tr>
-    <td>SwiftUI</td>
-    <td>iOS 17+</td>
-    <td>Native Apple optimization</td>
-  </tr>
-  <tr>
-    <td>Kotlin Multiplatform</td>
-    <td>1.9+</td>
-    <td>Shared business logic</td>
-  </tr>
-  <tr>
-    <td rowspan="5"><b>AI Runtime</b></td>
+    <td rowspan="2"><b>AI Runtime</b></td>
     <td>llama.cpp</td>
     <td>b3024+</td>
     <td>CPU-optimized LLM inference</td>
@@ -279,80 +313,51 @@ Microphone
     <td>Cross-platform model execution</td>
   </tr>
   <tr>
-    <td>CoreML</td>
-    <td>7+</td>
-    <td>Apple Neural Engine acceleration</td>
+    <td rowspan="3"><b>Identity & Voice</b></td>
+    <td>SpeechBrain ECAPA-TDNN</td>
+    <td>0.5.15+</td>
+    <td>Speaker verification (192-dim embeddings)</td>
   </tr>
   <tr>
-    <td>MLX</td>
-    <td>0.15+</td>
-    <td>Apple Silicon ML framework</td>
+    <td>Whisper / Piper TTS / XTTS-v2</td>
+    <td>v3 / v1.0+ / v2.0+</td>
+    <td>Speech-to-text & text-to-speech</td>
   </tr>
   <tr>
-    <td>ExecuTorch</td>
-    <td>0.3+</td>
-    <td>On-device PyTorch execution</td>
+    <td>scipy / silero-vad</td>
+    <td>1.12+ / 4.0+</td>
+    <td>Anti-spoofing & liveness detection</td>
   </tr>
   <tr>
-    <td rowspan="4"><b>Models</b></td>
+    <td rowspan="3"><b>Models</b></td>
     <td>Phi-3 Mini / Gemma 2B / Llama 3.2</td>
     <td>Quantized GGUF</td>
     <td>On-device LLM</td>
   </tr>
   <tr>
-    <td>Whisper Tiny/Base</td>
+    <td>Whisper</td>
     <td>v3</td>
     <td>Speech-to-text</td>
   </tr>
   <tr>
-    <td>Whisper (STT) / Piper TTS / XTTS-v2</td>
-    <td>v3 / v1.0+ / v2.0+</td>
-    <td>Speech-to-text & text-to-speech</td>
+    <td>XTTS-v2 / Piper</td>
+    <td>v2.0+ / v1.0+</td>
+    <td>Text-to-speech with voice cloning</td>
   </tr>
   <tr>
-    <td>CLIP / LLaVA</td>
-    <td>v1.5+</td>
-    <td>Vision understanding</td>
-  </tr>
-  <tr>
-    <td rowspan="3"><b>Memory</b></td>
+    <td rowspan="1"><b>Memory</b></td>
     <td>SQLite</td>
     <td>3.45+</td>
     <td>Relational memory storage</td>
   </tr>
   <tr>
-    <td>ChromaDB / LanceDB</td>
-    <td>0.5+ / 0.8+</td>
-    <td>Vector embeddings & retrieval</td>
-  </tr>
-  <tr>
-    <td>HNSWLIB</td>
-    <td>0.7+</td>
-    <td>Approximate nearest neighbor search</td>
-  </tr>
-  <tr>
-    <td rowspan="4"><b>Backend</b></td>
+    <td rowspan="1"><b>Backend</b></td>
     <td>FastAPI (Python)</td>
     <td>0.109+</td>
-    <td>Sync & cloud APIs</td>
+    <td>HTTP API</td>
   </tr>
   <tr>
-    <td>Rust</td>
-    <td>1.75+</td>
-    <td>High-performance microservices</td>
-  </tr>
-  <tr>
-    <td>PostgreSQL</td>
-    <td>16+</td>
-    <td>Cloud persistence</td>
-  </tr>
-  <tr>
-    <td>Redis</td>
-    <td>7+</td>
-    <td>Caching & pub/sub</td>
-  </tr>
-  <tr>
-    <td rowspan="4"><b>DevOps</b></td>
+    <td rowspan="2"><b>DevOps</b></td>
     <td>Docker</td>
     <td>24+</td>
     <td>Containerized services</td>
@@ -362,16 +367,6 @@ Microphone
     <td>—</td>
     <td>CI/CD pipelines</td>
   </tr>
-  <tr>
-    <td>Terraform</td>
-    <td>1.7+</td>
-    <td>Cloud infrastructure</td>
-  </tr>
-  <tr>
-    <td>Cloudflare Tunnel</td>
-    <td>—</td>
-    <td>Secure ingress</td>
-  </tr>
 </table>
 
 ---
@@ -379,56 +374,32 @@ Microphone
 ## ✧ Repository Structure
 
 ```
-moso-app/                   # Cross-platform application frontend
-├── apps/
-│   ├── android/            # Android (Kotlin + Flutter + Gradle)
-│   ├── ios/                # iOS (SwiftUI + Flutter + CocoaPods)
-│   ├── macos/              # macOS desktop (Swift + Flutter)
-│   ├── windows/            # Windows desktop (C# + Flutter)
-│   └── linux/              # Linux desktop (GTK + Flutter)
-├── shared/                 # Cross-platform shared engines
-│   ├── ai-engine/          # Core AI logic & interfaces
-│   ├── memory-engine/      # Memory system interfaces
-│   ├── prompt-engine/      # Prompt management & templating
-│   ├── emotion-engine/     # Emotional tone adaptation
-│   ├── behavior-engine/    # Behavioral modeling & tracking
-│   ├── recommendation-engine/ # Recommendation & scoring
-│   ├── sync-engine/        # Zero-knowledge sync protocol
-│   ├── encryption/         # Cryptographic primitives
-│   └── analytics/          # Privacy-preserving analytics
-└── ...
-
-moso-core/                  # AI inference runtime
+moso-core/                  # AI runtime, voice, identity
 ├── inference/              # Model backends
 │   ├── llama-cpp/          # CPU-optimized GGUF inference
-│   ├── onnx-runtime/       # Cross-platform ONNX execution
-│   ├── coreml/             # Apple Neural Engine
-│   ├── executorch/         # On-device PyTorch
-│   └── mlx/                # Apple Silicon
+│   └── onnx-runtime/       # Cross-platform ONNX execution
 ├── pipelines/              # Modality processing pipelines
+│   └── text/               # Chat conversation pipeline
+├── voice/                  # Voice interaction pipeline
+│   ├── input.py            # Audio capture, VAD, wake word
+│   ├── speaker.py          # ECAPA-TDNN speaker verification
+│   ├── stt.py              # Whisper speech-to-text
+│   ├── tts.py              # Piper/Coqui text-to-speech
+│   ├── cloner.py           # XTTS-v2 voice cloning
+│   └── pipeline.py         # Full voice orchestration
+├── identity/               # Multi-signal identity engine
+│   ├── verifier.py         # Identity orchestrator
+│   ├── voice_biometrics.py # ECAPA embedding (35%)
+│   ├── anti_spoof.py       # Liveness detection (20%)
+│   ├── behavior.py         # Behavioral biometrics (20%)
+│   ├── device_presence.py  # BT/WiFi proximity (15%)
+│   ├── historical_context.py # Usage patterns (10%)
+│   ├── scoring.py          # Weighted confidence calculator
+│   ├── permissions.py      # Permission resolver
+│   └── session.py          # Identity session manager
 ├── orchestration/          # Dynamic pipeline composition
-├── scheduler/              # Resource & priority scheduling
 ├── agents/                 # Autonomous agent system
 └── safety/                 # Guardrails & content filtering
-
-moso-memory-engine/         # Memory & retrieval system
-├── episodic-memory/        # Conversation & experience memory
-├── semantic-memory/        # Knowledge & facts memory
-├── procedural-memory/      # Habit & skill memory
-├── embeddings/             # Embedding generation models
-├── vector-db/              # Vector database adapters
-├── retrieval/              # RAG retrieval pipeline
-├── summarization/          # Memory summarization
-└── personalization/        # User preference learning
-
-moso-docs/                  # Documentation hub
-├── architecture/           # System architecture docs
-├── api/                    # API reference & contracts
-├── memory-system/          # Memory engine documentation
-├── prompts/                # Prompt engineering guides
-├── deployment/             # Deployment guides
-├── privacy/                # Privacy whitepapers
-└── research/               # Research notes & papers
 ```
 
 ---
@@ -528,7 +499,7 @@ Without explicit written permission, you may NOT:
 |-------|-------|----------|
 | **Phase 1** — Foundation | Core inference, basic memory, Flutter shell | Q1-Q2 2025 |
 | **Phase 2** — Intelligence | Adaptive personality, RAG, voice pipeline ✅ | Q2-Q3 2025 |
-| **Phase 3** — Ecosystem | Cloud sync, vision, recommendation engine | Q3-Q4 2025 |
+| **Phase 3** — Ecosystem | Cloud sync, vision system, recommendation engine | Q3-Q4 2025 |
 | **Phase 4** — Scale | Agent SDK, multimodal, federated learning | 2026 |
 
 See [ROADMAP.md](ROADMAP.md) for the full roadmap.

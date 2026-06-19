@@ -1,15 +1,12 @@
 """
 MOSO Core - AI Inference Runtime
 
-The core inference engine supporting multiple backends:
+The core inference engine supporting:
 - llama.cpp (CPU-optimized)
 - ONNX Runtime (cross-platform)
-- CoreML (Apple Neural Engine)
-- MLX (Apple Silicon)
-- ExecuTorch (on-device PyTorch)
 """
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 from moso_core.inference.base import GenerationResult, GenerationStats, InferenceConfig, ModelBackend
 from moso_core.inference.llama_cpp.backend import LlamaCPPBackend
@@ -46,6 +43,26 @@ try:
 except ImportError:
     VOICE_AVAILABLE = False
 
+try:
+    from moso_core.identity import (
+        IdentityLevel,
+        IdentityResult,
+        IdentityScorer,
+        IdentitySessionManager,
+        IdentityState,
+        IdentityVerifier,
+        PermissionFlags,
+        PermissionResolver,
+        VoiceBiometrics,
+        AntiSpoofDetector,
+        BehavioralBiometrics,
+        DevicePresence,
+        HistoricalContext,
+    )
+    IDENTITY_AVAILABLE = True
+except ImportError:
+    IDENTITY_AVAILABLE = False
+
 __all__ = [
     "InferenceConfig",
     "ModelBackend",
@@ -61,4 +78,5 @@ __all__ = [
     "PromptGuard",
     "OutputGuard",
     "VOICE_AVAILABLE",
+    "IDENTITY_AVAILABLE",
 ]
