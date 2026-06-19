@@ -12,6 +12,7 @@ from moso_core.safety.guardrails import OutputGuard, PromptGuard
 
 if TYPE_CHECKING:
     from moso_core.memory.manager import MemoryManager
+    from moso_core.resources.manager import ResourceManager
     from moso_core.voice.pipeline import VoicePipeline
     from moso_core.identity.verifier import IdentityVerifier
 
@@ -64,6 +65,7 @@ class Orchestrator:
         self._voice_pipeline = None
         self._identity_verifier = None
         self._memory: Optional[MemoryManager] = None
+        self._resources: Optional[ResourceManager] = None
 
     def process(self, prompt: str, modality: Modality = Modality.TEXT, **kwargs) -> PipelineResult:
         if self._prompt_guard:
@@ -201,6 +203,18 @@ class Orchestrator:
     @property
     def identity_verifier(self):
         return self._identity_verifier
+
+    def enable_resources(self) -> None:
+        try:
+            from moso_core.resources.manager import ResourceManager
+            self._resources = ResourceManager()
+            logger.info("Resource manager enabled")
+        except Exception as e:
+            logger.warning("Resource manager not available: %s", e)
+
+    @property
+    def resources(self) -> Optional[ResourceManager]:
+        return self._resources
 
     def enable_memory(self, db_path: Optional[str] = None) -> None:
         try:

@@ -69,6 +69,12 @@ try:
 except ImportError:
     MEMORY_AVAILABLE = False
 
+try:
+    from moso_core.resources import ResourceManager, RESOURCES_AVAILABLE as _res_flag
+    RESOURCES_AVAILABLE = _res_flag
+except ImportError:
+    RESOURCES_AVAILABLE = False
+
 __all__ = [
     "InferenceConfig",
     "ModelBackend",
@@ -87,4 +93,6 @@ __all__ = [
     "IDENTITY_AVAILABLE",
     "MEMORY_AVAILABLE",
     "MemoryManager",
+    "RESOURCES_AVAILABLE",
+    "ResourceManager",
 ]

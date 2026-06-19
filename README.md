@@ -39,6 +39,7 @@
 <a href="#"><img src="https://img.shields.io/badge/Voice-Pipeline%20Ready-00d2ff?style=flat-square&labelColor=1a1a2e&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZmZmIj48cGF0aCBkPSJNMTIgMWEzIDMgMCAwIDAtMyAzdjhhMyAzIDAgMCAwIDYgMFY0YTMgMyAwIDAgMC0zLTN6Ii8+PHBhdGggZD0iTTE5IDEwdjJhNyA3IDAgMCAxLTE0IDB2LTIiLz48bGluZSB4MT0iMTIiIHkxPSIxOSIgeDI9IjEyIiB5Mj0iMjMiLz48bGluZSB4MT0iOCIgeTE9IjIzIiB4Mj0iMTYiIHkyPSIyMyIvPjwvc3ZnPg==" alt="Voice"/></a>
 <a href="#"><img src="https://img.shields.io/badge/Identity-Multi--Signal-2ecc71?style=flat-square&labelColor=1a1a2e&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZmZmIj48cGF0aCBkPSJNMTIgMjJsLTctNC4xVjVjMC0zLjMgMi43LTYgNi02czYgMi43IDYgNnYxMi45TDcgMjJ6Ii8+PC9zdmc+" alt="Identity"/></a>
 <a href="#"><img src="https://img.shields.io/badge/Memory-Persistent-f39c12?style=flat-square&labelColor=1a1a2e&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZmZmIj48cmVjdCB4PSI0IiB5PSI2IiB3aWR0aD0iMTYiIGhlaWdodD0iMTIiIHJ4PSIyIi8+PHBhdGggZD0iTTIyIDEwSDJ2M2gyMGwwLTMiLz48bGluZSB4MT0iMTIiIHkxPSI2IiB4Mj0iMTIiIHkyPSIxOCIvPjwvc3ZnPg==" alt="Memory"/></a>
+<a href="#"><img src="https://img.shields.io/badge/Resources-Monitoring-e67e22?style=flat-square&labelColor=1a1a2e&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZmZmIj48cmVjdCB4PSI0IiB5PSI0IiB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHJ4PSIyIi8+PGxpbmUgeDE9IjkiIHkxPSIxMiIgeDI9IjE1IiB5Mj0iMTIiLz48bGluZSB4MT0iMTIiIHkxPSI5IiB4Mj0iMTIiIHkyPSIxNSIvPjwvc3ZnPg==" alt="Resources"/></a>
 
 <br/>
 <br/>
@@ -90,22 +91,25 @@
 | **Voice Pipeline** | ✅ Complete | Wake word → Speaker verify → STT → LLM → TTS |
 | **Identity Engine** | ✅ Complete | 5-signal owner verification (voice, liveness, behavior, device, history) |
 | **Memory Engine** | ✅ Complete | Episodic, semantic, procedural, preferences — SQLite persistent storage |
+| **Resource Manager** | ✅ Complete | CPU, RAM, storage, battery, network, process monitoring via psutil |
 | **Retrieval** | ✅ V1 | Keyword search, recent memory, type filtering |
 | **Summarization** | ✅ V1 | Event-to-fact extraction, activity summaries |
-| **Orchestrator Integration** | ✅ Complete | Memory context injection, auto-event logging |
+| **Orchestrator Integration** | ✅ Complete | Memory context injection, auto-event logging, resource awareness |
 | **Embeddings / Vector Search** | 🔄 V2 | Planned for next release |
+| **GPU Monitoring** | 🔄 V2 | pynvml integration planned |
 | **Agent System** | 🔄 In Progress | Goal decomposition, tool use |
-| **RAG Pipeline** | 📋 Planned | Long-term memory retrieval augmented generation |
+| **Tool Engine** | 📋 Planned | OS actions, file ops, browser, workflows |
 
 ---
 
 ## ✧ What is MOSO?
 
-**MOSO (M0S0)** is a **privacy-first**, **local-first** adaptive AI assistant that runs entirely on your device. It is built in three layers:
+**MOSO (M0S0)** is a **privacy-first**, **local-first** adaptive AI assistant that runs entirely on your device. It is built in four layers:
 
 1. **Voice Pipeline** — Talk to MOSO hands-free: wake word detection, speaker verification, speech-to-text, LLM reasoning, text-to-speech with optional voice cloning
 2. **Identity Engine** — MOSO knows who you are using 5 weighted signals (voice, liveness, behavior, device, history). Replay/synthetic audio is rejected. Confidence scoring determines permission levels from guest to full owner
 3. **Memory Engine** — MOSO remembers across sessions: past conversations (episodic), facts about you (semantic), how to do things (procedural), and your preferences. All stored locally in SQLite
+4. **Resource Manager** — MOSO understands its environment: CPU usage, RAM available, storage space, battery level, network speeds, and running processes. This lets it answer "can I run X?" before attempting a task
 
 Everything runs locally — no cloud dependency, no data leaves your device.
 
@@ -133,14 +137,19 @@ Everything runs locally — no cloud dependency, no data leaves your device.
 │  ┌──────────────────────────────────────────────────────────┐   │
 │  │   Agents   │   Safety   │   Voice Engine   │   Identity  │   │
 │  └──────────────────────────┬───────────────────────────────┘   │
-│                             ▼                                    │
+│                         ▼                                        │
 │  ┌──────────────────────────────────────────────────────────┐   │
 │  │                   Memory Engine                           │   │
 │  │  Episodic  │  Semantic  │  Procedural  │  Preferences     │   │
 │  └──────────────────────────┬───────────────────────────────┘   │
 │                             ▼                                    │
 │  ┌──────────────────────────────────────────────────────────┐   │
-│  │   SQLite (WAL)  │  File System  │  Audio I/O              │   │
+│  │                  Resource Manager                         │   │
+│  │  CPU  │  RAM  │  Storage  │  Battery  │  Network  │ Procs│   │
+│  └──────────────────────────┬───────────────────────────────┘   │
+│                             ▼                                    │
+│  ┌──────────────────────────────────────────────────────────┐   │
+│  │   SQLite (WAL)  │  psutil  │  File System  │  Audio I/O   │   │
 │  └──────────────────────────────────────────────────────────┘   │
 └─────────────────────────────────────────────────────────────────┘
 ```
@@ -163,6 +172,7 @@ The foundational runtime that powers all AI inference across platforms with mult
 | **Voice** | Input, VAD, wake word, speaker verify, STT, TTS, cloning | Full voice interaction pipeline |
 | **Identity** | Voice (35%), Liveness (20%), Behavior (20%), Device (15%), History (10%) | Multi-signal owner verification engine |
 | **Memory** | Episodic, Semantic, Procedural, Preferences | SQLite-persistent cross-session memory |
+| **Resources** | CPU, RAM, Storage, Battery, Network, Processes | psutil-based local resource monitoring |
 
 ### M0S0 Assistant — Adaptive Personality
 
@@ -308,6 +318,56 @@ orchestrator.process("what was my last project?")
 
 ---
 
+### Resource Manager
+
+MOSO Resource Manager monitors local machine resources so MOSO can make intelligent decisions about task execution.
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│                     ResourceManager                           │
+│                                                               │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌─────────────┐  │
+│  │   CPU    │  │   RAM    │  │ Storage  │  │   Battery   │  │
+│  │ usage %  │  │ total/   │  │ per mount│  │ plugged_in  │  │
+│  │ cores/   │  │ avail/   │  │ total/   │  │ percent     │  │
+│  │ threads  │  │ used     │  │ used/free│  │ time_remain │  │
+│  └────┬─────┘  └────┬─────┘  └────┬─────┘  └──────┬──────┘  │
+│       └────────┬─────┴────────┬────┴─────────┬─────┘          │
+│                ▼              ▼               ▼                │
+│  ┌──────────┐  ┌──────────┐  ┌──────────────────────────┐    │
+│  │ Network  │  │Processes │  │     SystemStatus          │    │
+│  │ up/down  │  │ top CPU  │  │   snapshot + summary()   │    │
+│  │ bytes    │  │ top mem  │  │   → LLM-friendly string  │    │
+│  └──────────┘  └──────────┘  └──────────────────────────┘    │
+└──────────────────────────────────────────────────────────────┘
+```
+
+| Monitor | Class | Key Methods | Source |
+|---------|-------|-------------|--------|
+| **CPU** | `CPUMonitor` | `get_usage()`, `get_temperature()` | psutil |
+| **RAM** | `RAMMonitor` | `get_usage()` — total, available, used, percent | psutil |
+| **Storage** | `StorageMonitor` | `get_usage()` — per physical mount, skips pseudo-fs | psutil + shutil |
+| **Battery** | `BatteryMonitor` | `get_status()` — returns desktop fallback if no battery | psutil |
+| **Network** | `NetworkMonitor` | `get_usage()` — bytes (lifetime) + speed (delta since last call) | psutil |
+| **Processes** | `ProcessMonitor` | `top_cpu(n)`, `top_memory(n)`, `find_by_name(name)` | psutil |
+
+**Orchestrator Integration:**
+```python
+orchestrator.enable_resources()
+status = orchestrator.resources.get_system_status()
+print(status.summary())
+# CPU: 23% (6C/12T) | RAM: 8.1GB/32GB (25%) | Storage: 72% free | Battery: 85% (plugged) | Network: ↑0KB/s ↓1.2MB/s
+
+# Or individual queries:
+orchestrator.resources.get_ram().available       # bytes free
+orchestrator.resources.get_battery().percent      # 85.0
+orchestrator.resources.get_top_cpu_processes(5)   # top 5 CPU hogs
+```
+
+**Future GPU Support:** `ResourceManager.__init__()` accepts `gpu=None` — adding NVIDIA GPU monitoring via pynvml later requires no API change.
+
+---
+
 ## ✧ Tech Stack
 
 <table>
@@ -349,6 +409,12 @@ orchestrator.process("what was my last project?")
     <td>scipy / silero-vad</td>
     <td>1.12+ / 4.0+</td>
     <td>Anti-spoofing & liveness detection</td>
+  </tr>
+  <tr>
+    <td rowspan="1"><b>Resources</b></td>
+    <td>psutil</td>
+    <td>5.9+</td>
+    <td>CPU, RAM, storage, battery, network, process monitoring</td>
   </tr>
   <tr>
     <td rowspan="3"><b>Models</b></td>
@@ -405,6 +471,15 @@ moso-core/                  # AI runtime, voice, identity, memory
 │   ├── retrieval.py        # Unified keyword + recent search
 │   ├── summarizer.py       # Event-to-fact extraction
 │   └── models.py           # Memory dataclasses
+├── resources/              # Local resource monitoring
+│   ├── manager.py          # ResourceManager facade
+│   ├── cpu.py              # CPUMonitor (usage, freq, temp)
+│   ├── ram.py              # RAMMonitor (total, avail, used)
+│   ├── storage.py          # StorageMonitor (per mount)
+│   ├── battery.py          # BatteryMonitor (plugged, %)
+│   ├── network.py          # NetworkMonitor (bytes, speed)
+│   ├── processes.py        # ProcessMonitor (top CPU/mem)
+│   └── models.py           # Resource dataclasses
 ├── orchestration/          # Dynamic pipeline composition
 ├── agents/                 # Autonomous agent system
 └── safety/                 # Guardrails & content filtering
@@ -433,8 +508,9 @@ feature/*   ─── New features (branched from main, PR to merge)
 | **Phase 1** — Voice Pipeline | Wake word, speaker verify, STT, TTS, cloning | ✅ Complete |
 | **Phase 2** — Identity Engine | 5-signal owner verification, anti-spoof, permissions | ✅ Complete |
 | **Phase 3** — Memory Engine | Episodic + semantic + procedural + preferences, SQLite | ✅ Complete |
-| **Phase 4** — Intelligence | Embeddings + vector search, RAG, adaptive behavior | 🔄 Next |
-| **Phase 5** — Autonomy | Agent planning, tool execution, multi-modal | 📋 Future |
+| **Phase 4** — Resource Manager | CPU, RAM, storage, battery, network, process monitoring | ✅ Complete |
+| **Phase 5** — Intelligence | Embeddings + vector search, GPU monitoring, RAG | 🔄 Next |
+| **Phase 6** — Tool Engine | OS actions, file ops, browser, workflows | 📋 Future |
 
 ---
 
