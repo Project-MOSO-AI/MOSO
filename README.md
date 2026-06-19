@@ -32,9 +32,9 @@
 <br/>
 
 <!-- Animated Status Badges -->
-<a href="https://github.com/MOSO-AI/moso-app"><img src="https://img.shields.io/badge/Status-Development-8A2BE2?style=flat-square&labelColor=1a1a2e&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZmZmIj48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMCIvPjxwb2x5bGluZSBwb2ludHM9IjEyIDYgMTIgMTIgMTYgMTQiLz48L3N2Zz4=" alt="Status"/></a>
+<a href="#"><img src="https://img.shields.io/badge/Status-Development-8A2BE2?style=flat-square&labelColor=1a1a2e&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZmZmIj48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMCIvPjxwb2x5bGluZSBwb2ludHM9IjEyIDYgMTIgMTIgMTYgMTQiLz48L3N2Zz4=" alt="Status"/></a>
 <a href="LICENSE"><img src="https://img.shields.io/badge/License-MOSO%20Source-e74c3c?style=flat-square&labelColor=1a1a2e&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZmZmIj48cmVjdCB4PSIzIiB5PSIxMSIgd2lkdGg9IjE4IiBoZWlnaHQ9IjExIiByeD0iMiIgcnk9IjIiLz48cGF0aCBkPSJNNyAxMVY3YzAtMi43NiAyLjI0LTUgNS01czUgMi4yNCA1IDV2NCIvPjwvc3ZnPg==" alt="License"/></a>
-<a href="https://github.com/MOSO-AI/moso-app/releases"><img src="https://img.shields.io/badge/Version-0.2.0--dev-00d2ff?style=flat-square&labelColor=1a1a2e&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZmZmIj48cG9seWdvbiBwb2ludHM9IjEyIDIgMTUgOSAyMiA5IDE2LjUgMTQuNSAxOSAyMiAxMiAxNyA1IDIyIDcuNSAxNC41IDIgOSA5IDkiLz48L3N2Zz4=" alt="Version"/></a>
+<a href="#"><img src="https://img.shields.io/badge/Version-0.2.0--dev-00d2ff?style=flat-square&labelColor=1a1a2e&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZmZmIj48cG9seWdvbiBwb2ludHM9IjEyIDIgMTUgOSAyMiA5IDE2LjUgMTQuNSAxOSAyMiAxMiAxNyA1IDIyIDcuNSAxNC41IDIgOSA5IDkiLz48L3N2Zz4=" alt="Version"/></a>
 <a href="SECURITY.md"><img src="https://img.shields.io/badge/Security-Enforced-2ecc71?style=flat-square&labelColor=1a1a2e&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZmZmIj48cGF0aCBkPSJNMTIgMjJsLTctNC4xVjVjMC0zLjMgMi43LTYgNi02czYgMi43IDYgNnYxMi45TDcgMjJ6Ii8+PC9zdmc+" alt="Security"/></a>
 <a href="ROADMAP.md"><img src="https://img.shields.io/badge/Voice-Pipeline%20Ready-00d2ff?style=flat-square&labelColor=1a1a2e&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZmZmIj48cGF0aCBkPSJNMTIgMWEzIDMgMCAwIDAtMyAzdjhhMyAzIDAgMCAwIDYgMFY0YTMgMyAwIDAgMC0zLTN6Ii8+PHBhdGggZD0iTTE5IDEwdjJhNyA3IDAgMCAxLTE0IDB2LTIiLz48bGluZSB4MT0iMTIiIHkxPSIxOSIgeDI9IjEyIiB5Mj0iMjMiLz48bGluZSB4MT0iOCIgeTE9IjIzIiB4Mj0iMTYiIHkyPSIyMyIvPjwvc3ZnPg==" alt="Voice"/></a>
 <a href="SECURITY.md"><img src="https://img.shields.io/badge/Identity-Multi--Signal-2ecc71?style=flat-square&labelColor=1a1a2e&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZmZmIj48cGF0aCBkPSJNMTIgMjJsLTctNC4xVjVjMC0zLjMgMi43LTYgNi02czYgMi43IDYgNnYxMi45TDcgMjJ6Ii8+PC9zdmc+" alt="Identity"/></a>
@@ -107,68 +107,33 @@ The latest update introduces a **multi-signal identity verification engine** alo
 
 ---
 
-## ✧ Organization Structure
-
-MOSO AI is organized across multiple repositories for modularity and security:
-
-| Repository | Purpose | Visibility | Access |
-|------------|---------|------------|--------|
-| [`moso-app`](https://github.com/MOSO-AI/moso-app) | Cross-platform application (Flutter + native) | Public | Read-only |
-| [`moso-core`](https://github.com/MOSO-AI/moso-core) | AI inference runtime (llama.cpp, ONNX) | Public | Read-only |
-| [`moso-memory-engine`](https://github.com/MOSO-AI/moso-memory-engine) | Memory & retrieval system (RAG, vector DB) | Public | Read-only |
-| [`moso-docs`](https://github.com/MOSO-AI/moso-docs) | Documentation, architecture, research | Public | Read-only |
-
-> **All repositories are publicly visible for transparency and community feedback only.**
-> **No public write access is granted. Only approved maintainers can push or merge code.**
-
 ---
 
 ## ✧ Architecture
 
 ```
-┌────────────────────────────────────────────────────────────────────┐
-│                         MOSO APP (Flutter)                         │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐         │
-│  │ Android  │  │   iOS    │  │  macOS   │  │ Windows  │  Linux  │
-│  └────┬─────┘  └────┬─────┘  └────┬─────┘  └────┬─────┘         │
-│       └──────────────┼──────────────┼──────────────┘              │
-│                      └──────┬──────┘                              │
-│                    ┌────────┴────────┐                            │
-│                    │  Flutter Shell  │                            │
-│                    └────────┬────────┘                            │
-└─────────────────────────────┼────────────────────────────────────┘
-                              │
-┌─────────────────────────────┼────────────────────────────────────┐
-│                     MOSO CORE (AI Runtime)                        │
-│  ┌──────────┐ ┌──────────┐                                       │
-│  │ llama.cpp│ │  ONNX    │                                       │
-│  │  (CPU)   │ │ (GPU/CPU)│                                       │
-│  └──────────┘ └──────────┘                                       │
-│  ┌────────────────────────────────────────────────────────┐     │
-│  │              Pipeline Orchestrator                      │     │
-│  │  [Text] [Voice] [Identity]                              │     │
-│  └────────────────────────────────────────────────────────┘     │
-│  ┌────────────────────────────────────────────────────────┐     │
-│  │  Agents  │  Safety  │  Identity Engine  │  Voice Engine │     │
-│  └────────────────────────────────────────────────────────┘     │
-└─────────────────────────────┼────────────────────────────────────┘
-                              │
-┌─────────────────────────────┼────────────────────────────────────┐
-│                   MoSo MEMORY ENGINE                              │
-│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌────────────────────┐  │
-│  │ Episodic │ │ Semantic │ │Procedural│ │   Preference       │  │
-│  │  Memory  │ │  Memory  │ │  Memory  │ │    Learning        │  │
-│  └──────────┘ └──────────┘ └──────────┘ └────────────────────┘  │
-│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌────────────────────┐  │
-│  │  Vector  │ │    RAG   │ │Summariza-│ │   Embedding        │  │
-│  │    DB    │ │ Retrieval│ │  tion    │ │   Generation       │  │
-│  └──────────┘ └──────────┘ └──────────┘ └────────────────────┘  │
-└─────────────────────────────┼────────────────────────────────────┘
-                              │
-┌─────────────────────────────┼────────────────────────────────────┐
-│              SHARED ENGINES + BACKEND                             │
-│  [HTTP API]                                                     │
-└────────────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────┐
+│                        MOSO CORE                                │
+│                                                                 │
+│  ┌──────────┐  ┌──────────┐                                     │
+│  │ llama.cpp│  │  ONNX    │   Inference Backends                │
+│  │  (CPU)   │  │ (GPU/CPU)│                                     │
+│  └─────┬────┘  └────┬─────┘                                     │
+│        └──────┬─────┘                                            │
+│               ▼                                                  │
+│  ┌──────────────────────────────────────────────────────┐       │
+│  │              Pipeline Orchestrator                    │       │
+│  │         Text  →  Voice  →  Identity                   │       │
+│  └──────────────────────┬───────────────────────────────┘       │
+│                         ▼                                        │
+│  ┌──────────────────────────────────────────────────────┐       │
+│  │   Agents   │   Safety   │   Voice Engine   │  Identity│      │
+│  └──────────────────────────────────────────────────────┘       │
+│                                                                  │
+│  ┌──────────────────────────────────────────────────────┐       │
+│  │   SQLite   │   File System   │   Audio I/O           │       │
+│  └──────────────────────────────────────────────────────┘       │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
 ---
@@ -189,21 +154,11 @@ The foundational runtime that powers all AI inference across platforms with mult
 | **Voice** | Input, VAD, wake word, speaker verify, STT, TTS, cloning | Full voice interaction pipeline |
 | **Identity** | Voice (35%), Liveness (20%), Behavior (20%), Device (15%), History (10%) | Multi-signal owner verification engine |
 
-### MoSo Memory Engine — Three-Tier Memory
-
-| Memory Type | Function | Storage | Retrieval |
-|-------------|----------|---------|-----------|
-| **Episodic** | Personal experiences & conversations | SQLite + Vector DB | Temporal + semantic |
-| **Semantic** | Facts, knowledge, concepts | Vector DB | Similarity search |
-| **Procedural** | Skills, habits, routines | Behavioral model + SQLite | Pattern matching |
-
 ### M0S0 Assistant — Adaptive Personality
 
-- **Adaptive Personality** — Shifts tone and style based on user context
-- **Emotional Intelligence** — Detects and adapts to emotional states
-- **Contextual Awareness** — Remembers past conversations and preferences
 - **Voice-First Interaction** — Natural conversation with wake word, speaker verification, STT, and TTS with voice cloning
 - **Identity Engine** — Continuous multi-signal owner verification (voice, liveness, behavior, device, history) with confidence scoring
+- **Contextual Awareness** — Remembers past conversations and preferences
 
 ### Identity Engine
 
@@ -296,12 +251,6 @@ Microphone
     <th>Purpose</th>
   </tr>
   <tr>
-    <td rowspan="1"><b>Frontend</b></td>
-    <td>Flutter</td>
-    <td>3.16+</td>
-    <td>Cross-platform UI shell</td>
-  </tr>
-  <tr>
     <td rowspan="2"><b>AI Runtime</b></td>
     <td>llama.cpp</td>
     <td>b3024+</td>
@@ -311,6 +260,12 @@ Microphone
     <td>ONNX Runtime</td>
     <td>1.17+</td>
     <td>Cross-platform model execution</td>
+  </tr>
+  <tr>
+    <td rowspan="1"><b>Memory</b></td>
+    <td>SQLite</td>
+    <td>3.45+</td>
+    <td>Conversation & state storage</td>
   </tr>
   <tr>
     <td rowspan="3"><b>Identity & Voice</b></td>
@@ -343,29 +298,6 @@ Microphone
     <td>XTTS-v2 / Piper</td>
     <td>v2.0+ / v1.0+</td>
     <td>Text-to-speech with voice cloning</td>
-  </tr>
-  <tr>
-    <td rowspan="1"><b>Memory</b></td>
-    <td>SQLite</td>
-    <td>3.45+</td>
-    <td>Relational memory storage</td>
-  </tr>
-  <tr>
-    <td rowspan="1"><b>Backend</b></td>
-    <td>FastAPI (Python)</td>
-    <td>0.109+</td>
-    <td>HTTP API</td>
-  </tr>
-  <tr>
-    <td rowspan="2"><b>DevOps</b></td>
-    <td>Docker</td>
-    <td>24+</td>
-    <td>Containerized services</td>
-  </tr>
-  <tr>
-    <td>GitHub Actions</td>
-    <td>—</td>
-    <td>CI/CD pipelines</td>
   </tr>
 </table>
 
@@ -407,70 +339,14 @@ moso-core/                  # AI runtime, voice, identity
 ## ✧ Branch Strategy
 
 ```
-main        ─── Production (stable, releases only)
-staging     ─── Release candidates (pre-release validation)
-dev         ─── Development (integration branch)
-feature/*   ─── New features (branched from dev)
-hotfix/*    ─── Emergency fixes (branched from main)
+main        ─── Production (ruleset protected)
+feature/*   ─── New features (branched from main, PR to merge)
 ```
 
-**Branch Protection Rules:**
-| Branch | Direct Push | Force Push | PR Required | Approvals | Signed Commits |
-|--------|-------------|------------|-------------|-----------|----------------|
-| `main` | ❌ No | ❌ No | ✅ Yes | 2 | ✅ Required |
-| `staging` | ❌ No | ❌ No | ✅ Yes | 1 | ✅ Required |
-| `dev` | ❌ No | ❌ No | ✅ Yes | 1 | ✅ Required |
-| `feature/*` | ✅ Yes | ❌ No | ❌ Optional | — | — |
-| `hotfix/*` | ❌ No | ❌ No | ✅ Yes | 1 (expedited) | ✅ Required |
+- `main` is protected via GitHub ruleset: requires PR with 1 approval, blocks force pushes & deletions, enforces linear history
+- Owner can bypass ruleset for emergency recovery
 
 ---
-
-## ✧ Community & Feedback
-
-This repository exists for **transparency, feedback, research, and community engagement**.
-
-**Community members can:**
-- ✅ View and read the source code
-- ✅ Open issues for bugs and feature suggestions
-- ✅ Participate in GitHub Discussions
-- ✅ Give feedback on AI behavior
-- ✅ Submit pull requests (requires maintainer review)
-
-**Community members cannot:**
-- ❌ Push code directly
-- ❌ Merge pull requests
-- ❌ Fork without approval
-- ❌ Use the code without a license
-
----
-
-## ✧ Governance
-
-| Document | Description |
-|----------|-------------|
-| [Branch Protection](GOVERNANCE/BRANCH_PROTECTION.md) | Branch rules and protection configuration |
-| [Team Permissions](GOVERNANCE/TEAMS.md) | Team roles and access matrix |
-| [Issue Management](GOVERNANCE/ISSUE_MANAGEMENT.md) | Issue workflow and triage process |
-| [Release Strategy](GOVERNANCE/RELEASE_STRATEGY.md) | Semantic versioning and release process |
-| [CI/CD Pipeline](GOVERNANCE/CICD.md) | Build and deployment pipeline architecture |
-| [Labels](GOVERNANCE/LABELS.md) | Issue and PR label definitions |
-| [Discussions](GOVERNANCE/DISCUSSIONS.md) | Discussion categories and guidelines |
-
----
-
-## ✧ Security
-
-See [SECURITY.md](SECURITY.md) for the complete security policy.
-
-| Feature | Status |
-|---------|--------|
-| Signed commits (GPG/SSH) | ✅ Required |
-| Branch protection | ✅ Enforced |
-| CodeQL scanning | ✅ Active |
-| Secret detection | ✅ Active |
-| Dependency scanning | ✅ Active |
-| 2FA requirement | ✅ Required for maintainers |
-| No public write access | ✅ Enforced |
 
 ---
 
@@ -497,10 +373,9 @@ Without explicit written permission, you may NOT:
 
 | Phase | Focus | Timeline |
 |-------|-------|----------|
-| **Phase 1** — Foundation | Core inference, basic memory, Flutter shell | Q1-Q2 2025 |
-| **Phase 2** — Intelligence | Adaptive personality, RAG, voice pipeline ✅ | Q2-Q3 2025 |
-| **Phase 3** — Ecosystem | Cloud sync, vision system, recommendation engine | Q3-Q4 2025 |
-| **Phase 4** — Scale | Agent SDK, multimodal, federated learning | 2026 |
+| **Phase 1** — Foundation | Core inference, voice pipeline, identity engine | ✅ Complete |
+| **Phase 2** — Intelligence | RAG memory system, adaptive personality, behavioral learning | Next |
+| **Phase 3** — Ecosystem | Multi-modal (vision), tool-use, plugin system | Future |
 
 See [ROADMAP.md](ROADMAP.md) for the full roadmap.
 
@@ -515,8 +390,8 @@ python -m scripts.model-download.download_voice_models
 # 2. Enroll your voice (3 samples)
 python -m scripts.enroll_voice
 
-# 3. Run voice mode
-python -m scripts.run_voice --model models/llm/phi3/phi3.q4.gguf
+# 3. Run voice mode (LLM path varies by model)
+python -m scripts.run_voice --model path/to/model.gguf
 ```
 
 **Voice Commands:**
@@ -530,13 +405,10 @@ python -m scripts.run_voice --model models/llm/phi3/phi3.q4.gguf
 <p align="center">
   <sub>
     <strong>MOSO AI</strong> — Privacy-First Adaptive Artificial Intelligence<br/>
-    <a href="https://github.com/MOSO-AI">github.com/MOSO-AI</a> &nbsp;·&nbsp;
-    <a href="SECURITY.md">Security</a> &nbsp;·&nbsp;
-    <a href="CONTRIBUTING.md">Contributing</a> &nbsp;·&nbsp;
     <a href="LICENSE">License</a>
   </sub>
   <br/><br/>
-  <sub>© 2024-2025 MOSO AI. All rights reserved. Source available under MOSO Source Available License.</sub>
+  <sub>© 2024-2026 MOSO AI. All rights reserved. Source available under MOSO Source Available License.</sub>
 </p>
 
 <!-- Invisible style block for animations -->
