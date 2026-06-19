@@ -11,6 +11,7 @@ from moso_core.pipelines.text.pipeline import TextPipeline
 from moso_core.safety.guardrails import OutputGuard, PromptGuard
 
 if TYPE_CHECKING:
+    from moso_core.memory.manager import MemoryManager
     from moso_core.voice.pipeline import VoicePipeline
     from moso_core.identity.verifier import IdentityVerifier
 
@@ -62,6 +63,7 @@ class Orchestrator:
 
         self._voice_pipeline = None
         self._identity_verifier = None
+        self._memory: Optional[MemoryManager] = None
 
     def process(self, prompt: str, modality: Modality = Modality.TEXT, **kwargs) -> PipelineResult:
         if self._prompt_guard:
@@ -73,13 +75,34 @@ class Orchestrator:
                     generation=None,
                 )
 
+        owner_id = None
         if self._identity_verifier:
             identity = self._identity_verifier.verify(text=prompt)
             if not identity.verified and modality == Modality.VOICE:
                 logger.info("Voice processed with identity: %.1f%%", identity.confidence)
+            if identity.session and identity.session.current_user:
+                owner_id = identity.session.current_user
+
+        if self._memory and owner_id:
+            context = self._memory.build_context(prompt, owner_id=owner_id)
+            if context:
+                enriched = f"[Memory]\n{context}\n\n[Query]\n{prompt}"
+                logger.debug("Memory context injected for %s", owner_id)
+            else:
+                enriched = prompt
+        else:
+            enriched = prompt
 
         pipeline = self._resolve_pipeline(modality)
-        result = pipeline.run(prompt, **kwargs)
+        result = pipeline.run(enriched, **kwargs)
+
+        if self._memory:
+            self._memory.store_event(
+                title=f"Query: {prompt[:80]}",
+                description=prompt,
+                tags=["conversation"],
+                owner_id=owner_id or "default",
+            )
 
         if self._output_guard:
             result = self._output_guard.sanitize(result)
@@ -179,6 +202,14 @@ class Orchestrator:
     def identity_verifier(self):
         return self._identity_verifier
 
+    def enable_memory(self, db_path: Optional[str] = None) -> None:
+        try:
+            from moso_core.memory.manager import MemoryManager
+            self._memory = MemoryManager(db_path=db_path)
+            logger.info("Memory engine enabled at %s", db_path or "default location")
+        except Exception as e:
+            logger.warning("Memory engine not available: %s", e)
+
     def get_identity_confidence(self) -> float:
         if self._identity_verifier is None:
             return 0.0
@@ -193,6 +224,10 @@ class Orchestrator:
         if self._identity_verifier is None:
             return False
         return self._identity_verifier.is_owner()
+
+    @property
+    def memory(self) -> Optional[MemoryManager]:
+        return self._memory
 
     def reset_conversation(self, modality: Modality = Modality.TEXT) -> None:
         pipeline = self._pipelines.get(modality)

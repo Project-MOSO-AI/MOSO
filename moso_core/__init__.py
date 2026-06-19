@@ -63,6 +63,12 @@ try:
 except ImportError:
     IDENTITY_AVAILABLE = False
 
+try:
+    from moso_core.memory import MemoryManager, MEMORY_AVAILABLE as _mem_flag
+    MEMORY_AVAILABLE = _mem_flag
+except ImportError:
+    MEMORY_AVAILABLE = False
+
 __all__ = [
     "InferenceConfig",
     "ModelBackend",
@@ -79,4 +85,6 @@ __all__ = [
     "OutputGuard",
     "VOICE_AVAILABLE",
     "IDENTITY_AVAILABLE",
+    "MEMORY_AVAILABLE",
+    "MemoryManager",
 ]

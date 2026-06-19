@@ -36,8 +36,9 @@
 <a href="LICENSE"><img src="https://img.shields.io/badge/License-MOSO%20Source-e74c3c?style=flat-square&labelColor=1a1a2e&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZmZmIj48cmVjdCB4PSIzIiB5PSIxMSIgd2lkdGg9IjE4IiBoZWlnaHQ9IjExIiByeD0iMiIgcnk9IjIiLz48cGF0aCBkPSJNNyAxMVY3YzAtMi43NiAyLjI0LTUgNS01czUgMi4yNCA1IDV2NCIvPjwvc3ZnPg==" alt="License"/></a>
 <a href="#"><img src="https://img.shields.io/badge/Version-0.2.0--dev-00d2ff?style=flat-square&labelColor=1a1a2e&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZmZmIj48cG9seWdvbiBwb2ludHM9IjEyIDIgMTUgOSAyMiA5IDE2LjUgMTQuNSAxOSAyMiAxMiAxNyA1IDIyIDcuNSAxNC41IDIgOSA5IDkiLz48L3N2Zz4=" alt="Version"/></a>
 <a href="SECURITY.md"><img src="https://img.shields.io/badge/Security-Enforced-2ecc71?style=flat-square&labelColor=1a1a2e&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZmZmIj48cGF0aCBkPSJNMTIgMjJsLTctNC4xVjVjMC0zLjMgMi43LTYgNi02czYgMi43IDYgNnYxMi45TDcgMjJ6Ii8+PC9zdmc+" alt="Security"/></a>
-<a href="ROADMAP.md"><img src="https://img.shields.io/badge/Voice-Pipeline%20Ready-00d2ff?style=flat-square&labelColor=1a1a2e&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZmZmIj48cGF0aCBkPSJNMTIgMWEzIDMgMCAwIDAtMyAzdjhhMyAzIDAgMCAwIDYgMFY0YTMgMyAwIDAgMC0zLTN6Ii8+PHBhdGggZD0iTTE5IDEwdjJhNyA3IDAgMCAxLTE0IDB2LTIiLz48bGluZSB4MT0iMTIiIHkxPSIxOSIgeDI9IjEyIiB5Mj0iMjMiLz48bGluZSB4MT0iOCIgeTE9IjIzIiB4Mj0iMTYiIHkyPSIyMyIvPjwvc3ZnPg==" alt="Voice"/></a>
-<a href="SECURITY.md"><img src="https://img.shields.io/badge/Identity-Multi--Signal-2ecc71?style=flat-square&labelColor=1a1a2e&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZmZmIj48cGF0aCBkPSJNMTIgMjJsLTctNC4xVjVjMC0zLjMgMi43LTYgNi02czYgMi43IDYgNnYxMi45TDcgMjJ6Ii8+PC9zdmc+" alt="Identity"/></a>
+<a href="#"><img src="https://img.shields.io/badge/Voice-Pipeline%20Ready-00d2ff?style=flat-square&labelColor=1a1a2e&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZmZmIj48cGF0aCBkPSJNMTIgMWEzIDMgMCAwIDAtMyAzdjhhMyAzIDAgMCAwIDYgMFY0YTMgMyAwIDAgMC0zLTN6Ii8+PHBhdGggZD0iTTE5IDEwdjJhNyA3IDAgMCAxLTE0IDB2LTIiLz48bGluZSB4MT0iMTIiIHkxPSIxOSIgeDI9IjEyIiB5Mj0iMjMiLz48bGluZSB4MT0iOCIgeTE9IjIzIiB4Mj0iMTYiIHkyPSIyMyIvPjwvc3ZnPg==" alt="Voice"/></a>
+<a href="#"><img src="https://img.shields.io/badge/Identity-Multi--Signal-2ecc71?style=flat-square&labelColor=1a1a2e&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZmZmIj48cGF0aCBkPSJNMTIgMjJsLTctNC4xVjVjMC0zLjMgMi43LTYgNi02czYgMi43IDYgNnYxMi45TDcgMjJ6Ii8+PC9zdmc+" alt="Identity"/></a>
+<a href="#"><img src="https://img.shields.io/badge/Memory-Persistent-f39c12?style=flat-square&labelColor=1a1a2e&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZmZmIj48cmVjdCB4PSI0IiB5PSI2IiB3aWR0aD0iMTYiIGhlaWdodD0iMTIiIHJ4PSIyIi8+PHBhdGggZD0iTTIyIDEwSDJ2M2gyMGwwLTMiLz48bGluZSB4MT0iMTIiIHkxPSI2IiB4Mj0iMTIiIHkyPSIxOCIvPjwvc3ZnPg==" alt="Memory"/></a>
 
 <br/>
 <br/>
@@ -81,29 +82,32 @@
 
 ---
 
-## ✧ What's New — Identity Engine v1
+## ✧ Build Status
 
-The latest update introduces a **multi-signal identity verification engine** alongside a major repository cleanup:
-
-| Feature | Description |
-|---------|-------------|
-| **Identity Engine** | Continuous owner verification using 5 weighted signals: voice (35%), liveness (20%), behavior (20%), device (15%), history (10%) |
-| **Anti-Spoofing** | Replay, synthetic, and cloned voice detection via spectral + energy analysis |
-| **Behavioral Biometrics** | Vocabulary, cadence, and timing profiling that builds a baseline over 10+ interactions |
-| **Permission Levels** | Owner (95-100), Likely Owner (80-94), Guest (60-79), Unknown (<60) with tiered access |
-| **Repo Cleanup** | Removed 450+ dead scaffolding files (apps, cloud, datasets, tests, tools, docs, shared engines, backend stubs) |
-| **Tech Stack Pruned** | Removed unused: Rust, Terraform, SwiftUI, Kotlin, CoreML, MLX, ExecuTorch, Cloudflare Tunnel, Firebase |
+| Component | Status | Description |
+|-----------|--------|-------------|
+| **Core Inference** | ✅ Complete | llama.cpp + ONNX Runtime backends |
+| **Voice Pipeline** | ✅ Complete | Wake word → Speaker verify → STT → LLM → TTS |
+| **Identity Engine** | ✅ Complete | 5-signal owner verification (voice, liveness, behavior, device, history) |
+| **Memory Engine** | ✅ Complete | Episodic, semantic, procedural, preferences — SQLite persistent storage |
+| **Retrieval** | ✅ V1 | Keyword search, recent memory, type filtering |
+| **Summarization** | ✅ V1 | Event-to-fact extraction, activity summaries |
+| **Orchestrator Integration** | ✅ Complete | Memory context injection, auto-event logging |
+| **Embeddings / Vector Search** | 🔄 V2 | Planned for next release |
+| **Agent System** | 🔄 In Progress | Goal decomposition, tool use |
+| **RAG Pipeline** | 📋 Planned | Long-term memory retrieval augmented generation |
 
 ---
 
-## ✧ Overview
+## ✧ What is MOSO?
 
-**MOSO** (M0S0) is a **privacy-first**, **local-first** adaptive AI assistant that runs entirely on your device. It learns from your behavior, adapts to your preferences, and grows with you — without ever compromising your privacy through cloud dependency.
+**MOSO (M0S0)** is a **privacy-first**, **local-first** adaptive AI assistant that runs entirely on your device. It is built in three layers:
 
-| | | |
-|-|-|-|
-| **App** | **Engine** | **Persona** | **Memory** | **Voice** |
-| MOSO App | MOSO Core | M0S0 | MoSo Memory Engine | MOSO Voice Pipeline |
+1. **Voice Pipeline** — Talk to MOSO hands-free: wake word detection, speaker verification, speech-to-text, LLM reasoning, text-to-speech with optional voice cloning
+2. **Identity Engine** — MOSO knows who you are using 5 weighted signals (voice, liveness, behavior, device, history). Replay/synthetic audio is rejected. Confidence scoring determines permission levels from guest to full owner
+3. **Memory Engine** — MOSO remembers across sessions: past conversations (episodic), facts about you (semantic), how to do things (procedural), and your preferences. All stored locally in SQLite
+
+Everything runs locally — no cloud dependency, no data leaves your device.
 
 ---
 
@@ -126,13 +130,18 @@ The latest update introduces a **multi-signal identity verification engine** alo
 │  │         Text  →  Voice  →  Identity                   │       │
 │  └──────────────────────┬───────────────────────────────┘       │
 │                         ▼                                        │
-│  ┌──────────────────────────────────────────────────────┐       │
-│  │   Agents   │   Safety   │   Voice Engine   │  Identity│      │
-│  └──────────────────────────────────────────────────────┘       │
-│                                                                  │
-│  ┌──────────────────────────────────────────────────────┐       │
-│  │   SQLite   │   File System   │   Audio I/O           │       │
-│  └──────────────────────────────────────────────────────┘       │
+│  ┌──────────────────────────────────────────────────────────┐   │
+│  │   Agents   │   Safety   │   Voice Engine   │   Identity  │   │
+│  └──────────────────────────┬───────────────────────────────┘   │
+│                             ▼                                    │
+│  ┌──────────────────────────────────────────────────────────┐   │
+│  │                   Memory Engine                           │   │
+│  │  Episodic  │  Semantic  │  Procedural  │  Preferences     │   │
+│  └──────────────────────────┬───────────────────────────────┘   │
+│                             ▼                                    │
+│  ┌──────────────────────────────────────────────────────────┐   │
+│  │   SQLite (WAL)  │  File System  │  Audio I/O              │   │
+│  └──────────────────────────────────────────────────────────┘   │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -148,11 +157,12 @@ The foundational runtime that powers all AI inference across platforms with mult
 |--------|----------|---------|
 | **Inference** | llama.cpp, ONNX Runtime | Unified model loading & execution |
 | **Pipelines** | Text, Voice, Identity | Modality-specific processing chains |
-| **Orchestration** | Modality routing, backend abstraction | Dynamic pipeline composition |
+| **Orchestration** | Modality routing, backend abstraction, memory injection | Dynamic pipeline composition |
 | **Agents** | Goal decomposition, tool use, self-reflection | Autonomous task execution |
 | **Safety** | Prompt injection detection, output sanitization | Content filtering and guardrails |
 | **Voice** | Input, VAD, wake word, speaker verify, STT, TTS, cloning | Full voice interaction pipeline |
 | **Identity** | Voice (35%), Liveness (20%), Behavior (20%), Device (15%), History (10%) | Multi-signal owner verification engine |
+| **Memory** | Episodic, Semantic, Procedural, Preferences | SQLite-persistent cross-session memory |
 
 ### M0S0 Assistant — Adaptive Personality
 
@@ -239,6 +249,63 @@ Microphone
 | **Continuous Auth** | ECAPA + cosine similarity | Periodic re-verification during sessions |
 | **Voice Cloning** | XTTS-v2 fine-tuning | Clone owner's voice (30min–5hr dataset) |
 
+### Memory Engine
+
+MOSO Memory Engine provides persistent, cross-session memory using four specialized stores backed by SQLite:
+
+```
+User Interaction
+    ↓
+┌──────────────────────────────────────────────────────────────┐
+│                    MemoryManager                              │
+│                                                               │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────────┐   │
+│  │  Episodic    │  │   Semantic   │  │   Procedural     │   │
+│  │  "What did   │  │   "Facts     │  │   "How to do    │   │
+│  │   I do?"     │  │    about me" │  │    things"       │   │
+│  │              │  │              │  │                  │   │
+│  │  - Events    │  │  - Owner pre-│  │  - Workflows    │   │
+│  │  - Convos    │  │    ferences  │  │  - Skills       │   │
+│  │  - Projects  │  │  - Projects  │  │  - Success rate │   │
+│  └──────┬───────┘  └──────┬───────┘  └────────┬─────────┘   │
+│         └────────┬──────────┴──────────┬───────┘             │
+│                  ▼                     ▼                      │
+│  ┌──────────────────────────────────────────────────────┐    │
+│  │  Preferences                      Retrieval          │    │
+│  │  - editor, language, voice  ←───  keyword + recent   │    │
+│  │  - confidence weighted           + type filtering    │    │
+│  └──────────────────────────────────────────────────────┘    │
+│                         │                                     │
+│                         ▼                                     │
+│  ┌──────────────────────────────────────────────────────┐    │
+│  │  SQLite (WAL mode)  —  ~/.moso/memory.db              │    │
+│  │  4 tables: episodic, semantic, procedural, prefs     │    │
+│  └──────────────────────────────────────────────────────┘    │
+└──────────────────────────────────────────────────────────────┘
+    ↓
+[MemoryContext] injected into LLM prompt on verified owner
+```
+
+| Store | Table | Key Methods | Search |
+|-------|-------|-------------|--------|
+| **Episodic** | `episodic_memory` | `store(title, desc, tags)`, `list_recent()`, `search(query)` | `LIKE` on title/description, tag filter, recent sort |
+| **Semantic** | `semantic_memory` | `store(fact, confidence, category)`, `list_by_category()`, `search(query)` | `LIKE` on fact, category filter, confidence sort |
+| **Procedural** | `procedural_memory` | `store(task, steps, tags)`, `record_use()`, `search(query)` | `LIKE` on task/tags, success rate sort |
+| **Preferences** | `preferences` | `set_value(category, value)`, `list_all()` | Exact match by `(category, owner_id)` |
+
+**Context Injection:** When the owner is verified, `build_context()` retrieves relevant events, facts, procedures, and preferences for the current query and injects them into the LLM prompt as `[Memory]` context.
+
+**Summarization:** `extract_facts_from_events()` scans recent episodic memories and derives semantic facts (e.g., "Owner has created X", "Owner uses Y"). These are stored for long-term recall.
+
+**Orchestrator Integration:**
+```python
+orchestrator = Orchestrator(config)
+orchestrator.enable_memory()                # SQLite at ~/.moso/memory.db
+orchestrator.enable_identity()              # Owner verification
+orchestrator.process("what was my last project?")
+# → Memory context auto-injected, conversation auto-logged as event
+```
+
 ---
 
 ## ✧ Tech Stack
@@ -306,7 +373,7 @@ Microphone
 ## ✧ Repository Structure
 
 ```
-moso-core/                  # AI runtime, voice, identity
+moso-core/                  # AI runtime, voice, identity, memory
 ├── inference/              # Model backends
 │   ├── llama-cpp/          # CPU-optimized GGUF inference
 │   └── onnx-runtime/       # Cross-platform ONNX execution
@@ -329,6 +396,15 @@ moso-core/                  # AI runtime, voice, identity
 │   ├── scoring.py          # Weighted confidence calculator
 │   ├── permissions.py      # Permission resolver
 │   └── session.py          # Identity session manager
+├── memory/                 # Persistent memory engine
+│   ├── manager.py          # MemoryManager facade
+│   ├── episodic.py         # Event & conversation store
+│   ├── semantic.py         # Fact & knowledge store
+│   ├── procedural.py       # Workflow & skill store
+│   ├── preferences.py      # User preference store
+│   ├── retrieval.py        # Unified keyword + recent search
+│   ├── summarizer.py       # Event-to-fact extraction
+│   └── models.py           # Memory dataclasses
 ├── orchestration/          # Dynamic pipeline composition
 ├── agents/                 # Autonomous agent system
 └── safety/                 # Guardrails & content filtering
@@ -350,11 +426,23 @@ feature/*   ─── New features (branched from main, PR to merge)
 
 ---
 
+## ✧ Roadmap
+
+| Phase | Focus | Status |
+|-------|-------|--------|
+| **Phase 1** — Voice Pipeline | Wake word, speaker verify, STT, TTS, cloning | ✅ Complete |
+| **Phase 2** — Identity Engine | 5-signal owner verification, anti-spoof, permissions | ✅ Complete |
+| **Phase 3** — Memory Engine | Episodic + semantic + procedural + preferences, SQLite | ✅ Complete |
+| **Phase 4** — Intelligence | Embeddings + vector search, RAG, adaptive behavior | 🔄 Next |
+| **Phase 5** — Autonomy | Agent planning, tool execution, multi-modal | 📋 Future |
+
+---
+
 ## ✧ License
 
 **MOSO Source Available License v1.0**
 
-Copyright (c) 2024-2025 MOSO AI
+Copyright (c) 2024-2026 MOSO AI
 
 **Viewing access does not grant usage rights.**
 
@@ -369,36 +457,31 @@ Without explicit written permission, you may NOT:
 
 ---
 
-## ✧ Roadmap
+## ✧ Quick Start
 
-| Phase | Focus | Timeline |
-|-------|-------|----------|
-| **Phase 1** — Foundation | Core inference, voice pipeline, identity engine | ✅ Complete |
-| **Phase 2** — Intelligence | RAG memory system, adaptive personality, behavioral learning | Next |
-| **Phase 3** — Ecosystem | Multi-modal (vision), tool-use, plugin system | Future |
+```python
+from moso_core.inference.base import InferenceConfig
+from moso_core.orchestration.orchestrator import Orchestrator
 
-See [ROADMAP.md](ROADMAP.md) for the full roadmap.
+config = InferenceConfig(model_path="path/to/model.gguf")
+orchestrator = Orchestrator(config)
+orchestrator.enable_memory()      # SQLite at ~/.moso/memory.db
+orchestrator.enable_identity()    # Owner verification
+result = orchestrator.process("Hello, remember my name is Harsha")
+print(result.text)
 
----
-
-## ✧ Quick Start — Voice Mode
-
-```bash
-# 1. Download voice models
-python -m scripts.model-download.download_voice_models
-
-# 2. Enroll your voice (3 samples)
-python -m scripts.enroll_voice
-
-# 3. Run voice mode (LLM path varies by model)
-python -m scripts.run_voice --model path/to/model.gguf
+# MOSO now knows this fact across restarts:
+result2 = orchestrator.process("What is my name?")
+print(result2.text)  # → Recalls from semantic memory
 ```
 
-**Voice Commands:**
-- Say **"Hey MOSO"** followed by your question or command
-- MOSO verifies your identity and responds
-- Guest speakers receive limited access
-- Press `Ctrl+C` to exit voice mode
+**Voice Mode:**
+```bash
+python -m scripts.model-download.download_voice_models
+python -m scripts.enroll_voice
+python -m scripts.run_voice --model path/to/model.gguf
+```
+Say **"Hey MOSO"** followed by your question or command.
 
 ---
 
