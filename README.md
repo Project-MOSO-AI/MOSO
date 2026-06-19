@@ -98,7 +98,7 @@
 | **Orchestrator Integration** | ✅ Complete | Memory context injection, auto-event logging, resource awareness |
 | **Embeddings / Vector Search** | 🔄 V2 | Planned for next release |
 | **GPU Monitoring** | 🔄 V2 | pynvml integration planned |
-| **Agent System** | 🔄 In Progress | Goal decomposition, tool use |
+| **Agent System** | ✅ V1 | Template-based goal decomposition, task execution, verification |
 | **Tool Engine** | ✅ V1 | File ops, apps, browser, terminal — structured tool execution |
 
 ---
@@ -112,6 +112,7 @@
 3. **Memory Engine** — MOSO remembers across sessions: past conversations (episodic), facts about you (semantic), how to do things (procedural), and your preferences. All stored locally in SQLite
 4. **Resource Manager** — MOSO understands its environment: CPU usage, RAM available, storage space, battery level, network speeds, and running processes. This lets it answer "can I run X?" before attempting a task
 5. **Tool Engine** — MOSO can act: open applications, create and read files, search the web, and run terminal commands. Every action is permission-gated, audit-logged, and remembered. Dry-run mode lets you preview before executing
+6. **Agent Planner** — MOSO can plan: decompose goals into sequential tasks using template matching (python project, folder, app, web search, file read/write), execute via Tool Engine, verify each task, and persist history to SQLite
 
 Everything runs locally — no cloud dependency, no data leaves your device.
 
@@ -137,6 +138,11 @@ Everything runs locally — no cloud dependency, no data leaves your device.
 │  └──────────────────────┬───────────────────────────────┘       │
 │                         ▼                                        │
 │  ┌──────────────────────────────────────────────────────────┐   │
+│  │                   Agent Planner                           │   │
+│  │  Planner  │  Executor  │  Verifier  │  History (SQLite)   │   │
+│  └──────────────────────────┬───────────────────────────────┘   │
+│                         ▼                                        │
+│  ┌──────────────────────────────────────────────────────────┐   │
 │  │   Agents   │   Safety   │   Voice Engine   │   Identity  │   │
 │  └──────────────────────────┬───────────────────────────────┘   │
 │                         ▼                                        │
@@ -149,7 +155,6 @@ Everything runs locally — no cloud dependency, no data leaves your device.
 │  │                  Resource Manager                         │   │
 │  │  CPU  │  RAM  │  Storage  │  Battery  │  Network  │ Procs│   │
 │  └──────────────────────────┬───────────────────────────────┘   │
-│                             ▼                                    │
 │                             ▼                                    │
 │  ┌──────────────────────────────────────────────────────────┐   │
 │  │                   Tool Engine                             │   │
@@ -182,6 +187,7 @@ The foundational runtime that powers all AI inference across platforms with mult
 | **Memory** | Episodic, Semantic, Procedural, Preferences | SQLite-persistent cross-session memory |
 | **Resources** | CPU, RAM, Storage, Battery, Network, Processes | psutil-based local resource monitoring |
 | **Tools** | File, Apps, Browser, Terminal | Permission-gated OS actions with audit logging + dry-run |
+| **Agents** | Planner, Executor, Verifier, History | Template-based goal decomposition with task verification |
 
 ### M0S0 Assistant — Adaptive Personality
 
@@ -467,6 +473,130 @@ result = orchestrator.tools.execute_tool(req3, identity=orchestrator.identity_ve
 └─────────────────────────────────────────────────────┘
 ```
 
+---
+
+### Agent Planner
+
+**MOSO Agent Planner** provides autonomous goal decomposition and execution using template matching (no LLM calls needed):
+
+```
+User Goal: "create a python project named test_app"
+    ↓
+┌──────────────────────────────────────────────┐
+│              Planner                          │
+│  Matches goal against 6 templates:           │
+│  - python_project (score: 3) ← best match    │
+│  - create_folder (score: 1)                  │
+│  - create_file (score: 1)                    │
+│  - open_app / search_web / read_file (0)     │
+└──────────────────┬───────────────────────────┘
+                   ↓
+┌──────────────────────────────────────────────┐
+│              Plan                             │
+│  Goal: "create a python project test_app"    │
+│  Tasks:                                       │
+│    1. file.create_folder → test_app/         │
+│    2. file.create_file  → test_app/__init__  │
+│    3. file.create_file  → test_app/main.py   │
+└──────────────────┬───────────────────────────┘
+                   ↓
+┌──────────────────────────────────────────────┐
+│              Executor                         │
+│  Sequential execution with:                  │
+│  - ToolRequest → ToolRegistry.execute()      │
+│  - Per-task verification                      │
+│    (file_exists, folder_exists, exit_code)   │
+│  - Error handling (skip/fail on failure)     │
+└──────────────────┬───────────────────────────┘
+                   ↓
+┌──────────────────────────────────────────────┐
+│              History                          │
+│  SQLite at ~/.moso/plans.db                  │
+│  goals + tasks tables (FK cascade)           │
+│  List recent plans, replay past executions   │
+└──────────────────────────────────────────────┘
+```
+
+**6 Built-in Templates:**
+
+| Template | Keywords | Tasks Generated |
+|----------|----------|----------------|
+| **python_project** | python, project, create, app | Create folder + `__init__.py` + `main.py` |
+| **create_folder** | folder, directory, mkdir, create | Create folder, verify existence |
+| **open_app** | open, launch, start, run, app, chrome, browser | Launch app, verify process running |
+| **search_web** | search, find, web, browse, google | Search DuckDuckGo or browse URL |
+| **read_file** | read, file, view, show, display, cat | Read file, verify content not empty |
+| **create_file** | create, file, make, write | Create file with optional content, verify existence |
+
+**Fallback:** Goals that don't match any template (score < 2) are executed as a single terminal command.
+
+**Verification Methods:**
+| Method | Description |
+|--------|-------------|
+| `file_exists` | Checks file existence on disk |
+| `folder_exists` | Checks directory existence |
+| `exit_code_zero` | Terminal exit code == 0 |
+| `process_running` | psutil process name match |
+| `content_not_empty` | Tool result has content |
+
+**Orchestrator Integration:**
+```python
+orchestrator.enable_memory()
+orchestrator.enable_identity()
+orchestrator.enable_resources()
+orchestrator.enable_tools()
+orchestrator.enable_agents()
+
+# Create and execute a plan
+summary = orchestrator.agents.plan_and_execute(
+    "create a python project named my_app",
+    requester="owner",
+)
+print(summary.overall_status)  # GoalStatus.COMPLETED
+
+# List available templates
+for t in orchestrator.agents.list_templates():
+    print(t["name"], t["description"])
+
+# View execution history
+for plan in orchestrator.agents.get_recent_plans(5):
+    print(plan["goal"]["description"])  # Past goals
+```
+
+**Architecture:**
+```
+┌─────────────────────────────────────────────────────┐
+│                  AgentManager                        │
+│                                                      │
+│  ┌──────────────────────────────────────────────┐   │
+│  │               Planner                         │   │
+│  │  6 x PlanTemplate + keyword scoring + regex   │   │
+│  └──────────────────┬───────────────────────────┘   │
+│                     ▼                                │
+│  ┌──────────────────────────────────────────────┐   │
+│  │               Executor                        │   │
+│  │  Sequential task loop + ToolRegistry calls    │   │
+│  └──────────────────┬───────────────────────────┘   │
+│                     ▼                                │
+│  ┌──────────────────────────────────────────────┐   │
+│  │               Verifier                        │   │
+│  │  file_exists / folder_exists / process check  │   │
+│  └──────────────────┬───────────────────────────┘   │
+│                     ▼                                │
+│  ┌──────────────────────────────────────────────┐   │
+│  │               History (SQLite)                │   │
+│  │  ~/.moso/plans.db — goals + tasks tables     │   │
+│  └──────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────┘
+```
+
+**Key Points:**
+- **No LLM calls** — template matching is purely keyword/regex-based
+- **Owner-only execution** — all tasks are submitted as `requester="owner"`
+- **Persistent history** — every plan and task is stored in `~/.moso/plans.db`
+- **Per-task verification** — each completed task is verified before the next begins
+- **First failure stops execution** — failed tasks halt the remaining sequence
+
 <table>
   <tr>
     <th>Layer</th>
@@ -588,6 +718,13 @@ moso-core/                  # AI runtime, voice, identity, memory
 │   └── terminal_tool.py    # TerminalTool — commands with timeout + output cap
 ├── orchestration/          # Dynamic pipeline composition
 ├── agents/                 # Autonomous agent system
+│   ├── planner.py          # Template-based goal → task decomposition (6 templates)
+│   ├── executor.py         # Sequential task execution with verification
+│   ├── verifier.py         # Per-task verification (file/process/exit code checks)
+│   ├── history.py          # SQLite plan storage at ~/.moso/plans.db
+│   ├── manager.py          # AgentManager facade — plan, execute, list templates
+│   ├── models.py           # Goal, Task, Plan, ExecutionSummary dataclasses
+│   └── __init__.py         # Exports + AGENTS_AVAILABLE flag
 └── safety/                 # Guardrails & content filtering
 ```
 
@@ -617,7 +754,7 @@ feature/*   ─── New features (branched from main, PR to merge)
 | **Phase 4** — Resource Manager | CPU, RAM, storage, battery, network, process monitoring | ✅ Complete |
 | **Phase 5** — Tool Engine | File ops, apps, browser, terminal — permission-gated + audit-logged | ✅ Complete |
 | **Phase 6** — Intelligence | Embeddings + vector search, GPU monitoring, RAG | 🔄 Next |
-| **Phase 7** — Agent System | Goal decomposition, task planning, autonomous tool chaining | 📋 Future |
+| **Phase 7** — Agent System | Template-based goal decomposition, task execution, verification | ✅ Complete |
 
 ---
 
@@ -674,6 +811,14 @@ req2 = ToolRequest(
 )
 result = orchestrator.tools.execute_tool(req2)
 # → Returns file content
+
+# MOSO can plan and execute multi-step tasks:
+orchestrator.enable_agents()  # Agent Planner
+summary = orchestrator.agents.plan_and_execute(
+    "create a python project named my_app",
+    requester="owner",
+)
+print(summary.overall_status)  # GoalStatus.COMPLETED
 ```
 
 **Voice Mode:**
