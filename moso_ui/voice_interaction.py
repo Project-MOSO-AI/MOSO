@@ -238,7 +238,8 @@ class VoiceInteraction:
             pass
         except Exception:
             pass
-        return "You said: %s" % text
+        from moso_ui.responses import generate_response as fallback
+        return fallback(text)
 
     def _text_to_speech(self, text: str):
         if not TTS_AVAILABLE or not self._tts_engine:
