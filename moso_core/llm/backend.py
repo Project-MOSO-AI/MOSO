@@ -77,7 +77,11 @@ class LlamaServer:
             stderr=subprocess.PIPE,
             creationflags=subprocess.CREATE_NO_WINDOW if platform.system() == "Windows" else 0,
         )
-        return self._wait_for_ready()
+        if not self._wait_for_ready():
+            logger.error("Server failed to start, terminating process")
+            self.stop()
+            return False
+        return True
 
     def _wait_for_ready(self, timeout: float = 30.0) -> bool:
         start = time.perf_counter()
@@ -130,12 +134,18 @@ class LlamaServer:
             return LLMResponse(text="", success=False, error=str(e))
 
     def stop(self):
-        if self._process:
-            self._process.terminate()
+        if self._process is not None:
             try:
+                self._process.terminate()
                 self._process.wait(timeout=5)
             except subprocess.TimeoutExpired:
-                self._process.kill()
+                try:
+                    self._process.kill()
+                    self._process.wait(timeout=2)
+                except Exception:
+                    pass
+            except Exception:
+                pass
             self._process = None
             logger.info("Server stopped")
 

@@ -14,6 +14,8 @@ import logging
 import sys
 import time
 
+import numpy as np
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
@@ -65,9 +67,9 @@ def enroll_speaker(verifier, num_samples: int = 3):
                     audio_chunks.append(chunk)
 
             if audio_chunks:
-                combined = audio_chunks[-1] if len(audio_chunks) == 1 else audio_chunks[-1]
+                combined = np.concatenate(audio_chunks, axis=0)
                 verifier.enroll([combined], name="owner")
-                print(f"  Sample {i + 1} recorded.\n")
+                print(f"  Sample {i + 1} recorded ({len(audio_chunks)} chunks, {len(combined)} samples).\n")
             else:
                 print("  No audio detected. Try again.")
                 i -= 1

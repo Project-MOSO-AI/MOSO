@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+import os
 import subprocess
 import sys
 
@@ -34,10 +35,26 @@ class TerminalTool(Tool):
         return method(**{k: v for k, v in kwargs.items() if k != "action"})
 
     def execute_command(self, command: str, timeout: int = DEFAULT_TIMEOUT) -> ToolResult:
+        forbidden = ["&", "|", ";", "$", "`", "(", ")", "{", "}", "<", ">", "\n"]
+        for ch in forbidden:
+            if ch in command:
+                return ToolResult(False, self.name, "execute_command",
+                                  error=f"Command contains forbidden character: {ch!r}")
+
+        import shlex
+        try:
+            cmd_list = shlex.split(command, posix=(os.name != "nt"))
+        except ValueError as e:
+            return ToolResult(False, self.name, "execute_command",
+                              error=f"Invalid command syntax: {e}")
+
+        if not cmd_list:
+            return ToolResult(False, self.name, "execute_command",
+                              error="Empty command after parsing")
+
         try:
             result = subprocess.run(
-                command,
-                shell=True,
+                cmd_list,
                 capture_output=True,
                 text=True,
                 timeout=timeout,

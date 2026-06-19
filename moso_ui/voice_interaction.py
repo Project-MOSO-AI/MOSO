@@ -1,8 +1,13 @@
 from __future__ import annotations
 
+import json
 import logging
+import os
 import queue
+import re
 import threading
+import time
+from concurrent.futures import ThreadPoolExecutor
 from typing import Optional, Callable
 
 import numpy as np
@@ -11,6 +16,7 @@ from moso_ui.states import OrbState
 
 logger = logging.getLogger(__name__)
 
+# --- sounddevice ---
 try:
     import sounddevice as sd
     SOUNDDEVICE_AVAILABLE = True
@@ -18,6 +24,14 @@ except ImportError:
     SOUNDDEVICE_AVAILABLE = False
     sd = None
 
+# --- faster-whisper (local offline STT) ---
+try:
+    from faster_whisper import WhisperModel
+    WHISPER_AVAILABLE = True
+except ImportError:
+    WHISPER_AVAILABLE = False
+
+# --- speech_recognition (legacy fallback) ---
 try:
     import speech_recognition as sr
     SR_AVAILABLE = True
@@ -25,6 +39,7 @@ except ImportError:
     SR_AVAILABLE = False
     sr = None
 
+# --- pyttsx3 (TTS) ---
 try:
     import pyttsx3
     TTS_AVAILABLE = True
@@ -34,11 +49,53 @@ except ImportError:
 
 
 AUDIO_LEVEL_THRESHOLD = 0.005
+WHISPER_SAMPLE_RATE = 16000
+
+
+class ConversationManager:
+    def __init__(self, max_messages: int = 20):
+        self._messages: list[dict] = []
+        self._max_messages = max_messages
+        self._active_task: Optional[str] = None
+        self._active_plan: Optional[dict] = None
+
+    @property
+    def active_task(self) -> Optional[str]:
+        return self._active_task
+
+    @active_task.setter
+    def active_task(self, value: Optional[str]):
+        self._active_task = value
+
+    def add_message(self, role: str, content: str):
+        self._messages.append({"role": role, "content": content})
+        if len(self._messages) > self._max_messages:
+            self._messages.pop(0)
+
+    def get_history(self, limit: int = 10) -> list[dict]:
+        return self._messages[-limit:]
+
+    def build_context(self, query: str) -> str:
+        parts = []
+        if self._active_task:
+            parts.append(f"[Active Task: {self._active_task}]")
+        history = self.get_history(6)
+        if history:
+            parts.append("[Recent Conversation]")
+            for msg in history[-4:]:
+                tag = "User" if msg["role"] == "user" else "Assistant"
+                parts.append(f"{tag}: {msg['content']}")
+        parts.append(f"[Query] {query}")
+        return "\n".join(parts)
+
+    def clear(self):
+        self._messages.clear()
+        self._active_task = None
+        self._active_plan = None
 
 
 class VoiceInteraction:
     def __init__(self):
-        self._recognizer = sr.Recognizer() if sr else None
         self._tts_engine: Optional[pyttsx3.Engine] = None
         self._tts_lock = threading.Lock()
         self._listening = False
@@ -48,9 +105,27 @@ class VoiceInteraction:
         self._audio_queue: queue.Queue = queue.Queue()
         self._stream: Optional[sd.InputStream] = None
         self._tool_registry = None
+        self._orchestrator = None
+        self._conversation = ConversationManager()
+        self._executor = ThreadPoolExecutor(max_workers=2, thread_name_prefix="moso_audio")
+        self._whisper_model = None
+        self._device_sample_rate = WHISPER_SAMPLE_RATE
 
         self._init_tts()
         self._init_tools()
+        self._init_whisper()
+
+    # ----- Initialization -----
+
+    def _init_whisper(self):
+        if WHISPER_AVAILABLE:
+            try:
+                self._whisper_model = WhisperModel("base", device="cpu", compute_type="int8")
+                logger.info("Whisper model loaded (base, CPU, int8)")
+            except Exception as e:
+                logger.error("Whisper init failed: %s", e)
+        else:
+            logger.warning("faster-whisper not installed. Install: pip install faster-whisper")
 
     def _init_tools(self):
         try:
@@ -80,6 +155,50 @@ class VoiceInteraction:
                 logger.warning("TTS init failed: %s", e)
                 self._tts_engine = None
 
+    def _init_orchestrator(self):
+        try:
+            settings_path = os.path.join(os.path.expanduser("~"), ".moso", "aura_settings.json")
+            model_path = None
+            if os.path.exists(settings_path):
+                with open(settings_path) as f:
+                    model_path = json.load(f).get("model_path")
+            if not model_path or not os.path.exists(model_path):
+                logger.warning("No LLM model configured. Set model_path in Aura settings (%s)", settings_path)
+                return
+
+            from moso_core.llm.models import LLMConfig
+            from moso_core.llm.manager import LLMManager
+
+            config = LLMConfig(
+                model_path=model_path,
+                n_ctx=2048,
+                server_port=8081,
+            )
+            llm = LLMManager(config)
+            if not llm.start():
+                logger.error("LLM server failed to start for: %s", model_path)
+                return
+
+            self._orchestrator = _OrchestratorSingleton(llm)
+            self._init_orchestrator_extras()
+            logger.info("Orchestrator singleton ready: %s", model_path)
+        except ImportError as e:
+            logger.error("Orchestrator modules not available: %s", e)
+        except Exception as e:
+            logger.error("Orchestrator init failed: %s", e)
+
+    def _init_orchestrator_extras(self):
+        try:
+            from moso_core.tools.registry import ToolRegistry
+            if self._tool_registry is None:
+                self._init_tools()
+            if self._orchestrator:
+                self._orchestrator.tool_registry = self._tool_registry
+        except Exception as e:
+            logger.warning("Tool registry binding failed: %s", e)
+
+    # ----- Callbacks -----
+
     def set_state_callback(self, callback: Callable):
         self._state_callback = callback
 
@@ -101,6 +220,12 @@ class VoiceInteraction:
     def is_listening(self) -> bool:
         return self._listening
 
+    @property
+    def conversation(self) -> ConversationManager:
+        return self._conversation
+
+    # ----- Audio capture -----
+
     def start_listening(self):
         if self._listening:
             return
@@ -109,13 +234,13 @@ class VoiceInteraction:
             return
 
         self._audio_queue = queue.Queue()
-
         device = self._find_best_device()
         if device is None:
             self._request_text_direct()
             return
 
         dev_id, sr_rate = device
+        self._device_sample_rate = sr_rate
         try:
             self._stream = sd.InputStream(
                 samplerate=sr_rate,
@@ -138,7 +263,7 @@ class VoiceInteraction:
         best = None
         for i, info in enumerate(sd.query_devices()):
             if info["max_input_channels"] > 0:
-                sr = int(info["default_samplerate"]) if info.get("default_samplerate", 0) > 0 else 44100
+                sr = int(info["default_samplerate"]) if info.get("default_samplerate", 0) > 0 else WHISPER_SAMPLE_RATE
                 name = info["name"]
                 if "Microphone" in name or "mic" in name.lower():
                     return (i, sr)
@@ -156,12 +281,13 @@ class VoiceInteraction:
             self._stream = None
         self._process_audio()
 
-    def _request_text_direct(self):
-        self._update_state(OrbState.IDLE)
-        self._show_text("MOSO: Click or press Space, then type your message.")
-        text = self._request_input()
-        if text and text.strip():
-            self._on_text_input(text.strip())
+    def _audio_callback(self, indata, frames, time_info, status):
+        if status:
+            logger.debug("Audio status: %s", status)
+        if self._listening:
+            self._audio_queue.put(indata.copy())
+
+    # ----- Audio processing -----
 
     def _process_audio(self):
         chunks = []
@@ -179,22 +305,66 @@ class VoiceInteraction:
             self._show_text("MOSO: I didn't hear anything. Type instead?")
             self._request_text_direct()
             return
-        threading.Thread(target=self._transcribe_and_respond, args=(audio,), daemon=True).start()
+        self._executor.submit(self._transcribe_and_respond, audio)
 
-    def _on_text_input(self, text: str):
-        self._update_state(OrbState.THINKING)
-        self._show_text("You: %s" % text)
-        response = self._generate_response(text)
-        self._show_text("MOSO: %s" % response)
-        self._update_state(OrbState.SPEAKING)
-        self._text_to_speech(response)
+    def _request_text_direct(self):
         self._update_state(OrbState.IDLE)
+        self._show_text("MOSO: Click or press Space, then type your message.")
+        text = self._request_input()
+        if text and text.strip():
+            self._on_text_input(text.strip())
 
-    def _audio_callback(self, indata, frames, time_info, status):
-        if status:
-            logger.debug("Audio status: %s", status)
-        if self._listening:
-            self._audio_queue.put(indata.copy())
+    def _request_input(self) -> Optional[str]:
+        if self._input_callback:
+            return self._input_callback()
+        return None
+
+    # ----- Transcription (STT) -----
+
+    def _speech_to_text(self, audio: np.ndarray) -> Optional[str]:
+        if WHISPER_AVAILABLE and self._whisper_model:
+            try:
+                audio_16k = self._resample(audio, self._device_sample_rate, WHISPER_SAMPLE_RATE)
+                segments, _ = self._whisper_model.transcribe(audio_16k, language="en")
+                text = " ".join(s.text.strip() for s in segments if s.text and s.text.strip()).strip()
+                if text:
+                    logger.info("Whisper STT: %s", text[:80])
+                    return text
+                logger.warning("Whisper returned no text")
+                return None
+            except Exception as e:
+                logger.error("Whisper STT error: %s", e)
+                return None
+
+        if SR_AVAILABLE and sr:
+            try:
+                audio_int16 = (audio * 32767).astype(np.int16)
+                audio_data = sr.AudioData(audio_int16.tobytes(), self._device_sample_rate, 2)
+                text = sr.Recognizer().recognize_google(audio_data)
+                return text.strip()
+            except sr.UnknownValueError:
+                return None
+            except sr.RequestError as e:
+                logger.error("Google STT error: %s", e)
+                return None
+            except Exception as e:
+                logger.error("STT error: %s", e)
+                return None
+
+        logger.warning("No STT backend available (install faster-whisper or speech_recognition)")
+        return None
+
+    @staticmethod
+    def _resample(audio: np.ndarray, orig_rate: int, target_rate: int) -> np.ndarray:
+        if orig_rate == target_rate:
+            return audio
+        ratio = target_rate / orig_rate
+        n_samples = int(len(audio) * ratio)
+        indices = (np.arange(n_samples) / ratio).astype(np.int64)
+        indices = np.clip(indices, 0, len(audio) - 1)
+        return audio[indices]
+
+    # ----- Response generation -----
 
     def _transcribe_and_respond(self, audio: np.ndarray):
         self._update_state(OrbState.THINKING)
@@ -207,63 +377,118 @@ class VoiceInteraction:
             self._text_to_speech("I didn't catch that. Could you repeat?")
             self._update_state(OrbState.IDLE)
             return
+        self._conversation.add_message("user", text)
         self._show_text("You: %s" % text)
         response = self._generate_response(text)
+        self._conversation.add_message("assistant", response)
         self._show_text("MOSO: %s" % response)
         self._update_state(OrbState.SPEAKING)
         self._text_to_speech(response)
         self._update_state(OrbState.IDLE)
 
-    def _speech_to_text(self, audio: np.ndarray) -> Optional[str]:
-        if not SR_AVAILABLE or not self._recognizer:
-            return None
-        try:
-            audio_int16 = (audio * 32767).astype(np.int16)
-            audio_data = sr.AudioData(audio_int16.tobytes(), 16000, 2)
-            text = self._recognizer.recognize_google(audio_data)
-            return text.strip()
-        except sr.UnknownValueError:
-            return None
-        except sr.RequestError as e:
-            logger.error("Google STT error: %s", e)
-            return None
-        except Exception as e:
-            logger.error("STT error: %s", e)
-            return None
-
-    def _request_input(self) -> Optional[str]:
-        if self._input_callback:
-            return self._input_callback()
-        return None
+    def _on_text_input(self, text: str):
+        self._update_state(OrbState.THINKING)
+        self._conversation.add_message("user", text)
+        self._show_text("You: %s" % text)
+        response = self._generate_response(text)
+        self._conversation.add_message("assistant", response)
+        self._show_text("MOSO: %s" % response)
+        self._update_state(OrbState.SPEAKING)
+        self._text_to_speech(response)
+        self._update_state(OrbState.IDLE)
 
     def _generate_response(self, text: str) -> str:
-        cmd_text = self._try_llm(text)
-        if cmd_text:
-            return cmd_text
-        cmd_text = self._try_command(text)
-        if cmd_text:
-            return cmd_text
+        if self._orchestrator is None:
+            self._init_orchestrator()
+
+        result = self._try_llm_with_tools(text)
+        if result:
+            return result
+
+        result = self._try_command(text)
+        if result:
+            return result
+
         from moso_ui.responses import chat_response
-        return chat_response(text)
+        fallback = chat_response(text)
+        logger.info("Fallback response used for: %s", text[:50])
+        return fallback
+
+    def _try_llm_with_tools(self, text: str) -> Optional[str]:
+        if self._orchestrator is None or not self._orchestrator.is_ready:
+            return None
+        try:
+            context = self._conversation.build_context(text)
+            system_prompt = (
+                "You are MOSO, a privacy-first local AI assistant. "
+                "When the user asks you to perform an action, use the available tools.\n\n"
+                "Available tools (output as ```tool\\n{\"tool\": \"name\", \"params\": {...}}\\n```):\n"
+                "- launch_application(app_name): Launch an app\n"
+                "- close_application(app_name): Close a running app\n"
+                "- list_running_applications(): List running apps\n"
+                "- search_web(query): Search the web\n"
+                "- open_url(url): Open a URL in the browser\n"
+                "- list_directory(path): List files in a directory\n"
+                "- read_file(path): Read a file\n"
+                "- run_command(command): Run a terminal command\n"
+                "- create_folder(path): Create a folder\n"
+                "- create_file(path, content): Create a file\n"
+                "- delete_file(path): Delete a file\n\n"
+                "Examples:\n"
+                "User: Open VLC\n"
+                "Assistant: ```tool\n{\"tool\": \"app_tool\", \"params\": {\"action\": \"launch_application\", \"app_name\": \"vlc\"}}\n```\n"
+                "Opening VLC now.\n\n"
+                "User: Create a folder called Test\n"
+                "Assistant: ```tool\n{\"tool\": \"file_tool\", \"params\": {\"action\": \"create_folder\", \"path\": \"Test\"}}\n```\n"
+                "Created folder Test.\n\n"
+                "If no tool is needed, just respond conversationally."
+            )
+            resp = self._orchestrator.chat(context, system_prompt=system_prompt)
+            if resp and resp.strip():
+                return self._execute_llm_with_tools(resp)
+        except Exception as e:
+            logger.error("LLM+Tools error: %s", e)
+        return None
+
+    def _execute_llm_with_tools(self, response: str) -> str:
+        tool_call_pattern = r'```tool\n(.*?)\n```'
+        match = re.search(tool_call_pattern, response, re.DOTALL)
+        if not match:
+            return response
+        try:
+            tool_spec = json.loads(match.group(1).strip())
+        except (json.JSONDecodeError, KeyError) as e:
+            logger.warning("Failed to parse tool call: %s", e)
+            return response
+
+        tool_name = tool_spec.get("tool")
+        params = tool_spec.get("params", {})
+        if not tool_name:
+            return response
+
+        clean_response = re.sub(r'```tool\n.*?\n```\n?', '', response, flags=re.DOTALL).strip()
+
+        if self._tool_registry is None:
+            return clean_response if clean_response else "I can't execute tools right now."
+
+        from moso_core.tools.models import ToolRequest
+        req = ToolRequest(tool_name=tool_name, parameters=params, requester="aura_ui")
+        result = self._tool_registry.execute_tool(req, identity=self._get_identity())
+        if result.success:
+            result_text = self._format_result(req, result)
+            return f"{clean_response}\n\n{result_text}" if clean_response else result_text
+        error_msg = result.error or "Something went wrong."
+        return f"{clean_response}\n\nI ran into an issue: {error_msg}" if clean_response else f"Sorry, I couldn't do that: {error_msg}"
 
     def _try_llm(self, text: str) -> Optional[str]:
+        if self._orchestrator is None or not self._orchestrator.is_ready:
+            return None
         try:
-            import os, json
-            from moso_core.orchestration.orchestrator import MOSOOrchestrator
-            settings_path = os.path.join(os.path.expanduser("~"), ".moso", "aura_settings.json")
-            model_path = None
-            if os.path.exists(settings_path):
-                with open(settings_path) as f:
-                    model_path = json.load(f).get("model_path")
-            if model_path and os.path.exists(model_path):
-                orch = MOSOOrchestrator()
-                orch.enable_llm(model_path=model_path)
-                if orch.llm and orch.llm.start():
-                    return orch.llm.chat(text).text
-        except ImportError:
-            pass
-        except Exception:
-            pass
+            context = self._conversation.build_context(text)
+            resp = self._orchestrator.chat(context)
+            return resp
+        except Exception as e:
+            logger.error("LLM error: %s", e)
         return None
 
     def _try_command(self, text: str) -> Optional[str]:
@@ -280,6 +505,8 @@ class VoiceInteraction:
         if result.success:
             return self._format_result(req, result)
         return result.error or "Something went wrong."
+
+    # ----- Tool result formatting -----
 
     @staticmethod
     def _get_identity():
@@ -325,6 +552,8 @@ class VoiceInteraction:
             return str(result.result)[:300]
         return str(result.result)[:300] if result.result else "Done."
 
+    # ----- TTS -----
+
     def _text_to_speech(self, text: str):
         if not TTS_AVAILABLE or not self._tts_engine:
             return
@@ -334,3 +563,57 @@ class VoiceInteraction:
                 self._tts_engine.runAndWait()
             except Exception as e:
                 logger.error("TTS error: %s", e)
+
+    # ----- Cleanup -----
+
+    def shutdown(self):
+        self._executor.shutdown(wait=False)
+        if self._orchestrator:
+            self._orchestrator.shutdown()
+            self._orchestrator = None
+        if self._tts_engine:
+            try:
+                self._tts_engine.stop()
+            except Exception:
+                pass
+            self._tts_engine = None
+        logger.info("VoiceInteraction shutdown complete")
+
+
+class _OrchestratorSingleton:
+    def __init__(self, llm):
+        from moso_core.orchestration.orchestrator import Orchestrator
+        self._llm = llm
+        self._tool_registry = None
+        self._is_ready = True
+
+    @property
+    def is_ready(self) -> bool:
+        return self._is_ready and self._llm is not None
+
+    @property
+    def tool_registry(self):
+        return self._tool_registry
+
+    @tool_registry.setter
+    def tool_registry(self, registry):
+        self._tool_registry = registry
+
+    def complete(self, prompt: str, system_prompt: str = "") -> Optional[str]:
+        from moso_core.llm.models import LLMRequest
+        req = LLMRequest(prompt=prompt, system_prompt=system_prompt, max_tokens=512)
+        resp = self._llm._server.complete(req)
+        return resp.text if resp and resp.text else None
+
+    def chat(self, message: str, system_prompt: str = "") -> Optional[str]:
+        if system_prompt:
+            full_prompt = f"{system_prompt}\n\nUser: {message}\nAssistant:"
+            return self.complete(full_prompt, system_prompt="")
+        return self._llm.chat(message)
+
+    def shutdown(self):
+        try:
+            self._llm.stop()
+        except Exception:
+            pass
+        self._is_ready = False

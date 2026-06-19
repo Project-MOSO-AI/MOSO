@@ -7,7 +7,7 @@ import urllib.request
 
 MODELS = {
     "qwen3-8b": {
-        "url": "https://huggingface.co/Qwen/Qwen3-8B-GGUF/resolve/main/qwen3-8b-q4_k_m.gguf",
+        "url": "https://huggingface.co/Qwen/Qwen3-8B-GGUF/resolve/main/Qwen3-8B-Q4_K_M.gguf",
         "size_gb": 5.2,
     },
     "llama3-8b": {
@@ -55,10 +55,11 @@ def main():
     print(f"  To:   {dest}")
     print()
     print("This will take a while depending on your internet speed.")
-    confirm = input("Continue? [y/N] ").strip().lower()
-    if confirm != "y":
-        print("Cancelled.")
-        return
+    if not os.environ.get("OPCODE_NONINTERACTIVE"):
+        confirm = input("Continue? [y/N] ").strip().lower()
+        if confirm != "y":
+            print("Cancelled.")
+            return
 
     def report(block, blocks, size):
         downloaded = block * size / (1024 * 1024)

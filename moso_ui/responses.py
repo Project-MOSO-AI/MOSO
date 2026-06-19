@@ -52,16 +52,36 @@ _RESPONSES = {
     ],
 }
 
+_STOP_WORDS = {"source", "file", "folder", "directory", "document", "app", "application", "program"}
+
 
 _CMD_PATTERNS = [
-    (r"\b(?:open|launch|start|run)\s+(.+)", "app_tool", "launch_application", lambda m: {"app_name": m.group(1).strip()}),
-    (r"\b(?:close|kill|stop|quit)\s+(.+?)(?:\s+app|\s*)$", "app_tool", "close_application", lambda m: {"app_name": m.group(1).strip()}),
-    (r"\blist\s+(?:running\s+)?apps\b|\bwhat.*running\b", "app_tool", "list_running_applications", lambda m: {}),
-    (r"\b(?:search|find|look up|google)\s+(?:for\s+)?(.+)", "browser_tool", "search_web", lambda m: {"query": m.group(1).strip()}),
-    (r"\b(?:go to|open|navigate to)\s+(?:url\s+)?(https?://\S+)", "browser_tool", "open_url", lambda m: {"url": m.group(1).strip()}),
-    (r"\blist\s+(?:files?|dir|directory|folder)\s*(?:in\s+(.+))?", "file_tool", "list_directory", lambda m: {"path": m.group(1).strip() if m.group(1) else "."}),
-    (r"\bread\s+(?:file\s+)?(.+)", "file_tool", "read_file", lambda m: {"path": m.group(1).strip()}),
-    (r"\brun\s+(?:command\s+)?(.+)", "terminal_tool", "run_command", lambda m: {"command": m.group(1).strip()}),
+    (r"\bgo to\s+(https?://\S+)", "browser_tool", "open_url",
+     lambda m: {"url": m.group(1).strip()}),
+    (r"\bopen\s+(https?://\S+)", "browser_tool", "open_url",
+     lambda m: {"url": m.group(1).strip()}),
+    (r"\b(?:search|find|look up)\s+(?:for\s+)?(.+)", "browser_tool", "search_web",
+     lambda m: {"query": m.group(1).strip()}),
+    (r"\bclose\s+(.+?)(?:\s+app|\s*)$", "app_tool", "close_application",
+     lambda m: {"app_name": m.group(1).strip()}),
+    (r"\bkill\s+(.+?)(?:\s+app|\s*)$", "app_tool", "close_application",
+     lambda m: {"app_name": m.group(1).strip()}),
+    (r"\b(?:open|launch|start)\s+(.+)", "app_tool", "launch_application",
+     lambda m: {"app_name": m.group(1).strip()}),
+    (r"\blist\s+(?:running\s+)?apps", "app_tool", "list_running_applications", lambda m: {}),
+    (r"\bwhat('s| is)\s+running\b", "app_tool", "list_running_applications", lambda m: {}),
+    (r"\blist\s+(?:files?|dir|directory|folder)\s*(?:in\s+(.+))?", "file_tool", "list_directory",
+     lambda m: {"path": m.group(1).strip() if m.group(1) else "."}),
+    (r"\bread\s+(?:file\s+)?(.+)", "file_tool", "read_file",
+     lambda m: {"path": m.group(1).strip()}),
+    (r"\bcreate\s+(?:a\s+)?(?:folder|directory)\s+(.+)", "file_tool", "create_folder",
+     lambda m: {"path": m.group(1).strip()}),
+    (r"\bdelete\s+(?:the\s+)?(?:file|folder)\s+(.+)", "file_tool", "delete_file",
+     lambda m: {"path": m.group(1).strip()}),
+    (r"\bremove\s+(?:the\s+)?(?:file|folder)\s+(.+)", "file_tool", "delete_file",
+     lambda m: {"path": m.group(1).strip()}),
+    (r"\brun\s+(?:command\s+)?(.+)", "terminal_tool", "run_command",
+     lambda m: {"command": m.group(1).strip()}),
 ]
 
 

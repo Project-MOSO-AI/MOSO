@@ -18,8 +18,11 @@ SAFE_DIRS = [
 
 if os.name == "nt":
     SAFE_DIRS.append(os.environ.get("USERPROFILE", ""))
+    SAFE_DIRS.append(os.environ.get("TEMP", ""))
+    SAFE_DIRS.append(os.environ.get("TMP", ""))
 else:
     SAFE_DIRS.append("/home")
+    SAFE_DIRS.append("/tmp")
 
 
 class FileTool(Tool):
@@ -34,6 +37,7 @@ class FileTool(Tool):
         "list_directory": "guest",
         "find_files": "guest",
         "create_file": "trusted",
+        "create_folder": "trusted",
         "move_file": "trusted",
         "delete_file": "owner",
     }
@@ -60,12 +64,16 @@ class FileTool(Tool):
             p = Path(path).resolve()
             for safe in SAFE_DIRS:
                 safe_p = Path(safe).resolve()
-                if safe_p in p.parents or p == safe_p:
-                    return p
-            if os.name == "nt":
-                return p
+                if not safe_p.exists():
+                    continue
+                try:
+                    if safe_p in p.parents or p == safe_p or p.is_relative_to(safe_p):
+                        return p
+                except ValueError:
+                    if safe_p in p.parents or p == safe_p:
+                        return p
             return p
-        except (OSError, RuntimeError):
+        except (OSError, RuntimeError, ValueError):
             return None
 
     def read_file(self, path: str) -> ToolResult:
@@ -88,6 +96,29 @@ class FileTool(Tool):
             return ToolResult(True, self.name, "create_file", result=f"Created {resolved}")
         except Exception as e:
             return ToolResult(False, self.name, "create_file", error=str(e))
+
+    def create_folder(self, path: str) -> ToolResult:
+        resolved = self._safe_resolve(path)
+        if resolved is None:
+            return ToolResult(False, self.name, "create_folder", error=f"Invalid path: {path}")
+        try:
+            resolved.mkdir(parents=True, exist_ok=True)
+            return ToolResult(True, self.name, "create_folder", result=f"Created folder {resolved}")
+        except Exception as e:
+            return ToolResult(False, self.name, "create_folder", error=str(e))
+
+    def delete_file(self, path: str) -> ToolResult:
+        resolved = self._safe_resolve(path)
+        if resolved is None:
+            return ToolResult(False, self.name, "delete_file", error=f"Invalid path: {path}")
+        try:
+            if resolved.is_dir():
+                shutil.rmtree(resolved)
+            else:
+                resolved.unlink()
+            return ToolResult(True, self.name, "delete_file", result=f"Deleted {resolved}")
+        except Exception as e:
+            return ToolResult(False, self.name, "delete_file", error=str(e))
 
     def find_files(self, pattern: str, path: str = ".") -> ToolResult:
         try:

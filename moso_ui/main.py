@@ -42,7 +42,6 @@ class AuraApp:
     def _setup_global_hotkeys(self):
         self._ptt_shortcut = QShortcut(QKeySequence("Space"), self._orb)
         self._ptt_shortcut.activated.connect(self._toggle_voice)
-        self._orb.installEventFilter(self._orb)
 
     def _load_position(self):
         if self._settings.orb_x > 0 and self._settings.orb_y > 0:
@@ -78,6 +77,7 @@ class AuraApp:
         else:
             self._bubble.show()
             self._bubble.raise_()
+            self._bubble.set_status("listening")
             self._voice.start_listening()
 
     def _request_text_input(self) -> str:
@@ -86,9 +86,17 @@ class AuraApp:
 
     def _on_voice_state(self, state: OrbState):
         self._orb.state = state
+        self._bubble.set_status(state.value)
+        if state == OrbState.THINKING:
+            self._bubble.show_thinking()
 
     def _on_voice_text(self, text: str):
-        self._bubble.set_text(text)
+        if text.startswith("You:"):
+            self._bubble.append_message("user", text[4:].strip())
+        elif text.startswith("MOSO:"):
+            self._bubble.append_message("assistant", text[5:].strip())
+        else:
+            self._bubble.set_text(text)
         self._bubble.show()
         self._bubble.raise_()
 
@@ -101,6 +109,7 @@ class AuraApp:
 
     def _quit(self):
         self._save_position()
+        self._voice.shutdown()
         self._bubble.close()
         self._orb.close()
         self._app.quit()
