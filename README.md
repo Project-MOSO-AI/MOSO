@@ -102,6 +102,7 @@
 | **Tool Engine** | ✅ V1 | File ops, apps, browser, terminal — structured tool execution |
 | **Computer Use** | ✅ V1 | Mouse, keyboard, screen capture, window management, automation, recorder |
 | **Screen Vision** | ✅ V1 | Screenshot OCR, active window detection, screen context generation |
+| **System Intelligence** | ✅ V1 | Hardware, software, network, storage, security — live system understanding, diagnostics, explainer, inventory snapshots |
 | **LLM Integration** | ✅ V1 | llama.cpp server binary — subprocess HTTP backend, chat, completion |
 | **Aura UI** | ✅ V1 | Floating desktop orb — PySide6, always-on-top, states, tray, conversation bubble |
 
@@ -109,7 +110,7 @@
 
 ## ✧ What is MOSO?
 
-**MOSO (M0S0)** is a **privacy-first**, **local-first** adaptive AI assistant that runs entirely on your device. It is built in five layers:
+**MOSO (M0S0)** is a **privacy-first**, **local-first** adaptive AI assistant that runs entirely on your device. It is built in eleven layers:
 
 1. **Voice Pipeline** — Talk to MOSO hands-free: wake word detection, speaker verification, speech-to-text, LLM reasoning, text-to-speech with optional voice cloning
 2. **Identity Engine** — MOSO knows who you are using 5 weighted signals (voice, liveness, behavior, device, history). Replay/synthetic audio is rejected. Confidence scoring determines permission levels from guest to full owner
@@ -121,6 +122,7 @@
 8. **Screen Vision** — MOSO can see your screen: OCR text extraction, text region detection, active window identification, and screen context assembly — all observation-only, no clicking or ML
 9. **LLM Integration** — MOSO connects to a local llama.cpp server binary for text generation and chat. Download a GGUF model and start reasoning
 10. **Aura UI** — MOSO lives on your desktop as a floating orb. Always-on-top, draggable, with status animations (idle/listening/thinking/executing/error), system tray, and conversation bubbles
+11. **System Intelligence** — MOSO understands your entire computer: CPU model, GPU, motherboard, installed software, services, startup items, network connections, DNS, VPN, storage usage, firewall status, antivirus state, pending updates. It explains technical concepts in plain language, runs diagnostics with severity-ranked issues and suggestions, and tracks changes over time with SQLite-based inventory snapshots
 
 Everything runs locally — no cloud dependency, no data leaves your device.
 
@@ -172,7 +174,7 @@ Everything runs locally — no cloud dependency, no data leaves your device.
 │  │                  Resource Manager                         │   │
 │  │  CPU  │  RAM  │  Storage  │  Battery  │  Network  │ Procs│   │
 │  └──────────────────────────┬───────────────────────────────┘   │
-│                         ▼                                        │
+│                             ▼                                    │
 │  ┌──────────────────────────────────────────────────────────┐   │
 │  │                   Screen Vision                           │   │
 │  │   OCR  │  Text Regions  │  Active Window  │  Context      │   │
@@ -181,6 +183,12 @@ Everything runs locally — no cloud dependency, no data leaves your device.
 │  ┌──────────────────────────────────────────────────────────┐   │
 │  │                   Computer Use                            │   │
 │  │   Mouse  │  Keyboard  │  Screen  │  Windows  │ Recorder   │   │
+│  └──────────────────────────┬───────────────────────────────┘   │
+│                             ▼                                    │
+│  ┌──────────────────────────────────────────────────────────┐   │
+│  │               System Intelligence                         │   │
+│  │  Hardware │ Software │ Network │ Storage │ Security       │   │
+│  │  Diagnostics │ Inventory │ Explainer                      │   │
 │  └──────────────────────────┬───────────────────────────────┘   │
 │                             ▼                                    │
 │  ┌──────────────────────────────────────────────────────────┐   │
@@ -217,6 +225,7 @@ The foundational runtime that powers all AI inference across platforms with mult
 | **Agents** | Planner, Executor, Verifier, History | Template-based goal decomposition with retry + dependencies + dry-run |
 | **Computer Use** | Mouse, Keyboard, Screen, Windows, Automation, Recorder | Desktop automation — pyautogui, mss, pygetwindow |
 | **Screen Vision** | OCR, Text Regions, Window Detection, Context | Screenshot OCR — pytesseract, mss, pygetwindow |
+| **System Intelligence** | Hardware, Software, Network, Storage, Security, Diagnostics, Inventory, Explainer | Live system understanding — psutil, winreg, subprocess
 | **LLM Integration** | Server, Chat, Completion | llama.cpp server binary — subprocess HTTP backend |
 | **Aura UI** | Floating Orb, Conversation Bubble, Tray | Desktop overlay — PySide6 |
 
@@ -952,6 +961,128 @@ print(mgr.complete("Hello!").text)
 ```
 
 **Supported Models:** Any GGUF format model (Qwen 3 8B, Llama 3.1 8B, Gemma 3 12B, Phi-3 Mini, etc.)
+
+---
+
+### System Intelligence
+
+**MOSO System Intelligence** understands your entire computer — hardware, software, network, storage, and security — and explains findings in plain language.
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                      SystemIntelligenceManager                       │
+│                                                                      │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐            │
+│  │ Hardware │  │ Software │  │ Network  │  │ Storage  │            │
+│  │          │  │          │  │          │  │          │            │
+│  │ CPU model│  │ Installed│  │ Adapters │  │ Disk     │            │
+│  │ GPU      │  │ apps     │  │ DNS      │  │ usage    │            │
+│  │ Motherbrd│  │ Services │  │ VPN      │  │ Large    │            │
+│  │ RAM      │  │ Startups │  │ Connects │  │ files    │            │
+│  │ OS ver   │  │ Processes│  │ Ports    │  │ Health   │            │
+│  └────┬─────┘  └────┬─────┘  └────┬─────┘  └────┬─────┘            │
+│       └────────┬─────┴────────┬────┴─────────┬────┘                 │
+│                ▼              ▼              ▼                       │
+│  ┌──────────┐  ┌──────────┐  ┌──────────────────────────────┐     │
+│  │ Security │  │Diagnostic│  │  Explainer + Inventory        │     │
+│  │          │  │          │  │                               │     │
+│  │ Firewall │  │ Critical │  │  "What is RAM?" → education   │     │
+│  │ Antivirus│  │ Warning  │  │  Snapshot → compare → diff    │     │
+│  │ Updates  │  │ Info     │  │  SQLite history               │     │
+│  │ Startups │  │ Sugest   │  │                               │     │
+│  └──────────┘  └──────────┘  └───────────────────────────────┘     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+| Engine | Class | Key Methods | Source |
+|--------|-------|-------------|--------|
+| **Hardware** | `HardwareIntelligence` | `get_summary()` — CPU model, GPU, motherboard, RAM, OS | platform, psutil, wmic |
+| **Software** | `SoftwareIntelligence` | `get_installed_apps()`, `get_services()`, `get_startup_items()` | winreg, sc query, PowerShell |
+| **Network** | `NetworkIntelligence` | `get_config()` — adapters, DNS, VPN, connections, ports | psutil, ipconfig, PowerShell |
+| **Storage** | `StorageIntelligence` | `find_large_files()`, `find_large_folders()`, `get_drive_health()` | os.walk, psutil, wmic |
+| **Security** | `SecurityIntelligence` | `get_status()` — firewall, antivirus, updates, startup risks | netsh, PowerShell, winreg |
+| **Diagnostics** | `DiagnosticsEngine` | `run_full_diagnostics()`, `run_performance_check()` | All engines + ResourceManager |
+| **Inventory** | `InventoryEngine` | `capture_snapshot()`, `compare_with_last_snapshot()`, `list_snapshots()` | SQLite (~/.moso/inventory.db) |
+| **Explainer** | `ExplainerEngine` | `explain(topic)` — CPU, GPU, RAM, storage, network, battery, firewall, OS | Templates + live state |
+
+**Natural Language Responses:**
+
+Every summary method returns an educational paragraph — never raw data:
+
+```python
+si = orchestrator.system_intelligence
+
+si.get_hardware_summary()
+# "You have an Intel Core i7-12700H with 14 cores and 20 threads.
+#  Your GPU is NVIDIA RTX 3060. You have 16.0 GB of SODIMM RAM.
+#  Motherboard: ASUS ROG Z690. You are running Windows 11 23H2."
+
+si.explain("RAM")
+# "RAM (Random Access Memory) is your computer's short-term memory.
+#  It temporarily stores data that your CPU needs to access quickly.
+#  Unlike your hard drive, RAM is fast but volatile...
+#  You have 16.0 GB installed. Currently 12.5 GB is in use (78%)."
+
+si.get_diagnostics_summary()
+# "Found 1 warning(s). 
+#  - Storage: Your drive C:\ is 92% full. Only 24.5 GB remaining.
+#    Suggestion: Use storage.find_large_files() to identify cleanup candidates."
+```
+
+**Inventory Change Tracking:**
+
+MOSO remembers what changed between sessions:
+
+```python
+# First session:
+orchestrator.system_intelligence.capture_snapshot()
+# → "System snapshot captured at 2026-06-19T20:30:00."
+
+# Later, after installing new software:
+diff = orchestrator.system_intelligence.compare_with_last_snapshot()
+# → "New software installed: Firefox, Discord. Software removed: OldApp."
+```
+
+**Orchestrator Integration:**
+```python
+orchestrator = Orchestrator(config)
+orchestrator.enable_resources()
+orchestrator.enable_system_intelligence()
+
+# All summaries → natural language
+print(orchestrator.system_intelligence.get_hardware_summary())
+print(orchestrator.system_intelligence.get_software_summary())
+print(orchestrator.system_intelligence.get_network_summary())
+print(orchestrator.system_intelligence.get_storage_summary())
+print(orchestrator.system_intelligence.get_security_summary())
+
+# Diagnostics with severity
+issues = orchestrator.system_intelligence.run_diagnostics()
+for issue in issues:
+    print(f"[{issue.severity.upper()}] {issue.component}: {issue.explanation}")
+    print(f"  → Suggestion: {issue.suggestion}")
+
+# Educational explanations
+print(orchestrator.system_intelligence.explain("what is a GPU"))
+print(orchestrator.system_intelligence.explain("how does my firewall work"))
+
+# Change tracking
+orchestrator.system_intelligence.capture_snapshot()
+```
+
+**Permissions:**
+
+| Level | Access |
+|-------|--------|
+| **Guest** | All summaries, explanations, diagnostics |
+| **Owner** | Above + snapshot capture, inventory comparison |
+
+**Design Principles:**
+- **Read-only** — never modifies system state
+- **Privacy-first** — all data stays local in SQLite (~/.moso/inventory.db)
+- **Graceful fallback** — every WMI/powerShell/subprocess call is wrapped in try/except
+- **Composable** — uses existing `ResourceManager` for live counters
+- **Educational** — never dumps raw data when explanation is possible
 
 ---
 

@@ -98,6 +98,12 @@ except ImportError:
     COMPUTER_USE_AVAILABLE = False
 
 try:
+    from moso_core.system_intelligence import SYSTEM_INTELLIGENCE_AVAILABLE as _si_flag
+    SYSTEM_INTELLIGENCE_AVAILABLE = _si_flag
+except ImportError:
+    SYSTEM_INTELLIGENCE_AVAILABLE = False
+
+try:
     from moso_core.vision import VISION_AVAILABLE as _vision_flag
     VISION_AVAILABLE = _vision_flag
 except ImportError:
@@ -133,6 +139,7 @@ __all__ = [
     "ToolRegistry",
     "AGENTS_AVAILABLE",
     "COMPUTER_USE_AVAILABLE",
+    "SYSTEM_INTELLIGENCE_AVAILABLE",
     "VISION_AVAILABLE",
     "LLM_AVAILABLE",
     "LLMConfig",

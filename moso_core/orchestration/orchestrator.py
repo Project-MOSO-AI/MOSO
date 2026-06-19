@@ -19,6 +19,7 @@ if TYPE_CHECKING:
     from moso_core.llm.manager import LLMManager
     from moso_core.memory.manager import MemoryManager
     from moso_core.resources.manager import ResourceManager
+    from moso_core.system_intelligence.manager import SystemIntelligenceManager
     from moso_core.tools.registry import ToolRegistry
     from moso_core.vision.manager import VisionManager
     from moso_core.voice.pipeline import VoicePipeline
@@ -82,6 +83,7 @@ class Orchestrator:
         self._agent_manager: Optional[AgentManager] = None
         self._computer_use: Optional[AutomationEngine] = None
         self._vision: Optional[VisionManager] = None
+        self._system_intelligence: Optional[SystemIntelligenceManager] = None
         self._llm: Optional[LLMManager] = None
 
     def process(self, prompt: str, modality: Modality = Modality.TEXT, **kwargs) -> PipelineResult:
@@ -314,6 +316,22 @@ class Orchestrator:
     @property
     def vision(self) -> Optional[VisionManager]:
         return self._vision
+
+    def enable_system_intelligence(self) -> None:
+        try:
+            from moso_core.system_intelligence.manager import SystemIntelligenceManager
+            self._system_intelligence = SystemIntelligenceManager(
+                identity=self._identity_verifier,
+                memory=self._memory,
+                resources=self._resources,
+            )
+            logger.info("System intelligence engine enabled")
+        except Exception as e:
+            logger.warning("System intelligence engine not available: %s", e)
+
+    @property
+    def system_intelligence(self) -> Optional[SystemIntelligenceManager]:
+        return self._system_intelligence
 
     def enable_llm(self, model_path: str = "", n_ctx: int = 2048, server_port: int = 8081) -> None:
         try:
