@@ -104,6 +104,12 @@ except ImportError:
     SYSTEM_INTELLIGENCE_AVAILABLE = False
 
 try:
+    from moso_core.risk import RISK_AVAILABLE as _risk_flag
+    RISK_AVAILABLE = _risk_flag
+except ImportError:
+    RISK_AVAILABLE = False
+
+try:
     from moso_core.vision import VISION_AVAILABLE as _vision_flag
     VISION_AVAILABLE = _vision_flag
 except ImportError:
@@ -140,6 +146,7 @@ __all__ = [
     "AGENTS_AVAILABLE",
     "COMPUTER_USE_AVAILABLE",
     "SYSTEM_INTELLIGENCE_AVAILABLE",
+    "RISK_AVAILABLE",
     "VISION_AVAILABLE",
     "LLM_AVAILABLE",
     "LLMConfig",

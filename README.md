@@ -105,12 +105,13 @@
 | **System Intelligence** | ✅ V1 | Hardware, software, network, storage, security — live system understanding, diagnostics, explainer, inventory snapshots |
 | **LLM Integration** | ✅ V1 | llama.cpp server binary — subprocess HTTP backend, chat, completion |
 | **Aura UI** | ✅ V1 | Floating desktop orb — PySide6, always-on-top, states, tray, conversation bubble |
+| **Risk & Privacy Engine** | ✅ V1 | Pre-execution risk scoring, network reputation, credential exposure, data privacy analysis — blocks HIGH/CRITICAL actions |
 
 ---
 
 ## ✧ What is MOSO?
 
-**MOSO (M0S0)** is a **privacy-first**, **local-first** adaptive AI assistant that runs entirely on your device. It is built in eleven layers:
+**MOSO (M0S0)** is a **privacy-first**, **local-first** adaptive AI assistant that runs entirely on your device. It is built in twelve layers:
 
 1. **Voice Pipeline** — Talk to MOSO hands-free: wake word detection, speaker verification, speech-to-text, LLM reasoning, text-to-speech with optional voice cloning
 2. **Identity Engine** — MOSO knows who you are using 5 weighted signals (voice, liveness, behavior, device, history). Replay/synthetic audio is rejected. Confidence scoring determines permission levels from guest to full owner
@@ -123,6 +124,7 @@
 9. **LLM Integration** — MOSO connects to a local llama.cpp server binary for text generation and chat. Download a GGUF model and start reasoning
 10. **Aura UI** — MOSO lives on your desktop as a floating orb. Always-on-top, draggable, with status animations (idle/listening/thinking/executing/error), system tray, and conversation bubbles
 11. **System Intelligence** — MOSO understands your entire computer: CPU model, GPU, motherboard, installed software, services, startup items, network connections, DNS, VPN, storage usage, firewall status, antivirus state, pending updates. It explains technical concepts in plain language, runs diagnostics with severity-ranked issues and suggestions, and tracks changes over time with SQLite-based inventory snapshots
+12. **Risk & Privacy Engine** — MOSO protects your system: pre-execution risk scoring scans network destinations, file paths, credential exposure, and data privacy implications. The reputation checker evaluates domains/IPs against a built-in blocklist and heuristic scoring. HIGH and CRITICAL risk actions are blocked automatically
 
 Everything runs locally — no cloud dependency, no data leaves your device.
 
@@ -192,6 +194,13 @@ Everything runs locally — no cloud dependency, no data leaves your device.
 │  └──────────────────────────┬───────────────────────────────┘   │
 │                             ▼                                    │
 │  ┌──────────────────────────────────────────────────────────┐   │
+│  │               Risk & Privacy Engine                       │   │
+│  │  Network Reputation │ File Impact │ Credential Check      │   │
+│  │  Privacy Analysis │ Permission Check │ Resource Impact    │   │
+│  │  Pre-execution Scoring → Blocks HIGH/CRITICAL             │   │
+│  └──────────────────────────┬───────────────────────────────┘   │
+│                             ▼                                    │
+│  ┌──────────────────────────────────────────────────────────┐   │
 │  │                   Tool Engine                             │   │
 │  │  File │  Apps  │  Browser  │  Terminal  │  Audit Logger    │   │
 │  └──────────────────────────┬───────────────────────────────┘   │
@@ -226,6 +235,7 @@ The foundational runtime that powers all AI inference across platforms with mult
 | **Computer Use** | Mouse, Keyboard, Screen, Windows, Automation, Recorder | Desktop automation — pyautogui, mss, pygetwindow |
 | **Screen Vision** | OCR, Text Regions, Window Detection, Context | Screenshot OCR — pytesseract, mss, pygetwindow |
 | **System Intelligence** | Hardware, Software, Network, Storage, Security, Diagnostics, Inventory, Explainer | Live system understanding — psutil, winreg, subprocess
+| **Risk & Privacy Engine** | Network Reputation, File Impact, Credential Check, Privacy Analysis | Pre-execution risk scoring blocks HIGH/CRITICAL actions — built-in blocklist + heuristic scoring
 | **LLM Integration** | Server, Chat, Completion | llama.cpp server binary — subprocess HTTP backend |
 | **Aura UI** | Floating Orb, Conversation Bubble, Tray | Desktop overlay — PySide6 |
 
@@ -1247,6 +1257,15 @@ moso-core/                  # AI runtime, voice, identity, memory
 │   ├── retrieval.py        # Unified keyword + recent search
 │   ├── summarizer.py       # Event-to-fact extraction
 │   └── models.py           # Memory dataclasses
+├── risk/                   # Risk & Privacy Engine
+│   ├── models.py           # RiskLevel, RiskAssessment, PrivacyAssessment, RiskReport
+│   ├── reputation.py       # Local-only blocklist + heuristic domain/IP scoring
+│   ├── network_analysis.py # TLS port check, data size, upload/download direction
+│   ├── risk_engine.py      # Pre-execution scoring: network, file, credential, permission, resource
+│   ├── privacy_engine.py   # Data exposure analysis: read-only vs external write, user data access
+│   ├── verification.py     # verify(action, tool, params) → RiskReport
+│   ├── manager.py          # RiskManager facade with assess(), check_and_block()
+│   └── __init__.py         # Exports + RISK_AVAILABLE flag
 ├── resources/              # Local resource monitoring
 │   ├── manager.py          # ResourceManager facade
 │   ├── cpu.py              # CPUMonitor (usage, freq, temp)
@@ -1339,6 +1358,7 @@ feature/*   ─── New features (branched from main, PR to merge)
 | **Phase 8** — Computer Use | Mouse, keyboard, screen capture, window management, automation, recorder | ✅ Complete |
 | **Phase 9** — Vision V1 | Screenshot OCR, text region detection, active window detection, screen context | ✅ Complete |
 | **Phase 10** — LLM + Aura UI | llama.cpp server binary integration, floating desktop orb with PySide6 | ✅ Complete |
+| **Phase 11** — Risk & Privacy Engine | Pre-execution risk scoring, network reputation, credential exposure, privacy analysis | ✅ Complete |
 
 ---
 
@@ -1376,6 +1396,7 @@ orchestrator.enable_memory()      # SQLite at ~/.moso/memory.db
 orchestrator.enable_identity()    # Owner verification
 orchestrator.enable_resources()   # CPU, RAM, battery monitoring
 orchestrator.enable_tools()       # File, app, browser, terminal
+orchestrator.enable_risk_engine() # Risk & Privacy Engine (pre-execution scoring + blocking)
 
 # Talk to MOSO
 result = orchestrator.process("Hello, remember my name is Harsha")

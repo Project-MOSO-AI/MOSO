@@ -92,6 +92,22 @@ class ToolRegistry:
                 error=f"Validation failed: {reason}",
             )
 
+        try:
+            from moso_core.risk.manager import RiskManager as _RM
+            _risk = _RM(resources=resources) if resources else _RM()
+            allowed, report = _risk.check_and_block(tool.name, action, params)
+            if not allowed:
+                return ToolResult(
+                    success=False,
+                    tool_name=tool.name,
+                    action=action,
+                    error=f"Risk Engine blocked: {report.max_level.value} - {report.risk.recommendation}",
+                )
+        except ImportError:
+            pass
+        except Exception as e:
+            logger.warning("Risk check failed (non-blocking): %s", e)
+
         required_level = tool.get_permission_level(action)
         description = tool.describe_action(**params, _action_name=action)
 

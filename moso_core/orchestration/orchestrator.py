@@ -21,6 +21,7 @@ if TYPE_CHECKING:
     from moso_core.resources.manager import ResourceManager
     from moso_core.system_intelligence.manager import SystemIntelligenceManager
     from moso_core.tools.registry import ToolRegistry
+    from moso_core.risk.manager import RiskManager
     from moso_core.vision.manager import VisionManager
     from moso_core.voice.pipeline import VoicePipeline
     from moso_core.identity.verifier import IdentityVerifier
@@ -84,6 +85,7 @@ class Orchestrator:
         self._computer_use: Optional[AutomationEngine] = None
         self._vision: Optional[VisionManager] = None
         self._system_intelligence: Optional[SystemIntelligenceManager] = None
+        self._risk: Optional[RiskManager] = None
         self._llm: Optional[LLMManager] = None
 
     def process(self, prompt: str, modality: Modality = Modality.TEXT, **kwargs) -> PipelineResult:
@@ -332,6 +334,22 @@ class Orchestrator:
     @property
     def system_intelligence(self) -> Optional[SystemIntelligenceManager]:
         return self._system_intelligence
+
+    def enable_risk_engine(self) -> None:
+        try:
+            from moso_core.risk.manager import RiskManager
+            self._risk = RiskManager(
+                identity=self._identity_verifier,
+                memory=self._memory,
+                resources=self._resources,
+            )
+            logger.info("Risk & Privacy engine enabled")
+        except Exception as e:
+            logger.warning("Risk & Privacy engine not available: %s", e)
+
+    @property
+    def risk(self) -> Optional[RiskManager]:
+        return self._risk
 
     def enable_llm(self, model_path: str = "", n_ctx: int = 2048, server_port: int = 8081) -> None:
         try:
