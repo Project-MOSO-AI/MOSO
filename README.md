@@ -107,8 +107,9 @@
 | **Screen Vision** | ✅ V1 | Screenshot OCR, active window detection, screen context generation |
 | **System Intelligence** | ✅ V1 | Hardware, software, network, storage, security — live system understanding, diagnostics, explainer, inventory snapshots |
 | **LLM Integration** | ✅ V1 | llama.cpp server binary — subprocess HTTP backend, chat, completion |
-| **Aura UI** | ✅ V1 | Floating desktop orb — PySide6, always-on-top, states, tray, conversation bubble |
+| **Aura UI** | ✅ V2 | Floating desktop orb — PySide6, always-on-top, 8 states (idle/listening/thinking/analyzing/executing/speaking/warning/error), tray, conversation bubble, streaming display |
 | **Risk & Privacy Engine** | ✅ V1 | Pre-execution risk scoring, network reputation, credential exposure, data privacy analysis — blocks HIGH/CRITICAL actions |
+| **Unified Integration** | ✅ V1 | All modules wired into Aura UI via Orchestrator — Memory · System Intelligence · Tools · Risk Engine · Agents · Vision · Computer Use · Realtime Research · Identity — live at startup |
 
 ---
 
@@ -120,15 +121,16 @@
 2. **Identity Engine** — MOSO knows who you are using 5 weighted signals (voice, liveness, behavior, device, history). Replay/synthetic audio is rejected. Confidence scoring determines permission levels from guest to full owner
 3. **Memory Engine** — MOSO remembers across sessions: past conversations (episodic), facts about you (semantic), how to do things (procedural), and your preferences. All stored locally in SQLite
 4. **Resource Manager** — MOSO understands its environment: CPU usage, RAM available, storage space, battery level, network speeds, and running processes. This lets it answer "can I run X?" before attempting a task
-5. **Tool Engine** — MOSO can act: open applications, create and read files, search the web, and run terminal commands. Every action is permission-gated, audit-logged, and remembered. Dry-run mode lets you preview before executing
+5. **Tool Engine** — MOSO can act: open applications, create and read files, search the web, and run terminal commands. Every action is permission-gated, audit-logged, risk-checked, and remembered. Dry-run mode lets you preview before executing
 6. **Agent Planner** — MOSO can plan: decompose goals into sequential tasks using template matching (python project, folder, app, web search, file read/write), execute via Tool Engine, verify each task, retry on failure, check dependencies, and persist history to SQLite
 7. **Computer Use** — MOSO can operate desktop software like a human: move mouse, click buttons, type text, press keyboard shortcuts, capture screenshots, focus windows, execute action sequences, and record workflows
 8. **Screen Vision** — MOSO can see your screen: OCR text extraction, text region detection, active window identification, and screen context assembly — all observation-only, no clicking or ML
 9. **LLM Integration** — MOSO connects to a local llama.cpp server binary for text generation and chat. Download a GGUF model and start reasoning
-10. **Aura UI** — MOSO lives on your desktop as a floating orb. Always-on-top, draggable, with status animations (idle/listening/thinking/executing/error), system tray, and conversation bubbles
+10. **Aura UI V2** — MOSO lives on your desktop as a floating orb with 8 animated states (idle, listening, thinking, analyzing, executing, speaking, warning, error). System tray, conversation bubble with streaming text display, risk warnings, and module status indicators. All 11 modules are wired at startup and accessible through natural conversation
 11. **System Intelligence** — MOSO understands your entire computer: CPU model, GPU, motherboard, installed software, services, startup items, network connections, DNS, VPN, storage usage, firewall status, antivirus state, pending updates. It explains technical concepts in plain language, runs diagnostics with severity-ranked issues and suggestions, and tracks changes over time with SQLite-based inventory snapshots
-12. **Risk & Privacy Engine** — MOSO protects your system: pre-execution risk scoring scans network destinations, file paths, credential exposure, and data privacy implications. The reputation checker evaluates domains/IPs against a built-in blocklist and heuristic scoring. HIGH and CRITICAL risk actions are blocked automatically
+12. **Risk & Privacy Engine** — MOSO protects your system: pre-execution risk scoring scans network destinations, file paths, credential exposure, and data privacy implications. The reputation checker evaluates domains/IPs against a built-in blocklist and heuristic scoring. HIGH and CRITICAL risk actions are blocked automatically with explanation
 13. **Real-Time Intelligence** — MOSO researches the web on your behalf: risk-assessment-driven source selection, content fetching with redirect chain tracking and TLS verification, cross-source verification with duplicate detection and conflict resolution, keyword and LLM-based analysis, and transparent summarization. Embeddings power vector search across memory. A Knowledge Graph tracks entities, relationships, events, and concepts with confidence scoring and temporal awareness. An optional Playwright-based Research Browser provides autonomous page extraction with stealth mode, metadata parsing, and PDF download
+14. **Unified Integration** — All modules connected through the Orchestrator. Aura UI starts every module automatically. Intent detection routes queries to the right engine: system questions → System Intelligence, research → Realtime, multi-step goals → Agent Planner, screen queries → Vision, general chat → LLM + Tools. Every action is risk-checked before execution. Memory stores conversations, tool results, and research findings
 
 Everything runs locally — no cloud dependency, no data leaves your device.
 

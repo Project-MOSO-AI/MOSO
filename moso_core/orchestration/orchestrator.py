@@ -1,14 +1,14 @@
 import logging
 from enum import Enum
-from typing import Iterator, Optional, Type, Union
+from typing import Any, Iterator, Optional, Type, Union
 
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 from moso_core.inference.base import InferenceConfig, ModelBackend
 try:
     from moso_core.inference.llama_cpp.backend import LlamaCPPBackend
 except ImportError:
-    LlamaCPPBackend = None  # noqa: F811
+    LlamaCPPBackend = None
 from moso_core.pipelines.base import Pipeline, PipelineResult
 from moso_core.pipelines.text.pipeline import TextPipeline
 from moso_core.safety.guardrails import OutputGuard, PromptGuard
@@ -90,6 +90,8 @@ class Orchestrator:
         self._realtime: Optional[RealtimeManager] = None
         self._llm: Optional[LLMManager] = None
 
+    # ----- Core processing -----
+
     def process(self, prompt: str, modality: Modality = Modality.TEXT, **kwargs) -> PipelineResult:
         if self._prompt_guard:
             guard_result = self._prompt_guard.check(prompt)
@@ -149,6 +151,21 @@ class Orchestrator:
         pipeline = self._resolve_pipeline(modality)
         yield from pipeline.run_stream(prompt, **kwargs)
 
+    # ----- Module enablement -----
+
+    def enable_all(self, model_path: str = ""):
+        self.enable_llm(model_path=model_path)
+        self.enable_memory()
+        self.enable_resources()
+        self.enable_tools()
+        self.enable_risk_engine()
+        self.enable_agents()
+        self.enable_computer_use()
+        self.enable_vision()
+        self.enable_system_intelligence()
+        self.enable_realtime()
+        self._init_identity()
+
     def enable_voice(
         self,
         stt_model=None,
@@ -173,7 +190,6 @@ class Orchestrator:
         )
         self._pipelines[Modality.VOICE] = self._voice_pipeline
         logger.info("Voice pipeline enabled")
-
         self._init_identity()
 
     def _init_identity(self) -> None:
@@ -194,7 +210,6 @@ class Orchestrator:
         historical=None,
     ) -> None:
         from moso_core.identity.verifier import IdentityVerifier
-
         self._identity_verifier = IdentityVerifier(
             voice=voice_verifier,
             anti_spoof=anti_spoof,
@@ -207,16 +222,12 @@ class Orchestrator:
 
     def process_voice(self, audio, sample_rate: int = 16000):
         if self._voice_pipeline is None:
-            raise RuntimeError(
-                "Voice pipeline not enabled. Call enable_voice() first."
-            )
+            raise RuntimeError("Voice pipeline not enabled. Call enable_voice() first.")
         return self._voice_pipeline.process_voice(audio, sample_rate)
 
     def listen_and_respond(self, audio_stream=None):
         if self._voice_pipeline is None:
-            raise RuntimeError(
-                "Voice pipeline not enabled. Call enable_voice() first."
-            )
+            raise RuntimeError("Voice pipeline not enabled. Call enable_voice() first.")
         return self._voice_pipeline.listen_and_respond(audio_stream)
 
     @property
@@ -392,6 +403,8 @@ class Orchestrator:
             return "LLM engine not enabled. Call enable_llm() first."
         resp = self._llm.complete(prompt, system_prompt=system_prompt)
         return resp.text
+
+    # ----- Module accessors -----
 
     def get_identity_confidence(self) -> float:
         if self._identity_verifier is None:

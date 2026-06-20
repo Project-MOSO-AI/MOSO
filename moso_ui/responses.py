@@ -1,4 +1,4 @@
-"""Rule-based response engine with command detection for tools."""
+"""Rule-based response engine with command detection for tools and module routing."""
 import re
 import random
 from typing import Optional
@@ -28,8 +28,8 @@ _RESPONSES = {
         "{author} built me as a privacy-first local AI assistant.",
     ],
     r"\bwhat can you do\b|\bhelp\b|\bcapabilities\b": [
-        "I can see your screen with OCR, operate your desktop apps, run tools, plan tasks, and chat with you. All locally, no cloud needed.",
-        "I can help with desktop automation, screen reading, file management, and general conversation. All processing stays on your machine.",
+        "I can see your screen with OCR, operate your desktop apps, run tools, plan tasks, research the web, check your system specs, and chat with you. All locally, no cloud needed.",
+        "I can help with desktop automation, screen reading, file management, system intelligence, web research, and general conversation. All processing stays on your machine.",
     ],
     r"\bgoodbye\b|\bbye\b|\bsee you\b|\blater\b": [
         "Goodbye! Talk to you later.",
@@ -50,10 +50,29 @@ _RESPONSES = {
         "Alright. Let me know if you need anything.",
         "Okay. I'm here if you change your mind.",
     ],
+    r"\b(ram|memory|cpu|processor|specs|specifications|hardware|gpu|graphics)\b": [
+        "I can check your system specifications. Let me look that up for you...",
+        "Let me fetch your hardware information...",
+    ],
+    r"\b(software|installed|programs|applications)\b": [
+        "Let me check what software you have installed.",
+        "I can list your installed applications. One moment...",
+    ],
+    r"\b(news|research|latest|trending|what's new)\b": [
+        "Let me research that for you...",
+        "I'll look into the latest information on that topic.",
+    ],
+    r"\b(screen|see|visible|display|ocr|read text)\b": [
+        "Let me look at your screen...",
+        "I can analyze what's on your screen right now.",
+    ],
+    r"\b(create|build|make|write)\s+(a\s+)?(python|project|script|app)\b": [
+        "I can help set that up! Let me plan the steps...",
+        "Let me create that project structure for you...",
+    ],
 }
 
 _STOP_WORDS = {"source", "file", "folder", "directory", "document", "app", "application", "program"}
-
 
 _CMD_PATTERNS = [
     (r"\bgo to\s+(https?://\S+)", "browser_tool", "open_url",
@@ -82,8 +101,21 @@ _CMD_PATTERNS = [
      lambda m: {"path": m.group(1).strip()}),
     (r"\brun\s+(?:command\s+)?(.+)", "terminal_tool", "run_command",
      lambda m: {"command": m.group(1).strip()}),
+    (r"\btake\s+a\s+screenshot\b|\bcapture\s+(?:the\s+)?screen\b", "computer_use", "capture_screen",
+     lambda m: {}),
+    (r"\b(?:what|which)\s+(?:window|app)\s+(?:is\s+)?active\b", "computer_use", "get_active_window",
+     lambda m: {}),
+    (r"\bmove\s+(?:the\s+)?mouse\s+(?:to\s+)?\(?(\d+)\s*,?\s*(\d+)\)?", "computer_use", "move_mouse",
+     lambda m: {"x": int(m.group(1)), "y": int(m.group(2))}),
+    (r"\bclick\s+(?:at\s+)?\(?(\d+)\s*,?\s*(\d+)\)?", "computer_use", "click",
+     lambda m: {"x": int(m.group(1)), "y": int(m.group(2))}),
+    (r"\btype\s+(.+?)(?:\.|$)", "computer_use", "type_text",
+     lambda m: {"text": m.group(1).strip()}),
+    (r"\bpress\s+(?:the\s+)?(?:key\s+)?(.+?)(?:\.|$)", "computer_use", "press_key",
+     lambda m: {"key": m.group(1).strip()}),
+    (r"\bscroll\s+(up|down)\b", "computer_use", "scroll",
+     lambda m: {"direction": m.group(1)}),
 ]
-
 
 _DEFAULT_RESPONSES = [
     "That's interesting! Tell me more.",
@@ -91,6 +123,7 @@ _DEFAULT_RESPONSES = [
     "Hmm, I'm not sure what to say about that. I'm still learning!",
     "Got it. Is there something specific you'd like me to help with?",
     "I hear you. As an AI assistant, I'm best at tasks. Want me to do something?",
+    "I understand. Let me know if you need anything — I can check your system, research topics, manage files, automate your desktop, and more.",
 ]
 
 
@@ -103,6 +136,27 @@ def detect_command(text: str) -> Optional[tuple]:
             params["action"] = action
             return (tool_name, params)
     return None
+
+
+def detect_intent(text: str) -> str:
+    text_lower = text.lower().strip()
+    if re.search(r"\b(ram|memory|cpu|processor|specs?|hardware|gpu|graphics|motherboard|os |operating system)\b", text_lower):
+        return "system_hardware"
+    if re.search(r"\b(software|installed|programs?|applications?|running)\b", text_lower):
+        return "system_software"
+    if re.search(r"\b(news|research|latest|trending|what('s| is) new|compare|vs |versus)\b", text_lower):
+        return "research"
+    if re.search(r"\b(screen|see |visible|display|ocr|read text|what('s| is) on)\b", text_lower):
+        return "vision"
+    if re.search(r"\b(remember|recall|what did|what was|earlier|yesterday|before)\b", text_lower) and re.search(r"\b(i |me|we|you|said|discuss|talk)\b", text_lower):
+        return "memory_retrieval"
+    if re.search(r"\b(create|build|make|write|set up)\s+(a\s+)?(python|project|script|virtual env|folder)\b", text_lower):
+        return "agent"
+    if re.search(r"\b(click|screenshot|capture|mouse|type |press |scroll|focus)\b", text_lower):
+        return "computer_use"
+    if re.search(r"\b(diagnos|health|issue|problem|check|scan|optimize)\b", text_lower):
+        return "system_diagnostics"
+    return "general"
 
 
 def chat_response(text: str) -> str:

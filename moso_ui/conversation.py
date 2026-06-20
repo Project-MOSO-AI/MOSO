@@ -102,6 +102,9 @@ class ConversationBubble(QFrame):
         self._auto_hide_timer.setSingleShot(True)
         self._auto_hide_timer.timeout.connect(self.hide)
 
+        self._streaming_buffer = ""
+        self._streaming_tag = ""
+
     def _scroll_to_bottom(self):
         sb = self._display.verticalScrollBar()
         if sb:
@@ -115,11 +118,60 @@ class ConversationBubble(QFrame):
         self._scroll_to_bottom()
         self._start_auto_hide()
 
+    def append_system(self, text: str, color: str = "#f59e0b"):
+        line = f'<i style="color:{color}">⚡ {text}</i>'
+        self._display.append(line)
+        self._scroll_to_bottom()
+
     def show_thinking(self):
         self._display.append(
             '<i style="color:#22c55e">MOSO is thinking...</i>'
         )
         self._scroll_to_bottom()
+
+    def show_analyzing(self, detail: str = ""):
+        text = f"MOSO is analyzing... {detail}" if detail else "MOSO is analyzing..."
+        self._display.append(f'<i style="color:#f59e0b">{text}</i>')
+        self._scroll_to_bottom()
+
+    def show_executing(self, detail: str = ""):
+        text = f"MOSO is executing... {detail}" if detail else "MOSO is executing..."
+        self._display.append(f'<i style="color:#eab308">{text}</i>')
+        self._scroll_to_bottom()
+
+    def show_warning(self, text: str):
+        self._display.append(f'<b style="color:#f97316">⚠ {text}</b>')
+        self._scroll_to_bottom()
+
+    def show_error(self, text: str):
+        self._display.append(f'<b style="color:#ef4444">✗ {text}</b>')
+        self._scroll_to_bottom()
+
+    def show_risk(self, level: str, explanation: str):
+        colors = {"LOW": "#22c55e", "MEDIUM": "#f59e0b", "HIGH": "#f97316", "CRITICAL": "#ef4444"}
+        c = colors.get(level.upper(), "#f59e0b")
+        self._display.append(f'<b style="color:{c}">🛡 Risk: {level.upper()} — {explanation}</b>')
+        self._scroll_to_bottom()
+
+    def start_streaming(self, tag: str = "MOSO"):
+        self._streaming_tag = tag
+        self._streaming_buffer = ""
+        color = "#8A2BE2"
+        self._display.append(f'<b style="color:{color}">{tag}:</b> ')
+        self._scroll_to_bottom()
+
+    def stream_chunk(self, chunk: str):
+        self._streaming_buffer += chunk
+        cursor = self._display.textCursor()
+        cursor.movePosition(QTextCursor.MoveOperation.End)
+        cursor.insertText(chunk)
+        self._scroll_to_bottom()
+
+    def end_streaming(self):
+        self._streaming_tag = ""
+        self._streaming_buffer = ""
+        self._scroll_to_bottom()
+        self._start_auto_hide()
 
     def replace_last_line(self, text: str):
         cursor = self._display.textCursor()
@@ -144,8 +196,10 @@ class ConversationBubble(QFrame):
             "idle": "#6b7280",
             "listening": "#3b82f6",
             "thinking": "#22c55e",
+            "analyzing": "#f59e0b",
             "executing": "#eab308",
             "speaking": "#a855f7",
+            "warning": "#f97316",
             "error": "#ef4444",
         }
         color = colors.get(status, "#6b7280")
@@ -158,6 +212,8 @@ class ConversationBubble(QFrame):
     def clear(self):
         self._display.clear()
         self._status_label.setText("idle")
+        self._streaming_buffer = ""
+        self._streaming_tag = ""
 
     def set_visible(self, visible: bool):
         if visible:

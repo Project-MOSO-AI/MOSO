@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 import sys
 
 from PySide6.QtCore import QCoreApplication, Qt, QTimer
@@ -11,6 +12,8 @@ from moso_ui.conversation import ConversationBubble
 from moso_ui.settings import AuraSettings
 from moso_ui.tray import SystemTray
 from moso_ui.voice_interaction import VoiceInteraction
+
+logger = logging.getLogger(__name__)
 
 
 class AuraApp:
@@ -27,6 +30,7 @@ class AuraApp:
 
         self._setup_connections()
         self._load_position()
+        self._init_modules()
 
     def _setup_connections(self):
         self._tray.show_action.triggered.connect(self._show_orb)
@@ -51,6 +55,30 @@ class AuraApp:
             if screen:
                 geo = screen.availableGeometry()
                 self._orb.move(geo.right() - 120, geo.bottom() - 120)
+
+    def _init_modules(self):
+        self._bubble.append_system("Initializing MOSO modules...", "#8A2BE2")
+        self._voice._init_orchestrator()
+        orch = self._voice.orchestrator
+        if orch:
+            enabled = []
+            if orch.memory: enabled.append("Memory")
+            if orch.resources: enabled.append("Resources")
+            if orch.tools: enabled.append("Tools")
+            if orch.agents: enabled.append("Agents")
+            if orch.computer_use: enabled.append("Computer Use")
+            if orch.vision: enabled.append("Vision")
+            if orch.system_intelligence: enabled.append("System Intelligence")
+            if orch.risk: enabled.append("Risk Engine")
+            if orch.realtime: enabled.append("Realtime Research")
+            if orch.identity_verifier: enabled.append("Identity")
+            if orch.llm: enabled.append("LLM")
+            if enabled:
+                self._bubble.append_system(f"MOSO ready — {' · '.join(enabled)}", "#22c55e")
+            else:
+                self._bubble.append_system("MOSO started in fallback mode (no LLM model configured)", "#f59e0b")
+        else:
+            self._bubble.append_system("MOSO started — modules not available", "#f97316")
 
     def _save_position(self):
         self._settings.orb_x = self._orb.x()
@@ -89,6 +117,8 @@ class AuraApp:
         self._bubble.set_status(state.value)
         if state == OrbState.THINKING:
             self._bubble.show_thinking()
+        elif state == OrbState.ANALYZING:
+            self._bubble.show_analyzing()
 
     def _on_voice_text(self, text: str):
         if text.startswith("You:"):
@@ -96,7 +126,7 @@ class AuraApp:
         elif text.startswith("MOSO:"):
             self._bubble.append_message("assistant", text[5:].strip())
         else:
-            self._bubble.set_text(text)
+            self._bubble.append_system(text, "#f59e0b")
         self._bubble.show()
         self._bubble.raise_()
 
@@ -104,7 +134,11 @@ class AuraApp:
         self._bubble.set_text("MOSO AI - Aura UI\n\n"
                               "Privacy-first local AI assistant.\n\n"
                               "Click the orb or press Space to talk.\n\n"
-                              "Version: 0.3.0")
+                              "Integrated modules:\n"
+                              "Memory · System Intelligence · Tools\n"
+                              "Risk Engine · Agents · Vision\n"
+                              "Computer Use · Realtime Research\n\n"
+                              "Version: 1.0.0")
         self._toggle_bubble()
 
     def _quit(self):

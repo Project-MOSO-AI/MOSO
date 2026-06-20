@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import math
 import os
 import sys
 
@@ -56,7 +57,7 @@ class AuraOrb(QWidget):
 
     def _animate(self):
         self._angle = (self._angle + 3) % 360
-        if self._state in (OrbState.THINKING, OrbState.LISTENING, OrbState.SPEAKING):
+        if self._state in (OrbState.THINKING, OrbState.LISTENING, OrbState.SPEAKING, OrbState.ANALYZING, OrbState.EXECUTING):
             self._pulse = (self._pulse + 1) % 100
         else:
             self._pulse = 0
@@ -103,11 +104,34 @@ class AuraOrb(QWidget):
             dot_radius = 3
             for i in range(dots):
                 a = self._angle + i * 60
-                import math
                 dx = int(math.cos(math.radians(a)) * w * 0.45)
                 dy = int(math.sin(math.radians(a)) * w * 0.45)
                 painter.setBrush(QColor(255, 255, 255, 180))
                 painter.drawEllipse(cx + dx - dot_radius, cy + dy - dot_radius, dot_radius * 2, dot_radius * 2)
+
+        elif self._state == OrbState.ANALYZING:
+            painter.setPen(Qt.PenStyle.NoPen)
+            painter.setBrush(base)
+            painter.drawEllipse(rect)
+            segments = 8
+            for i in range(segments):
+                a = self._angle + i * 45
+                dx = int(math.cos(math.radians(a)) * rect.width() * 0.35)
+                dy = int(math.sin(math.radians(a)) * rect.height() * 0.35)
+                alpha = 80 + int(80 * math.sin(math.radians(self._angle * 3 + i * 45)))
+                painter.setBrush(QColor(255, 255, 255, alpha))
+                painter.drawEllipse(cx + dx - 2, cy + dy - 2, 4, 4)
+            painter.setBrush(base.lighter(130))
+            painter.drawEllipse(rect.adjusted(12, 12, -12, -12))
+
+        elif self._state == OrbState.EXECUTING:
+            painter.setPen(Qt.PenStyle.NoPen)
+            painter.setBrush(base)
+            painter.drawEllipse(rect)
+            painter.setPen(QPen(QColor(255, 255, 255, 150), 2))
+            painter.setBrush(Qt.BrushStyle.NoBrush)
+            span = 60 + 30 * math.sin(math.radians(self._angle * 2))
+            painter.drawArc(rect.adjusted(6, 6, -6, -6), int(self._angle * 16), int(span * 16))
 
         elif self._state == OrbState.SPEAKING:
             painter.setPen(Qt.PenStyle.NoPen)
@@ -122,15 +146,18 @@ class AuraOrb(QWidget):
                 painter.drawEllipse(ring)
             painter.setOpacity(1.0)
 
-        elif self._state == OrbState.EXECUTING:
+        elif self._state == OrbState.WARNING:
             painter.setPen(Qt.PenStyle.NoPen)
             painter.setBrush(base)
             painter.drawEllipse(rect)
-            painter.setPen(QPen(QColor(255, 255, 255, 150), 2))
+            painter.setPen(QPen(QColor(255, 255, 255, 200), 2))
             painter.setBrush(Qt.BrushStyle.NoBrush)
-            import math
-            span = 60 + 30 * math.sin(math.radians(self._angle * 2))
-            painter.drawArc(rect.adjusted(6, 6, -6, -6), int(self._angle * 16), int(span * 16))
+            c = rect.center()
+            off = rect.width() // 5
+            painter.drawLine(c.x(), c.y() - off, c.x(), c.y() + off // 2)
+            dot_size = 3
+            painter.setBrush(QColor(255, 255, 255, 200))
+            painter.drawEllipse(c.x() - dot_size, c.y() + off // 2 + 2, dot_size * 2, dot_size * 2)
 
         elif self._state == OrbState.ERROR:
             painter.setPen(Qt.PenStyle.NoPen)
