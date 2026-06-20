@@ -136,6 +136,35 @@ Everything runs locally — no cloud dependency, no data leaves your device.
 
 ---
 
+## ✧ Project Structure
+
+```
+MOSO/
+├── moso_core/              # Core AI engine
+│   ├── agents/             # Template-based agent planner & executor
+│   ├── computer_use/       # Desktop automation (mouse, keyboard, screen, windows)
+│   ├── identity/           # Multi-signal identity engine (voice, behavior, device)
+│   ├── inference/          # Model backends (llama.cpp, ONNX Runtime)
+│   ├── memory/             # Persistent memory (episodic, semantic, procedural, vector store)
+│   ├── orchestration/      # Dynamic pipeline composition
+│   ├── pipelines/          # Modality processing pipelines
+│   ├── realtime/           # Real-Time Intelligence Engine (research, knowledge graph, browser)
+│   ├── resources/          # Local resource monitoring (CPU, RAM, storage, network)
+│   ├── risk/               # Risk & Privacy Engine (reputation, scoring, privacy checks)
+│   ├── tools/              # Tool engine (file, app, browser, terminal)
+│   ├── vision/             # Screen vision & OCR
+│   └── voice/              # Voice pipeline (STT, TTS, speaker verification, cloning)
+├── moso_ui/                # Desktop UI (Aura floating orb)
+├── backend/                # Backend server
+├── tests/                  # Test suite (249 tests)
+├── scripts/                # Utility scripts
+├── run.py                  # Application entry point
+├── README.md               # This file
+└── llms.txt                # LLM context summary
+```
+
+---
+
 ## ✧ Architecture
 
 ```
