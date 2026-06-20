@@ -1,0 +1,432 @@
+# MOSO AI — Repository Guide for AI Assistants
+
+## 1. PROJECT OVERVIEW
+
+MOSO (M0S0) is a **privacy-first, local-first adaptive AI assistant** that runs entirely on the user's device. v0.2.0-dev. License: MOSO Source Available License.
+
+**Core tenets:** All inference runs locally (llama.cpp CPU, ONNX Runtime GPU/CPU). No cloud dependency. Every tool action is permission-gated, audit-logged, and remembered.
+
+**Entry point:** `run.py` at repo root — `python run.py` (launch Aura UI), `python run.py demo` (module demos), `python run.py test` (run tests).
+
+## 2. DIRECTORY STRUCTURE
+
+```
+MOSO/                          # Python package root
+  moso_core/                   # Core inference runtime
+    __init__.py                # Top-level exports + availability flags
+    requirements.txt            # Dependencies
+    inference/                 # Model backends (llama.cpp, ONNX Runtime)
+      base.py                  # ModelBackend ABC, GenerationResult, InferenceConfig
+      llama_cpp/backend.py     # LlamaCPPBackend
+      onnx_runtime/            # OnnxRuntimeBackend, generation utils
+    pipelines/                 # Modality-specific processing chains
+      base.py                  # Pipeline ABC, PipelineResult
+      text/pipeline.py         # TextPipeline
+    orchestration/
+      orchestrator.py          # Orchestrator — central integration hub
+    safety/
+      guardrails.py            # PromptGuard, OutputGuard
+    voice/                     # Full voice pipeline (STT, TTS, VAD, speaker)
+    identity/                  # Multi-signal owner verification engine
+    memory/                    # SQLite-persistent memory (episodic, semantic, procedural, preferences)
+    resources/                 # System resource monitoring (CPU, RAM, storage, battery, network)
+    tools/                     # Permission-gated tool execution (file, app, browser, terminal)
+    agents/                    # Goal decomposition, planning, execution, verification
+    computer_use/              # Desktop automation (mouse, keyboard, screen, windows)
+    vision/                    # Screen OCR and context analysis
+    system_intelligence/       # Hardware/software/network/security diagnostics
+    risk/                      # Pre-execution risk & privacy scoring
+    realtime/                  # Real-Time Intelligence Engine (NEW)
+    llm/                       # LLM integration (llama.cpp server subprocess)
+  moso_ui/                     # Aura desktop orb UI (PySide6)
+  tests/                       # pytest test suite
+  scripts/                     # Demo, voice enrollment, model download scripts
+  backend/api/                 # FastAPI backend
+  docs/                        # (empty — docs pending)
+  datasets/                    # Training data
+  models/                      # Model storage
+  shared/                      # Shared utilities
+```
+
+## 3. CORE MODULES
+
+### inference (moso_core/inference/)
+Base abstractions and backends for model inference.
+- `ModelBackend` — ABC with `generate()`, `generate_stream()`, `chat()`, `chat_stream()`, `embed()` (optional — raises NotImplementedError), `tokenize()`, `detokenize()`, `load()`, `unload()`
+- `InferenceConfig` — model_path, n_ctx, n_threads, use_mlock, use_mmap, etc.
+- `LlamaCPPBackend` — CPU-optimized via llama-cpp-python
+- `OnnxRuntimeBackend` — Cross-platform GPU/CPU via onnxruntime
+
+### pipelines (moso_core/pipelines/)
+Modality-specific processing chains wrapping backends.
+- `TextPipeline` — Core text generation pipeline with system prompt management and conversation reset
+
+### orchestration (moso_core/orchestration/)
+Central hub connecting all modules. Manages lifecycle, context injection, modality routing.
+- `Orchestrator` — `process()`, `process_stream()`, `process_voice()`, `enable_*()` for each subsystem
+- `Modality` enum — TEXT, VOICE, IMAGE, MULTIMODAL, REASONING
+- Integration: memory context injection, identity permission checks, safety guardrails
+
+### safety (moso_core/safety/)
+Content filtering and guardrails.
+- `PromptGuard` — Detects prompt injection attempts (jailbreak, system prompt leak, role play, DAN)
+- `OutputGuard` — Sanitizes model output (blocked patterns, sensitive data)
+
+### voice (moso_core/voice/)
+Complete voice interaction pipeline. Optional — guarded by `VOICE_AVAILABLE` flag.
+- `VoicePipeline` — Orchestrates VAD → wake word → speaker verify → STT → LLM → TTS
+- Components: `AudioStream`, `VAD` (webrtcvad), `WakeWordDetector`, `WhisperSTT`, `PiperTTS`, `CoquiTTS`, `SpeakerVerifier`, `SpeakerEmbedder`, `SpeakerStore`, `EnrollmentManager`, `ContinuousAuth`, `VoiceCloner`
+
+### identity (moso_core/identity/)
+Multi-signal owner verification. Optional — guarded by `IDENTITY_AVAILABLE` flag.
+- 5 weighted signals: Voice Biometrics (35%), Liveness (20%), Behavior (20%), Device Presence (15%), Historical Context (10%)
+- `IdentityVerifier` — Integrates all signals, returns `IdentityResult` with confidence + level
+- Levels: owner (≥95), likely (80-94), guest (60-79), unknown (<60)
+- `PermissionResolver` — Maps identity level to permission flags (FULL, STANDARD, LIMITED, GUEST_ONLY)
+
+### memory (moso_core/memory/)
+SQLite-persistent cross-session memory. Always available.
+- 4 stores: `EpisodicMemory` (events/conversations), `SemanticMemory` (facts), `ProceduralMemory` (workflows), `PreferenceMemory` (user settings)
+- `MemoryManager` — `store_event()`, `store_fact()`, `build_context()`, `search()`, summarization
+- `VectorStore` — SQLite FTS5 + cosine similarity hybrid search. `store()`, `get()`, `delete()`, `search_keyword()`, `search_semantic()`, `search_hybrid()`. Optional embedder via `ModelBackend.embed()`. Flag: `VECTOR_STORE_AVAILABLE`
+- Database: `~/.moso/memory.db` (WAL mode), 4 tables + vector_store.db for VectorStore
+
+### resources (moso_core/resources/)
+System resource monitoring via psutil. Always available.
+- `ResourceManager` — `get_system_status()` returns `SystemStatus` with CPU, RAM, storage, battery, network, processes
+- Individual monitors: `CPUMonitor`, `RAMMonitor`, `StorageMonitor`, `BatteryMonitor`, `NetworkMonitor`, `ProcessMonitor`
+
+### tools (moso_core/tools/)
+Permission-gated OS actions with audit logging and dry-run support. Always available.
+- `ToolRegistry` — register, lookup, execute, list tools
+- Tools: `FileTool`, `AppTool`, `BrowserTool`, `TerminalTool`
+- `AuditLogger` — JSON lines log at `~/.moso/tools-audit.log`
+- Permission model: Guest/Trusted/Owner levels per tool per action
+
+### agents (moso_core/agents/)
+Template-based goal decomposition and autonomous execution. Optional — guarded by `AGENTS_AVAILABLE` flag.
+- `Planner` — Matches goals against 7 templates (python_project, create_folder, open_app, search_web, read_file, create_file, desktop_automation)
+- `Executor` — Sequential task execution with verification, retry, dependency checking
+- `Verifier` — Per-task verification (file_exists, folder_exists, exit_code, content_not_empty)
+- `PlanHistory` — SQLite persistence at `~/.moso/plans.db`
+
+### computer_use (moso_core/computer_use/)
+Desktop automation via pyautogui, mss, pygetwindow. Optional — guarded by `COMPUTER_USE_AVAILABLE` flag.
+- `AutomationEngine` — Single action or sequence execution with identity + resource checks
+- Controllers: `MouseController`, `KeyboardController`, `ScreenCapturer`, `WindowManager`
+- `WorkflowRecorder` — Record and replay mouse/keyboard sequences
+- Permission levels: Guest (screenshot, list), Trusted (focus, analyze), Owner (mouse, keyboard, automation)
+
+### vision (moso_core/vision/)
+Screen OCR and context analysis. Optional — guarded by `VISION_AVAILABLE` flag.
+- `VisionManager` — Integrates OCR and screenshot analysis
+- `extract_text()`, `extract_text_regions()`, `analyze_screenshot()`, `build_context()`
+- Uses pytesseract, mss, pygetwindow
+
+### system_intelligence (moso_core/system_intelligence/)
+Live system understanding and diagnostics. Optional — guarded by `SYSTEM_INTELLIGENCE_AVAILABLE` flag.
+- Sub-modules: `HardwareIntelligence`, `SoftwareIntelligence`, `NetworkIntelligence`, `StorageIntelligence`, `SecurityIntelligence`
+- `DiagnosticsEngine` — Severity-ranked issues with suggestions
+- `InventoryEngine` — SQLite-based inventory snapshots with diff tracking
+- `ExplainerEngine` — Technical concept explanations in plain language
+
+### risk (moso_core/risk/)
+Pre-execution risk scoring for tool actions. Optional — guarded by `RISK_AVAILABLE` flag.
+- (See Section 5 for full detail)
+
+### llm (moso_core/llm/)
+LLM integration via llama.cpp server subprocess. Optional — guarded by `LLM_AVAILABLE` flag.
+- `LLMManager` — chat, completion, system prompt management
+- `LlamaServer` — Subprocess HTTP backend to llama.cpp server binary
+- `LLMConfig` — model_path, n_ctx, server_port
+
+## 4. REAL-TIME INTELLIGENCE ENGINE (moso_core/realtime/)
+
+**Purpose:** Fetch, verify, analyze, and summarize real-time web information. Wraps and extends the existing `risk/` module for web-specific URL risk assessment.
+
+**Availability flags:** `REALTIME_AVAILABLE` (guarded by try/except import), `RESEARCH_BROWSER_AVAILABLE` (separate playwright check)
+
+### Module Files (14 files)
+
+| File | Key Classes/Functions | Purpose |
+|------|----------------------|---------|
+| `models.py` | `SourceCategory` (enum), `SourceTier` (IntEnum: TIER_1_PRIMARY to TIER_5_COMMUNITY), `SourceInfo`, `FetchResult`, `SourceVerification`, `AnalysisResult`, `RealtimeResponse`, `ResearchReport` (15 fields) | Data models — ResearchReport includes research_goal, executive_summary, key_findings, evidence, methodology, limitations, contradictions, timeline, transparency_log |
+| `sources.py` | `SourceDefinition` (added `tier` field), `PREDEFINED_SOURCES` (27 sources with tier assignments), `detect_category()`, `get_sources_for_query()`, `filter_sources_by_tier()`, `tier_name()` | Source definitions with 5-tier quality system |
+| `cache.py` | `ResponseCache` | SQLite-backed fetch cache with per-category TTL |
+| `fetcher.py` | `Fetcher`, `strip_html()`, `extract_title()` | Async HTTP fetcher via aiohttp with redirect handling |
+| `reputation.py` | `WebReputationChecker` | Lookalike domain, phishing path, tracking domain detection — wraps `risk.reputation` |
+| `risk_engine.py` | `WebRiskEngine` | URL-specific risk assessment (destination, TLS, redirect, phishing, tracking) — wraps `risk.risk_engine` |
+| `privacy_check.py` | `WebPrivacyChecker` | Privacy assessment for URLs (tracking, data exposure, connection security) — mirrors `risk.privacy_engine` |
+| `verifier.py` | `SourceVerifier` | Publication date extraction, staleness check, duplicate detection, conflict detection, reliability ranking |
+| `analyzer.py` | `Analyzer`, `KeywordExtractor` | LLM-mode or rule-based analysis + `deep_analyze()` for 15-point structured research output |
+| `summarizer.py` | `Summarizer` | RISK REPORT format output generator |
+| `manager.py` | `RealtimeManager`, `AuraCallback` | Full pipeline orchestrator with lifecycle callbacks |
+| `research_browser.py` | `ResearchBrowser`, `PageContent` | Playwright headless browser with stealth mode, content extraction, metadata parsing (OG/JSON-LD/article), screenshot, PDF download. Optional — `RESEARCH_BROWSER_AVAILABLE` flag |
+| `knowledge_graph.py` | `KnowledgeGraph`, `Entity`, `Relationship`, `Event`, `Concept` | NetworkX DiGraph in-memory + SQLite persistence. Entities, relationships, events, and concepts with confidence scoring, source tracking, timestamps. Query: get_neighbors(), find_path(), get_timeline(), search_entities(), export_json() |
+
+### Source Tier System (sources.py)
+- `SourceTier.TIER_1_PRIMARY`: Official/research sources (OpenAI Blog, NVD, Python Docs, etc.)
+- `SourceTier.TIER_2_SECONDARY`: Journalism/analysis (Ars Technica, Krebs, Bloomberg, etc.)
+- `SourceTier.TIER_3_TERTIARY`: News/coverage (The Verge, Wired, TechCrunch, etc.)
+- `SourceTier.TIER_4_AGGREGATOR`: Curated/community (CNET, CoinTelegraph, GitHub Trending)
+- `SourceTier.TIER_5_COMMUNITY`: User-generated (Hacker News)
+- `filter_sources_by_tier(sources, min_tier)` — filter to minimum tier threshold
+- `tier_name(tier)` — human-readable label
+
+### Pipeline Flow (in RealtimeManager.research()):
+
+```
+Query → detect_category() → get_sources_for_query()
+  → risk_engine.assess_url() → privacy_check.check_url()
+  → fetcher.fetch_by_source() → verifier.verify() (per source)
+  → verifier.detect_conflicts() → analyzer.analyze()
+  → summarizer.generate_summary() → memory storage
+  → RealtimeResponse (with formatted_report property)
+```
+
+### Category Detection (sources.py:142-158)
+Weighted keyword scoring: multi-word keywords = 3pts, single-word exact = 2pts, stemmed variants = 2pts. Tiebreaker prefers AI > SECURITY > CRYPTO > MARKET > DOCS over NEWS/GENERAL.
+
+### Output Format (RealtimeResponse.formatted_report)
+```
+RISK REPORT
+Level: [LOW|MEDIUM|HIGH|CRITICAL]
+[explanation]
+
+SOURCE SUMMARY
+  - SourceName (category, reliability: label)
+
+KEY FINDINGS
+  - Finding 1
+  - Finding 2
+
+ANALYSIS
+What happened: ...
+Why it matters: ...
+What changed: ...
+Implications: ...
+
+RECOMMENDATION
+...
+```
+
+### VectorStore (moso_core/memory/vector_store.py)
+Embedding-aware document storage with hybrid search. Thread-safe via `threading.Lock`, SQLite WAL mode.
+- `StoreEntry` — id, text, metadata, embedding, timestamps
+- `store(entry)` — auto-embeds via `ModelBackend.embed()` if available; `get(id)`, `delete(id)`, `list_entries()`
+- `search_keyword(query)` — FTS5 full-text search ranked by BM25 score
+- `search_semantic(query)` — Cosine similarity against all stored embeddings (requires embedder)
+- `search_hybrid(query, alpha=0.5)` — Weighted combination of keyword + semantic scores
+- `has_embedder` property — True if embedder was provided
+
+### KnowledgeGraph (moso_core/realtime/knowledge_graph.py)
+In-memory NetworkX DiGraph with SQLite persistence. Requires `networkx`.
+- `Entity` — id, name, type, description, aliases, metadata, confidence, source
+- `Relationship` — id, source_id, target_id, type, label, weight, confidence, evidence
+- `Event` — id, title, description, entity_ids, timestamp, source, confidence
+- `Concept` — id, name, definition, parent_id (hierarchical), confidence, source
+- `add_entity()`, `add_relationship()`, `add_event()` (auto-links entities), `add_concept()` (auto-links parent)
+- Query: `get_neighbors(node_id, max_depth)`, `find_path(source, target)`, `get_timeline(entity_id)`, `search_entities(query)`
+- `export_json()` / `import_json()` — full graph serialization
+- `stats()` — entity/relationship/event/concept counts
+
+### ResearchBrowser (moso_core/realtime/research_browser.py)
+Playwright-based headless browser. Optional — `RESEARCH_BROWSER_AVAILABLE` flag.
+- `fetch_page(url)` → `PageContent(url, title, text, html, metadata, links, status_code, fetch_time_ms)`
+- `extract_content(url)` / `extract_links(url)` — convenience wrappers
+- `screenshot(url, path)` / `pdf_download(url, path)` — full-page capture
+- Stealth: random user-agent rotation, spoofed `navigator.webdriver`, plugins, languages
+- Metadata extraction: Open Graph (`og:title`, `og:description`, `og:image`), `article:published_time`, author, keywords
+- Browser per call — auto-closes on completion
+
+## 5. RISK & PRIVACY ENGINE (moso_core/risk/)
+
+**Purpose:** Pre-execution risk scoring for every tool action. Evaluates network destinations, file paths, credential exposure, and data privacy implications. Blocks HIGH/CRITICAL actions.
+
+**Availability flag:** `RISK_AVAILABLE`
+
+### Components
+
+| Component | File | Purpose |
+|-----------|------|---------|
+| `RiskLevel` | `models.py` | Enum: LOW, MEDIUM, HIGH, CRITICAL |
+| `RiskAssessment` | `models.py` | level, score, factors, explanation, recommendation |
+| `PrivacyAssessment` | `models.py` | data_exposure, credential_exposure, network_exposure, user_data_accessed, system_files_affected, writes_externally |
+| `RiskReport` | `models.py` | Combines risk + privacy, computes `max_level` and `is_allowed` |
+| `ReputationChecker` | `reputation.py` | Domain/IP reputation against SAFE_DOMAINS, KNOWN_BLOCKED, SUSPICIOUS_TLDS, keyword heuristics. Cached results. |
+| `NetworkAnalysis` | `network_analysis.py` | URL destination analysis: TLS ports, service identification, DNS resolution, reputation scoring |
+| `RiskEngine` | `risk_engine.py` | Assesses destination risk, file impact, credential exposure, permission requirements, resource impact |
+| `PrivacyEngine` | `privacy_engine.py` | Assesses user data access, system file changes, external writes, credential exposure |
+| `VerificationEngine` | `verification.py` | Combines RiskEngine + PrivacyEngine into RiskReport |
+| `RiskManager` | `manager.py` | Public API: `assess()` returns RiskReport, `check_and_block()` returns (allowed, report) tuple |
+
+### Risk Scoring Thresholds
+- score < 0.2: LOW (allowed)
+- 0.2 ≤ score < 0.5: MEDIUM (allowed with review)
+- 0.5 ≤ score < 0.8: HIGH (blocked)
+- score ≥ 0.8: CRITICAL (blocked)
+
+### Integration with realtime/
+The realtime module wraps risk module components:
+- `WebRiskEngine` wraps `risk.risk_engine.RiskEngine` — delegates destination assessment, adds URL-specific checks (TLS, redirect patterns)
+- `WebReputationChecker` wraps `risk.reputation.ReputationChecker` — adds lookalike domain detection, phishing path patterns, tracking domain detection, suspicious URL patterns
+- `WebPrivacyChecker` mirrors `risk.privacy_engine.PrivacyEngine` — independent implementation focused on URL privacy (tracking params, tracker patterns, data exposure paths)
+
+## 6. KEY PATTERNS AND CONVENTIONS
+
+### Try/Except Availability Flags
+Every optional module follows the same pattern:
+```python
+try:
+    from moso_core.module import SomeClass
+    MODULE_AVAILABLE = True
+except ImportError:
+    SomeClass = None
+    MODULE_AVAILABLE = False
+```
+Flags: `VOICE_AVAILABLE`, `IDENTITY_AVAILABLE`, `MEMORY_AVAILABLE`, `VECTOR_STORE_AVAILABLE`, `RESOURCES_AVAILABLE`, `TOOLS_AVAILABLE`, `AGENTS_AVAILABLE`, `COMPUTER_USE_AVAILABLE`, `VISION_AVAILABLE`, `SYSTEM_INTELLIGENCE_AVAILABLE`, `RISK_AVAILABLE`, `REALTIME_AVAILABLE`, `RESEARCH_BROWSER_AVAILABLE`, `LLM_AVAILABLE`
+
+### Dataclass Models
+All data models use `@dataclass` with `field(default_factory=...)` for mutable defaults. Every model has a `to_dict()` method. Complex models use `__post_init__` for timestamp defaults.
+
+### Module Structure
+Each module has:
+- `__init__.py` — Public API exports + availability flag
+- `models.py` — Data classes
+- `manager.py` (optional) — High-level orchestrator class
+- Specialized files per responsibility
+
+### Async Pattern
+The `realtime` module uses `asyncio` with `_get_or_create_loop()` pattern to bridge async fetchers with synchronous callers. `Fetcher` uses `aiohttp` with fallback to error FetchResult when unavailable.
+
+### Orchestrator enable_* Methods
+All modules integrate via `Orchestrator.enable_*()` pattern. Each method has try/except, logs success/failure, and exposes a `@property` for access. See `orchestrator.py:59-370`.
+
+## 7. DEPENDENCIES (moso_core/requirements.txt)
+
+| Dependency | Version | Used By |
+|-----------|---------|---------|
+| llama-cpp-python | ≥0.2.60 | inference/llama_cpp |
+| onnxruntime | ≥1.17.0 | inference/onnx_runtime |
+| transformers | ≥4.36.0 | inference |
+| pydantic | ≥2.6.0 | inference configs |
+| numpy | ≥1.24.0 | inference |
+| tokenizers | ≥0.15.0 | inference |
+| openai-whisper | ≥20231117 | voice/stt |
+| torch | ≥2.1.0 | voice |
+| speechbrain | ≥0.5.15 | voice/speaker |
+| sounddevice | ≥0.4.6 | voice/input |
+| soundfile | ≥0.12.1 | voice/input |
+| piper-tts | ≥1.2.0 | voice/tts |
+| webrtcvad | ≥2.0.6 | voice/vad |
+| TTS | ≥0.22.0 | voice/cloner |
+| scipy | ≥1.12.0 | identity |
+| silero-vad | ≥4.0 | identity |
+| aiohttp | ≥3.9.0 | identity, realtime/fetcher |
+| psutil | ≥5.9.0 | resources |
+| pyautogui | ≥0.9.54 | computer_use |
+| mss | ≥9.0.0 | computer_use, vision |
+| pygetwindow | ≥0.0.9 | computer_use, vision |
+| pytesseract | ≥0.3.10 | vision |
+| beautifulsoup4 | ≥4.12.0 | realtime/fetcher |
+| networkx | ≥3.0 | realtime/knowledge_graph |
+
+Optional dependencies (not in requirements.txt — install manually):
+| playwright | ≥1.40.0 | realtime/research_browser (headless browser) |
+
+Note: `aiohttp` is required by identity and realtime. `beautifulsoup4` and `networkx` are required by realtime. `playwright` is fully optional — `RESEARCH_BROWSER_AVAILABLE` flag. All degrade gracefully.
+
+## 8. TEST STRATEGY
+
+Tests live in `MOSO/tests/`. Run with `python run.py test` or `cd MOSO && python -m pytest tests/ -v`.
+
+| Test File | Lines | Tests Module(s) |
+|-----------|-------|-----------------|
+| `test_agents.py` | — | agents |
+| `test_computer_use.py` | — | computer_use |
+| `test_risk.py` | 370 | risk (models, reputation, network_analysis, risk_engine, privacy_engine, verification, manager, integration) |
+| `test_system_intelligence.py` | — | system_intelligence |
+| `test_vision.py` | — | vision |
+
+**Test patterns observed:**
+- Class-based test organization (`class TestRiskModels`, `class TestReputation`, etc.)
+- `from __future__ import annotations` at top
+- Mock identity/memory for manager tests
+- Integration tests that exercise Orchestrator with mock backends
+- TODO: No tests yet for the `realtime/` module
+
+**Current test count:** 249 tests (all passing).
+
+## 9. INTEGRATION POINTS
+
+### Orchestrator Connectivity
+```
+Orchestrator
+  ├── enable_voice()       → voice pipeline + identity
+  ├── enable_identity()    → identity verifier
+  ├── enable_memory()      → MemoryManager (SQLite)
+  ├── enable_resources()   → ResourceManager (psutil)
+  ├── enable_tools()       → ToolRegistry (4 tools)
+  ├── enable_agents()      → AgentManager (needs tools + identity + memory + resources)
+  ├── enable_computer_use()→ AutomationEngine (needs identity + memory + resources)
+  ├── enable_vision()      → VisionManager (needs identity + memory + resources)
+  ├── enable_system_intelligence() → SystemIntelligenceManager
+  ├── enable_risk_engine() → RiskManager
+  ├── enable_realtime()    → RealtimeManager (needs memory + llm + identity)
+  └── enable_llm()         → LLMManager (llama.cpp server)
+```
+
+### Cross-Module Dependencies
+- `realtime.risk_engine` → `risk.models`, `risk.network_analysis`, `realtime.reputation`
+- `realtime.reputation` → `risk.reputation`
+- `realtime.manager` → memory (for knowledge storage), llm (for LLM-mode analysis)
+- `risk.risk_engine` → `risk.network_analysis` (for destination analysis), `risk.reputation` (for domain scoring), `tools.registry` (for permission levels)
+- `risk.privacy_engine` → `risk.risk_engine` (for CREDENTIAL_PATHS)
+- `orchestrator` → all modules (type-checking imports only via TYPE_CHECKING)
+- `moso_core.__init__` → aggregates all module flags and top-level exports
+
+## 10. CONFIGURATION AND DATA
+
+### SQLite Databases
+| Database | Path | Module | Tables |
+|----------|------|--------|--------|
+| Memory | `~/.moso/memory.db` | memory | episodic_memory, semantic_memory, procedural_memory, preferences |
+| Plans | `~/.moso/plans.db` | agents | goals, tasks |
+| Cache | `~/.moso/realtime_cache.db` | realtime | response_cache |
+| Vector Store | `vector_store.db` (cwd or custom path) | memory/VectorStore | entries, entries_fts |
+| Knowledge Graph | `knowledge_graph.db` (cwd or custom path) | realtime/KnowledgeGraph | entities, relationships, events, concepts |
+| Inventory | (SystemIntelligenceManager) | system_intelligence | inventory snapshots |
+
+All databases use WAL mode for concurrent read performance.
+
+### Cache TTLs (realtime/cache.py)
+- news: 300s (5 min)
+- ai: 600s (10 min)
+- security: 300s (5 min)
+- market: 300s (5 min)
+- crypto: 300s (5 min)
+- open_source: 900s (15 min)
+- software: 1800s (30 min)
+- hardware: 3600s (1 hr)
+- documentation: 7200s (2 hr)
+- general: 600s (10 min)
+
+### Staleness Thresholds (realtime/verifier.py)
+- news: 7 days
+- ai: 30 days
+- security: 14 days
+- market: 1 day
+- crypto: 1 day
+- OSS: 60 days
+- software: 90 days
+- hardware: 180 days
+- docs: 365 days
+- general: 90 days
+
+### Configuration
+- `InferenceConfig` — model_path, n_ctx (default 2048), n_threads (auto), use_mlock, use_mmap, etc.
+- `Orchestrator` accepts `InferenceConfig`, optional `system_prompt`, `enable_safety` flag, and `backend`
+- `LLMConfig` — model_path, n_ctx, server_port
+
+### MOSO Docs MCP Server
+Configured at `~/.config/opencode/opencode.jsonc`. Maps `github.com/moso-ai/docs` to `gitmcp.io/moso-ai/docs` for read-only MCP access. Requires restarting opencode to activate.

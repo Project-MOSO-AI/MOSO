@@ -1,99 +1,28 @@
-# MOSO AI - Root .gitignore
-
-# Dependencies
-node_modules/
-.pub-cache/
-.dart_tool/
-.packages
-build/
-.gradle/
-.idea/
-*.iml
-Pods/
-DerivedData/
-*.xcworkspace
-
-# Python
+# MOSO Python project
 __pycache__/
 *.py[cod]
-*$py.class
-*.so
-.Python
-env/
-venv/
-.venv/
-pip-log.txt
-pip-delete-this-directory.txt
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
 .pytest_cache/
-
-# Rust
-/target/
-Cargo.lock
-
-# Flutter
-.flutter-plugins
-.flutter-plugins-dependencies
-*.apk
-*.aab
-*.ipa
-*.dSYM.zip
-*.dSYM
-
-# Models (you need to download these separately)
-models/llm/**/*.gguf
-models/llm/**/*.bin
-models/speech/**/*.pt
-models/speech/**/*.bin
-models/vision/**/*.pt
-models/embeddings/**/*.bin
-!models/**/.gitkeep
-
-# Environment
-.env
-.env.local
-.env.production
-*.key
-*.pem
-*.cert
-secrets/
+*.db
+*.sqlite3
 
 # IDE
-.vscode/
 .idea/
+.vscode/
 *.swp
 *.swo
 *~
+
+# OS
 .DS_Store
 Thumbs.db
 
-# Logs
-*.log
-/logs/
-/log/
+# MOSO user data
+.moso/
 
-# OS artifacts
-.DS_Store
-Thumbs.db
-Desktop.ini
-
-# Docker
-docker-compose.override.yml
-
-# Build artifacts
-dist/
-out/
-release/
-debug/
-coverage/
-
-# Binary server executables (download separately)
-llama-bin/
-
-# Database
-*.db
-*.sqlite
-*.sqlite3
-
-# Temporary files
-*.tmp
-*.temp
+# Previous artefacts
+.env.example
