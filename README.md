@@ -163,6 +163,116 @@
 
 ---
 
+## ✧ What is MOSO?
+
+**MOSO (M0S0)** is a **privacy-first**, **local-first** adaptive AI assistant that runs entirely on your device. It is built in twelve layers:
+
+1. **Voice Pipeline** — Talk to MOSO hands-free: wake word detection, speaker verification, speech-to-text, LLM reasoning, text-to-speech with optional voice cloning
+2. **Identity Engine** — MOSO knows who you are using 5 weighted signals (voice, liveness, behavior, device, history). Replay/synthetic audio is rejected. Confidence scoring determines permission levels from guest to full owner
+3. **Memory Engine** — MOSO remembers across sessions: past conversations (episodic), facts about you (semantic), how to do things (procedural), and your preferences. All stored locally in SQLite
+4. **Resource Manager** — MOSO understands its environment: CPU usage, RAM available, storage space, battery level, network speeds, and running processes. This lets it answer "can I run X?" before attempting a task
+5. **Tool Engine** — MOSO can act: open applications, create and read files, search the web, and run terminal commands. Every action is permission-gated, audit-logged, risk-checked, and remembered. Dry-run mode lets you preview before executing
+6. **Agent Planner** — MOSO can plan: decompose goals into sequential tasks using template matching (python project, folder, app, web search, file read/write), execute via Tool Engine, verify each task, retry on failure, check dependencies, and persist history to SQLite
+7. **Computer Use** — MOSO can operate desktop software like a human: move mouse, click buttons, type text, press keyboard shortcuts, capture screenshots, focus windows, execute action sequences, and record workflows
+8. **Screen Vision** — MOSO can see your screen: OCR text extraction, text region detection, active window identification, and screen context assembly — all observation-only, no clicking or ML
+9. **LLM Integration** — MOSO connects to a local llama.cpp server binary for text generation and chat. Download a GGUF model and start reasoning
+10. **Aura UI V2** — MOSO lives on your desktop as a floating orb with 8 animated states (idle, listening, thinking, analyzing, executing, speaking, warning, error). System tray, conversation bubble with streaming text display, risk warnings, and module status indicators. All 11 modules are wired at startup and accessible through natural conversation
+11. **System Intelligence** — MOSO understands your entire computer: CPU model, GPU, motherboard, installed software, services, startup items, network connections, DNS, VPN, storage usage, firewall status, antivirus state, pending updates. It explains technical concepts in plain language, runs diagnostics with severity-ranked issues and suggestions, and tracks changes over time with SQLite-based inventory snapshots
+12. **Risk & Privacy Engine** — MOSO protects your system: pre-execution risk scoring scans network destinations, file paths, credential exposure, and data privacy implications. The reputation checker evaluates domains/IPs against a built-in blocklist and heuristic scoring. HIGH and CRITICAL risk actions are blocked automatically with explanation
+13. **Real-Time Intelligence** — MOSO researches the web on your behalf: risk-assessment-driven source selection, content fetching with redirect chain tracking and TLS verification, cross-source verification with duplicate detection and conflict resolution, keyword and LLM-based analysis, and transparent summarization. Embeddings power vector search across memory. A Knowledge Graph tracks entities, relationships, events, and concepts with confidence scoring and temporal awareness. An optional Playwright-based Research Browser provides autonomous page extraction with stealth mode, metadata parsing, and PDF download
+14. **Unified Integration** — All modules connected through the Orchestrator. Aura UI starts every module automatically. Intent detection routes queries to the right engine: system questions → System Intelligence, research → Realtime, multi-step goals → Agent Planner, screen queries → Vision, general chat → LLM + Tools. Every action is risk-checked before execution. Memory stores conversations, tool results, and research findings
+
+Everything runs locally — no cloud dependency, no data leaves your device.
+
+---
+
+## ✧ Quick Start
+
+```python
+from moso_core.inference.base import InferenceConfig
+from moso_core.orchestration.orchestrator import Orchestrator
+from moso_core.tools.models import ToolRequest
+
+config = InferenceConfig(model_path="path/to/model.gguf")
+orchestrator = Orchestrator(config)
+
+# Enable all engines
+orchestrator.enable_memory()      # SQLite at ~/.moso/memory.db
+orchestrator.enable_identity()    # Owner verification
+orchestrator.enable_resources()   # CPU, RAM, battery monitoring
+orchestrator.enable_tools()       # File, app, browser, terminal
+orchestrator.enable_risk_engine() # Risk & Privacy Engine (pre-execution scoring + blocking)
+
+# Talk to MOSO
+result = orchestrator.process("Hello, remember my name is Harsha")
+print(result.text)
+
+# MOSO can now act on your behalf:
+req = ToolRequest(
+    tool_name="app_tool",
+    parameters={"action": "launch_application", "app_name": "code"},
+)
+result = orchestrator.tools.execute_tool(req, identity=orchestrator.identity_verifier)
+# → Launches VS Code, logged to memory + audit log
+
+req2 = ToolRequest(
+    tool_name="file_tool",
+    parameters={"action": "read_file", "path": "notes.txt"},
+)
+result = orchestrator.tools.execute_tool(req2)
+# → Returns file content
+
+# MOSO can plan and execute multi-step tasks:
+orchestrator.enable_agents()  # Agent Planner
+summary = orchestrator.agents.plan_and_execute(
+    "create a python project named my_app",
+    requester="owner",
+)
+print(summary.overall_status)  # GoalStatus.COMPLETED
+
+# MOSO can automate your desktop:
+orchestrator.enable_computer_use()
+print(orchestrator.computer_use.dry_run_sequence([
+    {"action": "move_to", "x": 500, "y": 200},
+    {"action": "click"},
+    {"action": "type_text", "text": "Hello from MOSO"},
+]))
+
+# MOSO can see your screen:
+orchestrator.enable_vision()
+ctx = orchestrator.vision.build_context()
+print(f"Active window: {ctx.active_window}")
+print(f"Screen text: {ctx.text_content[:100]}...")
+print(ctx.summary())
+
+# MOSO can run a local LLM:
+orchestrator.enable_llm(model_path="models/qwen3-8b-q4_k_m.gguf")
+if orchestrator.llm and orchestrator.llm.start():
+    print(orchestrator.llm.chat("What is MOSO?"))
+```
+
+**Desktop Aura UI:**
+```bash
+pip install PySide6
+python -m moso_ui.main
+```
+
+**Model Download:**
+```bash
+python scripts/download_model.py qwen3-8b      # ~5.2 GB
+python scripts/download_model.py phi3-mini      # ~2.3 GB (lightweight)
+```
+
+**Voice Mode:**
+```bash
+python -m scripts.model-download.download_voice_models
+python -m scripts.enroll_voice
+python -m scripts.run_voice --model path/to/model.gguf
+```
+Say **"Hey MOSO"** followed by your question or command.
+
+---
+
 ## ✧ Build Status
 
 | Component | Status | Description |
@@ -189,60 +299,6 @@
 | **Aura UI** | ✅ V2 | Floating desktop orb — PySide6, always-on-top, 8 states (idle/listening/thinking/analyzing/executing/speaking/warning/error), tray, conversation bubble, streaming display |
 | **Risk & Privacy Engine** | ✅ V1 | Pre-execution risk scoring, network reputation, credential exposure, data privacy analysis — blocks HIGH/CRITICAL actions |
 | **Unified Integration** | ✅ V1 | All modules wired into Aura UI via Orchestrator — Memory · System Intelligence · Tools · Risk Engine · Agents · Vision · Computer Use · Realtime Research · Identity — live at startup |
-
----
-
-## ✧ What is MOSO?
-
-**MOSO (M0S0)** is a **privacy-first**, **local-first** adaptive AI assistant that runs entirely on your device. It is built in twelve layers:
-
-1. **Voice Pipeline** — Talk to MOSO hands-free: wake word detection, speaker verification, speech-to-text, LLM reasoning, text-to-speech with optional voice cloning
-2. **Identity Engine** — MOSO knows who you are using 5 weighted signals (voice, liveness, behavior, device, history). Replay/synthetic audio is rejected. Confidence scoring determines permission levels from guest to full owner
-3. **Memory Engine** — MOSO remembers across sessions: past conversations (episodic), facts about you (semantic), how to do things (procedural), and your preferences. All stored locally in SQLite
-4. **Resource Manager** — MOSO understands its environment: CPU usage, RAM available, storage space, battery level, network speeds, and running processes. This lets it answer "can I run X?" before attempting a task
-5. **Tool Engine** — MOSO can act: open applications, create and read files, search the web, and run terminal commands. Every action is permission-gated, audit-logged, risk-checked, and remembered. Dry-run mode lets you preview before executing
-6. **Agent Planner** — MOSO can plan: decompose goals into sequential tasks using template matching (python project, folder, app, web search, file read/write), execute via Tool Engine, verify each task, retry on failure, check dependencies, and persist history to SQLite
-7. **Computer Use** — MOSO can operate desktop software like a human: move mouse, click buttons, type text, press keyboard shortcuts, capture screenshots, focus windows, execute action sequences, and record workflows
-8. **Screen Vision** — MOSO can see your screen: OCR text extraction, text region detection, active window identification, and screen context assembly — all observation-only, no clicking or ML
-9. **LLM Integration** — MOSO connects to a local llama.cpp server binary for text generation and chat. Download a GGUF model and start reasoning
-10. **Aura UI V2** — MOSO lives on your desktop as a floating orb with 8 animated states (idle, listening, thinking, analyzing, executing, speaking, warning, error). System tray, conversation bubble with streaming text display, risk warnings, and module status indicators. All 11 modules are wired at startup and accessible through natural conversation
-11. **System Intelligence** — MOSO understands your entire computer: CPU model, GPU, motherboard, installed software, services, startup items, network connections, DNS, VPN, storage usage, firewall status, antivirus state, pending updates. It explains technical concepts in plain language, runs diagnostics with severity-ranked issues and suggestions, and tracks changes over time with SQLite-based inventory snapshots
-12. **Risk & Privacy Engine** — MOSO protects your system: pre-execution risk scoring scans network destinations, file paths, credential exposure, and data privacy implications. The reputation checker evaluates domains/IPs against a built-in blocklist and heuristic scoring. HIGH and CRITICAL risk actions are blocked automatically with explanation
-13. **Real-Time Intelligence** — MOSO researches the web on your behalf: risk-assessment-driven source selection, content fetching with redirect chain tracking and TLS verification, cross-source verification with duplicate detection and conflict resolution, keyword and LLM-based analysis, and transparent summarization. Embeddings power vector search across memory. A Knowledge Graph tracks entities, relationships, events, and concepts with confidence scoring and temporal awareness. An optional Playwright-based Research Browser provides autonomous page extraction with stealth mode, metadata parsing, and PDF download
-14. **Unified Integration** — All modules connected through the Orchestrator. Aura UI starts every module automatically. Intent detection routes queries to the right engine: system questions → System Intelligence, research → Realtime, multi-step goals → Agent Planner, screen queries → Vision, general chat → LLM + Tools. Every action is risk-checked before execution. Memory stores conversations, tool results, and research findings
-
-Everything runs locally — no cloud dependency, no data leaves your device.
-
----
-
----
-
-## ✧ Project Structure
-
-```
-MOSO/
-├── moso_core/              # Core AI engine
-│   ├── agents/             # Template-based agent planner & executor
-│   ├── computer_use/       # Desktop automation (mouse, keyboard, screen, windows)
-│   ├── identity/           # Multi-signal identity engine (voice, behavior, device)
-│   ├── inference/          # Model backends (llama.cpp, ONNX Runtime)
-│   ├── memory/             # Persistent memory (episodic, semantic, procedural, vector store)
-│   ├── orchestration/      # Dynamic pipeline composition
-│   ├── pipelines/          # Modality processing pipelines
-│   ├── realtime/           # Real-Time Intelligence Engine (research, knowledge graph, browser)
-│   ├── resources/          # Local resource monitoring (CPU, RAM, storage, network)
-│   ├── risk/               # Risk & Privacy Engine (reputation, scoring, privacy checks)
-│   ├── tools/              # Tool engine (file, app, browser, terminal)
-│   ├── vision/             # Screen vision & OCR
-│   └── voice/              # Voice pipeline (STT, TTS, speaker verification, cloning)
-├── moso_ui/                # Desktop UI (Aura floating orb)
-├── backend/                # Backend server
-├── tests/                  # Test suite (249 tests)
-├── scripts/                # Utility scripts
-├── run.py                  # Application entry point
-├── README.md               # This file
-└── llms.txt                # LLM context summary
-```
 
 ---
 
@@ -334,6 +390,35 @@ MOSO/
 
 ---
 
+## ✧ Project Structure
+
+```
+MOSO/
+├── moso_core/              # Core AI engine
+│   ├── agents/             # Template-based agent planner & executor
+│   ├── computer_use/       # Desktop automation (mouse, keyboard, screen, windows)
+│   ├── identity/           # Multi-signal identity engine (voice, behavior, device)
+│   ├── inference/          # Model backends (llama.cpp, ONNX Runtime)
+│   ├── memory/             # Persistent memory (episodic, semantic, procedural, vector store)
+│   ├── orchestration/      # Dynamic pipeline composition
+│   ├── pipelines/          # Modality processing pipelines
+│   ├── realtime/           # Real-Time Intelligence Engine (research, knowledge graph, browser)
+│   ├── resources/          # Local resource monitoring (CPU, RAM, storage, network)
+│   ├── risk/               # Risk & Privacy Engine (reputation, scoring, privacy checks)
+│   ├── tools/              # Tool engine (file, app, browser, terminal)
+│   ├── vision/             # Screen vision & OCR
+│   └── voice/              # Voice pipeline (STT, TTS, speaker verification, cloning)
+├── moso_ui/                # Desktop UI (Aura floating orb)
+├── backend/                # Backend server
+├── tests/                  # Test suite (249 tests)
+├── scripts/                # Utility scripts
+├── run.py                  # Application entry point
+├── README.md               # This file
+└── llms.txt                # LLM context summary
+```
+
+---
+
 ## ✧ Core Components
 
 ### MOSO Core — AI Inference Runtime
@@ -364,11 +449,15 @@ The foundational runtime that powers all AI inference across platforms with mult
 | **LLM Integration** | Server, Chat, Completion | llama.cpp server binary — subprocess HTTP backend |
 | **Aura UI** | Floating Orb, Conversation Bubble, Tray | Desktop overlay — PySide6 |
 
+---
+
 ### M0S0 Assistant — Adaptive Personality
 
 - **Voice-First Interaction** — Natural conversation with wake word, speaker verification, STT, and TTS with voice cloning
 - **Identity Engine** — Continuous multi-signal owner verification (voice, liveness, behavior, device, history) with confidence scoring
 - **Contextual Awareness** — Remembers past conversations and preferences
+
+---
 
 ### Identity Engine
 
@@ -415,6 +504,8 @@ Audio / Text Input
 | **Device Presence** | 15% | Bluetooth/WiFi scan | Trusted device proximity detection |
 | **Historical Context** | 10% | Pattern matching | Time-of-day, conversation continuity, usage patterns |
 
+---
+
 ### Voice System
 
 The MOSO voice pipeline provides a complete hands-free interaction system with owner recognition and optional voice cloning.
@@ -448,6 +539,8 @@ Microphone
 | **Text-to-Speech** | Piper TTS (fast) + XTTS-v2 (clone) | Voice output with optional voice cloning |
 | **Continuous Auth** | ECAPA + cosine similarity | Periodic re-verification during sessions |
 | **Voice Cloning** | XTTS-v2 fine-tuning | Clone owner's voice (30min–5hr dataset) |
+
+---
 
 ### Memory Engine
 
@@ -777,6 +870,10 @@ windows = orchestrator.computer_use.execute_action(
     {"action": "list_windows"}
 )
 ```
+
+---
+
+### Agent Planner
 
 **MOSO Agent Planner** provides autonomous goal decomposition and execution using template matching (no LLM calls needed):
 
@@ -1281,69 +1378,22 @@ app.run()
 - Position persists between sessions (~/.moso/aura_settings.json)
 - Settings dialog for model path, server port, context size
 
-<table>
-  <tr>
-    <th>Layer</th>
-    <th>Technology</th>
-    <th>Version</th>
-    <th>Purpose</th>
-  </tr>
-  <tr>
-    <td rowspan="2"><b>AI Runtime</b></td>
-    <td>llama.cpp</td>
-    <td>b3024+</td>
-    <td>CPU-optimized LLM inference</td>
-  </tr>
-  <tr>
-    <td>ONNX Runtime</td>
-    <td>1.17+</td>
-    <td>Cross-platform model execution</td>
-  </tr>
-  <tr>
-    <td rowspan="1"><b>Memory</b></td>
-    <td>SQLite</td>
-    <td>3.45+</td>
-    <td>Conversation & state storage</td>
-  </tr>
-  <tr>
-    <td rowspan="3"><b>Identity & Voice</b></td>
-    <td>SpeechBrain ECAPA-TDNN</td>
-    <td>0.5.15+</td>
-    <td>Speaker verification (192-dim embeddings)</td>
-  </tr>
-  <tr>
-    <td>Whisper / Piper TTS / XTTS-v2</td>
-    <td>v3 / v1.0+ / v2.0+</td>
-    <td>Speech-to-text & text-to-speech</td>
-  </tr>
-  <tr>
-    <td>scipy / silero-vad</td>
-    <td>1.12+ / 4.0+</td>
-    <td>Anti-spoofing & liveness detection</td>
-  </tr>
-  <tr>
-    <td rowspan="1"><b>Resources</b></td>
-    <td>psutil</td>
-    <td>5.9+</td>
-    <td>CPU, RAM, storage, battery, network, process monitoring</td>
-  </tr>
-  <tr>
-    <td rowspan="3"><b>Models</b></td>
-    <td>Phi-3 Mini / Gemma 2B / Llama 3.2</td>
-    <td>Quantized GGUF</td>
-    <td>On-device LLM</td>
-  </tr>
-  <tr>
-    <td>Whisper</td>
-    <td>v3</td>
-    <td>Speech-to-text</td>
-  </tr>
-  <tr>
-    <td>XTTS-v2 / Piper</td>
-    <td>v2.0+ / v1.0+</td>
-    <td>Text-to-speech with voice cloning</td>
-  </tr>
-</table>
+---
+
+## ✧ Tech Stack
+
+| Layer | Technology | Version | Purpose |
+|-------|-----------|---------|---------|
+| **AI Runtime** | llama.cpp | b3024+ | CPU-optimized LLM inference |
+| | ONNX Runtime | 1.17+ | Cross-platform model execution |
+| **Memory** | SQLite | 3.45+ | Conversation & state storage |
+| **Identity & Voice** | SpeechBrain ECAPA-TDNN | 0.5.15+ | Speaker verification (192-dim embeddings) |
+| | Whisper / Piper TTS / XTTS-v2 | v3 / v1.0+ / v2.0+ | Speech-to-text & text-to-speech |
+| | scipy / silero-vad | 1.12+ / 4.0+ | Anti-spoofing & liveness detection |
+| **Resources** | psutil | 5.9+ | CPU, RAM, storage, battery, network, process monitoring |
+| **Models** | Phi-3 Mini / Gemma 2B / Llama 3.2 | Quantized GGUF | On-device LLM |
+| | Whisper | v3 | Speech-to-text |
+| | XTTS-v2 / Piper | v2.0+ / v1.0+ | Text-to-speech with voice cloning |
 
 ---
 
@@ -1467,6 +1517,7 @@ moso_ui/                    # Desktop overlay — Aura UI
 ├── settings.py             # Persistent settings (~/.moso/aura_settings.json)
 ├── main.py                 # App entry point
 └── __init__.py             # Exports
+```
 
 ---
 
@@ -1479,8 +1530,6 @@ feature/*   ─── New features (branched from main, PR to merge)
 
 - `main` is protected via GitHub ruleset: requires PR with 1 approval, blocks force pushes & deletions, enforces linear history
 - Owner can bypass ruleset for emergency recovery
-
----
 
 ---
 
@@ -1521,93 +1570,6 @@ Without explicit written permission, you may NOT:
 - Train AI models using this code
 - Create derivative works
 - Use this code for commercial purposes
-
----
-
-## ✧ Quick Start
-
-```python
-from moso_core.inference.base import InferenceConfig
-from moso_core.orchestration.orchestrator import Orchestrator
-from moso_core.tools.models import ToolRequest
-
-config = InferenceConfig(model_path="path/to/model.gguf")
-orchestrator = Orchestrator(config)
-
-# Enable all engines
-orchestrator.enable_memory()      # SQLite at ~/.moso/memory.db
-orchestrator.enable_identity()    # Owner verification
-orchestrator.enable_resources()   # CPU, RAM, battery monitoring
-orchestrator.enable_tools()       # File, app, browser, terminal
-orchestrator.enable_risk_engine() # Risk & Privacy Engine (pre-execution scoring + blocking)
-
-# Talk to MOSO
-result = orchestrator.process("Hello, remember my name is Harsha")
-print(result.text)
-
-# MOSO can now act on your behalf:
-req = ToolRequest(
-    tool_name="app_tool",
-    parameters={"action": "launch_application", "app_name": "code"},
-)
-result = orchestrator.tools.execute_tool(req, identity=orchestrator.identity_verifier)
-# → Launches VS Code, logged to memory + audit log
-
-req2 = ToolRequest(
-    tool_name="file_tool",
-    parameters={"action": "read_file", "path": "notes.txt"},
-)
-result = orchestrator.tools.execute_tool(req2)
-# → Returns file content
-
-# MOSO can plan and execute multi-step tasks:
-orchestrator.enable_agents()  # Agent Planner
-summary = orchestrator.agents.plan_and_execute(
-    "create a python project named my_app",
-    requester="owner",
-)
-print(summary.overall_status)  # GoalStatus.COMPLETED
-
-# MOSO can automate your desktop:
-orchestrator.enable_computer_use()
-print(orchestrator.computer_use.dry_run_sequence([
-    {"action": "move_to", "x": 500, "y": 200},
-    {"action": "click"},
-    {"action": "type_text", "text": "Hello from MOSO"},
-]))
-
-# MOSO can see your screen:
-orchestrator.enable_vision()
-ctx = orchestrator.vision.build_context()
-print(f"Active window: {ctx.active_window}")
-print(f"Screen text: {ctx.text_content[:100]}...")
-print(ctx.summary())
-
-# MOSO can run a local LLM:
-orchestrator.enable_llm(model_path="models/qwen3-8b-q4_k_m.gguf")
-if orchestrator.llm and orchestrator.llm.start():
-    print(orchestrator.llm.chat("What is MOSO?"))
-```
-
-**Desktop Aura UI:**
-```bash
-pip install PySide6
-python -m moso_ui.main
-```
-
-**Model Download:**
-```bash
-python scripts/download_model.py qwen3-8b      # ~5.2 GB
-python scripts/download_model.py phi3-mini      # ~2.3 GB (lightweight)
-```
-
-**Voice Mode:**
-```bash
-python -m scripts.model-download.download_voice_models
-python -m scripts.enroll_voice
-python -m scripts.run_voice --model path/to/model.gguf
-```
-Say **"Hey MOSO"** followed by your question or command.
 
 ---
 
