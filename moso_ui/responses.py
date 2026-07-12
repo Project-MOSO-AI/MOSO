@@ -75,18 +75,82 @@ _RESPONSES = {
 _STOP_WORDS = {"source", "file", "folder", "directory", "document", "app", "application", "program"}
 
 _CMD_PATTERNS = [
+    # Context-aware: "in <app> <action>"
+    (r"\bin\s+(spotify)\s+play\s+(?:the\s+|a\s+|my\s+)?playlist\s+(.+)",
+     "context_command", "context_command",
+     lambda m: {"app_name": m.group(1).lower(), "app_action": "play_playlist", "target": m.group(2).strip()}),
+    (r"\bplay\s+(?:the\s+|a\s+|my\s+)?(.+?)\s+playlist\s+(?:in|on|with)\s+(spotify)\b",
+     "context_command", "context_command",
+     lambda m: {"app_name": m.group(2).lower(), "app_action": "play_playlist", "target": m.group(1).strip()}),
+    (r"\bin\s+(spotify)\s+play\s+(.+)",
+     "context_command", "context_command",
+     lambda m: {"app_name": m.group(1).lower(), "app_action": "play_song", "target": m.group(2).strip()}),
+    (r"\bplay\s+(.+?)\s+(?:in|on|with)\s+(spotify)\b",
+     "context_command", "context_command",
+     lambda m: {"app_name": m.group(2).lower(), "app_action": "play_song", "target": m.group(1).strip()}),
+    (r"\bin\s+(spotify)\s+(pause|resume|stop|next|previous|prev|shuffle|volume up|volume down)\b",
+     "context_command", "context_command",
+     lambda m: {"app_name": m.group(1), "app_action": m.group(2).strip(), "target": ""}),
+    (r"\bin\s+(spotify)\s+search\s+(.+)",
+     "context_command", "context_command",
+     lambda m: {"app_name": m.group(1), "app_action": "search", "target": m.group(2).strip()}),
+    (r"\bin\s+(vlc)\s+(play|pause|resume|stop|next|previous|prev|fullscreen|volume up|volume down|seek forward|seek backward)\b",
+     "context_command", "context_command",
+     lambda m: {"app_name": m.group(1), "app_action": m.group(2).strip(), "target": ""}),
+    (r"\bin\s+(vlc)\s+open\s+(.+)",
+     "context_command", "context_command",
+     lambda m: {"app_name": m.group(1), "app_action": "open_file", "target": m.group(2).strip()}),
+    (r"\bin\s+(chrome|google chrome|opera|opera gx|firefox|edge)\s+(open|go to|navigate)\s+(.+)",
+     "context_command", "context_command",
+     lambda m: {"app_name": m.group(1).lower(), "app_action": "open_url", "target": m.group(3).strip()}),
+    (r"\bin\s+(chrome|google chrome|opera|opera gx|firefox|edge)\s+(search|google)\s+(.+)",
+     "context_command", "context_command",
+     lambda m: {"app_name": m.group(1).lower(), "app_action": "search", "target": m.group(3).strip()}),
+    (r"\bin\s+(vs\s*code|visual studio code|vscode)\s+(open|run)\s+(.+)",
+     "context_command", "context_command",
+     lambda m: {"app_name": "vscode", "app_action": "open_folder" if "open" in m.group(2) else "run", "target": m.group(3).strip()}),
+    # Generic "in <app> <anything>"
+    (r"\bin\s+(\w[\w\s]*?)\s+(.+)",
+     "context_command", "context_command",
+     lambda m: {"app_name": m.group(1).strip(), "app_action": "general", "target": m.group(2).strip()}),
+    # Context-aware media control (uses active app)
+    (r"\b(pause|stop|resume)\s+(?:the\s+)?(?:music|song|audio|track|video|playback)\b",
+     "context_command", "context_command",
+     lambda m: {"app_name": "_active_", "app_action": m.group(1).strip(), "target": ""}),
+    (r"\b(next|previous|prev)\s+(?:song|track|video)\b",
+     "context_command", "context_command",
+     lambda m: {"app_name": "_active_", "app_action": m.group(1).strip(), "target": ""}),
+    (r"\bplay\s+(?:this|the|that)\s+(?:video|song|track|music)\b",
+     "context_command", "context_command",
+     lambda m: {"app_name": "_active_", "app_action": "play", "target": ""}),
+    # Original patterns
     (r"\bgo to\s+(https?://\S+)", "browser_tool", "open_url",
      lambda m: {"url": m.group(1).strip()}),
     (r"\bopen\s+(https?://\S+)", "browser_tool", "open_url",
      lambda m: {"url": m.group(1).strip()}),
     (r"\b(?:search|find|look up)\s+(?:for\s+)?(.+)", "browser_tool", "search_web",
      lambda m: {"query": m.group(1).strip()}),
+    (r"\bplay\s+(?:any\s+|a\s+|some\s+)?(?:video|movie|film|clip)\s+(?:in\s+|on\s+|with\s+)?(.+)",
+     "app_tool", "play_media",
+     lambda m: {"media_type": "video", "player": re.sub(r'\s+(player|app|application|program)$', '', m.group(1).strip(), flags=re.I)}),
+    (r"\bplay\s+(?:any\s+|a\s+|some\s+)?(?:video|movie|film|clip)\b",
+     "app_tool", "play_media",
+     lambda m: {"media_type": "video", "player": ""}),
+    (r"\bplay\s+(?:any\s+|a\s+|some\s+)?(?:song|music|audio|track|mp3|tune)\s+(?:in\s+|on\s+|with\s+)?(.+)",
+     "app_tool", "play_media",
+     lambda m: {"media_type": "audio", "player": re.sub(r'\s+(player|app|application|program)$', '', m.group(1).strip(), flags=re.I)}),
+    (r"\bplay\s+(?:any\s+|a\s+|some\s+)?(?:song|music|audio|track|mp3|tune)\b",
+     "app_tool", "play_media",
+     lambda m: {"media_type": "audio", "player": ""}),
+    (r"\bplay\s+(.+)\s+(?:in\s+|on\s+|with\s+)?(.+)",
+     "app_tool", "play_media",
+     lambda m: {"media_type": "video", "player": re.sub(r'\s+(player|app|application|program)$', '', m.group(2).strip(), flags=re.I)}),
     (r"\bclose\s+(.+?)(?:\s+app|\s*)$", "app_tool", "close_application",
      lambda m: {"app_name": m.group(1).strip()}),
     (r"\bkill\s+(.+?)(?:\s+app|\s*)$", "app_tool", "close_application",
      lambda m: {"app_name": m.group(1).strip()}),
     (r"\b(?:open|launch|start)\s+(.+)", "app_tool", "launch_application",
-     lambda m: {"app_name": m.group(1).strip()}),
+     lambda m: {"app_name": re.sub(r'\s+(player|app|application|program|browser|editor)$', '', m.group(1).strip(), flags=re.I)}),
     (r"\blist\s+(?:running\s+)?apps", "app_tool", "list_running_applications", lambda m: {}),
     (r"\bwhat('s| is)\s+running\b", "app_tool", "list_running_applications", lambda m: {}),
     (r"\blist\s+(?:files?|dir|directory|folder)\s*(?:in\s+(.+))?", "file_tool", "list_directory",
@@ -142,11 +206,9 @@ def detect_intent(text: str) -> str:
     text_lower = text.lower().strip()
     if re.search(r"\b(ram|memory|cpu|processor|specs?|hardware|gpu|graphics|motherboard|os |operating system)\b", text_lower):
         return "system_hardware"
-    if re.search(r"\b(software|installed|programs?|applications?|running)\b", text_lower):
-        return "system_software"
     if re.search(r"\b(news|research|latest|trending|what('s| is) new|compare|vs |versus)\b", text_lower):
         return "research"
-    if re.search(r"\b(screen|see |visible|display|ocr|read text|what('s| is) on)\b", text_lower):
+    if re.search(r"\b(screen|see |visible|display|ocr|read text|what('s| is) on|what.*using|what.*open|active\s+app|which\s+app|what.*running|current\s+app)\b", text_lower):
         return "vision"
     if re.search(r"\b(remember|recall|what did|what was|earlier|yesterday|before)\b", text_lower) and re.search(r"\b(i |me|we|you|said|discuss|talk)\b", text_lower):
         return "memory_retrieval"
@@ -156,6 +218,8 @@ def detect_intent(text: str) -> str:
         return "computer_use"
     if re.search(r"\b(diagnos|health|issue|problem|check|scan|optimize)\b", text_lower):
         return "system_diagnostics"
+    if re.search(r"\b(software|installed|programs?|applications?)\b", text_lower):
+        return "system_software"
     return "general"
 
 

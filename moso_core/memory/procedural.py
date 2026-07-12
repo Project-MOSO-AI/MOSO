@@ -21,6 +21,12 @@ class ProceduralStore:
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 task_name TEXT NOT NULL UNIQUE,
                 steps TEXT DEFAULT '[]',
+                app_category TEXT DEFAULT 'other',
+                app_name TEXT DEFAULT 'unknown',
+                trigger_phrases TEXT DEFAULT '[]',
+                variables TEXT DEFAULT '[]',
+                success_count INTEGER DEFAULT 0,
+                failure_count INTEGER DEFAULT 0,
                 success_rate REAL DEFAULT 0.0,
                 times_used INTEGER DEFAULT 0,
                 last_used TEXT,
@@ -39,14 +45,28 @@ class ProceduralStore:
         self.db.commit()
 
     def store(self, memory: ProceduralMemory) -> int:
-        steps_json = json.dumps(memory.steps) if isinstance(memory.steps, list) else memory.steps
-        tags_json = json.dumps(memory.tags) if isinstance(memory.tags, list) else memory.tags
+        d = memory.to_dict()
         now = datetime.utcnow().isoformat()
+        
+        # Simple schema migration if the columns don't exist
+        try:
+            self.db.execute("ALTER TABLE procedural_memory ADD COLUMN app_category TEXT DEFAULT 'other'")
+            self.db.execute("ALTER TABLE procedural_memory ADD COLUMN app_name TEXT DEFAULT 'unknown'")
+            self.db.execute("ALTER TABLE procedural_memory ADD COLUMN trigger_phrases TEXT DEFAULT '[]'")
+            self.db.execute("ALTER TABLE procedural_memory ADD COLUMN variables TEXT DEFAULT '[]'")
+            self.db.execute("ALTER TABLE procedural_memory ADD COLUMN success_count INTEGER DEFAULT 0")
+            self.db.execute("ALTER TABLE procedural_memory ADD COLUMN failure_count INTEGER DEFAULT 0")
+        except Exception:
+            pass # columns already exist
+            
         cursor = self.db.execute(
             """INSERT OR REPLACE INTO procedural_memory
-               (task_name, steps, success_rate, times_used, last_used, owner_id, tags)
-               VALUES (?, ?, ?, ?, ?, ?, ?)""",
-            (memory.task_name, steps_json, memory.success_rate, memory.times_used, now, memory.owner_id, tags_json),
+               (task_name, steps, app_category, app_name, trigger_phrases, variables, 
+                success_count, failure_count, success_rate, times_used, last_used, owner_id, tags)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+            (memory.task_name, d["steps"], memory.app_category, memory.app_name, 
+             d["trigger_phrases"], d["variables"], memory.success_count, memory.failure_count,
+             memory.success_rate, memory.times_used, now, memory.owner_id, d["tags"]),
         )
         self.db.commit()
         memory_id = cursor.lastrowid

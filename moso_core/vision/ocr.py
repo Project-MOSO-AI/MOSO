@@ -7,22 +7,26 @@ from moso_core.vision.models import BoundingBox, OCRResult
 
 logger = logging.getLogger(__name__)
 
-try:
-    import pytesseract
-    from pytesseract import Output
-    _pytesseract = pytesseract
-    _OCR_AVAILABLE = True
-except ImportError:
-    _pytesseract = None  # noqa: F811
-    _OCR_AVAILABLE = False
+_OCR_AVAILABLE = None
+
+
+def _get_tesseract():
+    global _OCR_AVAILABLE
+    if _OCR_AVAILABLE is None:
+        try:
+            import pytesseract
+            _OCR_AVAILABLE = pytesseract
+        except ImportError:
+            _OCR_AVAILABLE = False
+    return _OCR_AVAILABLE
 
 
 def extract_text(image) -> str:
-    if not _OCR_AVAILABLE:
-        logger.warning("pytesseract not installed, OCR disabled")
+    t = _get_tesseract()
+    if not t:
         return ""
     try:
-        text = _pytesseract.image_to_string(image)
+        text = t.image_to_string(image)
         return text.strip() if text else ""
     except Exception as e:
         logger.warning("OCR text extraction failed: %s", e)
@@ -30,11 +34,12 @@ def extract_text(image) -> str:
 
 
 def extract_text_regions(image) -> list[OCRResult]:
-    if not _OCR_AVAILABLE:
+    t = _get_tesseract()
+    if not t:
         logger.warning("pytesseract not installed, OCR disabled")
         return []
     try:
-        data = _pytesseract.image_to_data(image, output_type=Output.DICT)
+        data = t.image_to_data(image, output_type=t.Output.DICT)
         results: list[OCRResult] = []
         for i in range(len(data.get("text", []))):
             text = (data["text"][i] or "").strip()

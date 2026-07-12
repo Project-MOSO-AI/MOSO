@@ -41,8 +41,18 @@ def _cosine_similarity(a: list[float], b: list[float]) -> float:
     return dot / (norm_a * norm_b)
 
 
+_default_model = None
+
 def _default_embedder(text: str) -> list[float]:
-    raise RuntimeError("No embedder configured; semantic search unavailable")
+    global _default_model
+    try:
+        from sentence_transformers import SentenceTransformer
+    except ImportError:
+        raise RuntimeError("No embedder configured and sentence-transformers is not installed; semantic search unavailable")
+    
+    if _default_model is None:
+        _default_model = SentenceTransformer("all-MiniLM-L6-v2")
+    return _default_model.encode(text).tolist()
 
 
 class VectorStore:

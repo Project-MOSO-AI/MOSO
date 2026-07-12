@@ -6,6 +6,7 @@ from PySide6.QtWidgets import (
     QFrame,
     QHBoxLayout,
     QLabel,
+    QLineEdit,
     QPushButton,
     QScrollArea,
     QSizePolicy,
@@ -13,15 +14,21 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
     QWidget,
 )
+import datetime
+import logging
 
-BUBBLE_WIDTH = 400
-BUBBLE_HEIGHT = 350
+logger = logging.getLogger(__name__)
+
+BUBBLE_WIDTH = 450
+BUBBLE_HEIGHT = 450
 
 AUTO_HIDE_SECONDS = 10
 
 
 class ConversationBubble(QFrame):
     closed = Signal()
+    text_submitted = Signal(str)
+    feedback_submitted = Signal(str, str)
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -49,6 +56,20 @@ class ConversationBubble(QFrame):
         header.addWidget(self._status_label)
 
         header.addStretch()
+
+        self._mode_btn = QPushButton("Desktop Mode")
+        self._mode_btn.setFixedSize(90, 20)
+        self._mode_btn.setStyleSheet("""
+            QPushButton {
+                background: rgba(40,100,200,80); color: #fff; border: none;
+                border-radius: 8px; font-size: 10px;
+            }
+            QPushButton:hover { background: rgba(60,120,220,100); }
+        """)
+        self._mode_btn.clicked.connect(self.toggle_mode)
+        header.addWidget(self._mode_btn)
+        self._conversation_mode = False
+
         self._clear_btn = QPushButton("Clear")
         self._clear_btn.setFixedSize(40, 20)
         self._clear_btn.setStyleSheet("""
@@ -88,35 +109,154 @@ class ConversationBubble(QFrame):
             }
         """)
         self._display.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+        self._display.setOpenExternalLinks(False)
+        self._display.anchorClicked.connect(self._on_anchor_clicked)
         layout.addWidget(self._display)
+
+        self._input_field = QLineEdit()
+        self._input_field.setPlaceholderText("Type a message...")
+        self._input_field.setStyleSheet("""
+            QLineEdit {
+                background: rgba(10, 10, 20, 200);
+                color: #ffffff;
+                border: 1px solid rgba(138, 43, 226, 120);
+                border-radius: 12px;
+                padding: 10px;
+                font-size: 13px;
+                font-family: "Segoe UI", sans-serif;
+            }
+            QLineEdit:focus {
+                border: 1px solid rgba(180, 80, 255, 180);
+                background: rgba(20, 20, 40, 230);
+            }
+        """)
+        self._input_field.returnPressed.connect(self._on_input_return)
+        layout.addWidget(self._input_field)
 
         self.setStyleSheet("""
             ConversationBubble {
-                background: rgba(15,15,35,220);
-                border: 1px solid rgba(138,43,226,100);
-                border-radius: 16px;
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                            stop:0 rgba(25, 25, 45, 240),
+                                            stop:1 rgba(15, 10, 30, 250));
+                border: 1px solid rgba(138, 43, 226, 80);
+                border-radius: 20px;
+            }
+            QTextBrowser {
+                background: transparent;
+                color: #e2e8f0;
+                border: none;
+                padding: 8px;
+                font-size: 13px;
+                font-family: "Segoe UI", sans-serif;
+            }
+            QScrollBar:vertical {
+                border: none;
+                background: rgba(0, 0, 0, 0);
+                width: 8px;
+                margin: 0px 0px 0px 0px;
+            }
+            QScrollBar::handle:vertical {
+                background: rgba(138, 43, 226, 80);
+                border-radius: 4px;
+                min-height: 20px;
+            }
+            QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+                height: 0px;
             }
         """)
 
         self._auto_hide_timer = QTimer(self)
         self._auto_hide_timer.setSingleShot(True)
-        self._auto_hide_timer.timeout.connect(self.hide)
+        # Disable auto-hide per user request
+        # self._auto_hide_timer.timeout.connect(self.hide)
 
         self._streaming_buffer = ""
         self._streaming_tag = ""
+
+    def paintEvent(self, event):
+        from PySide6.QtWidgets import QStyleOption, QStyle
+        from PySide6.QtGui import QPainter
+        opt = QStyleOption()
+        opt.initFrom(self)
+        p = QPainter(self)
+        self.style().drawPrimitive(QStyle.PrimitiveElement.PE_Widget, opt, p, self)
+        super().paintEvent(event)
+
+    def _on_input_return(self):
+        text = self._input_field.text().strip()
+        if text:
+            self.text_submitted.emit(text)
+            self._input_field.clear()
+            
+    def _on_anchor_clicked(self, url):
+        url_str = url.toString()
+        if url_str.startswith("feedback:"):
+            parts = url_str.split(":", 2)
+            if len(parts) == 3:
+                fb_type, msg = parts[1], parts[2]
+                self.feedback_submitted.emit(fb_type, msg)
+                self.append_system(f"Feedback recorded: {fb_type}", color="#22c55e")
 
     def _scroll_to_bottom(self):
         sb = self._display.verticalScrollBar()
         if sb:
             sb.setValue(sb.maximum())
 
+    def toggle_mode(self):
+        self._conversation_mode = not self._conversation_mode
+        if self._conversation_mode:
+            self._mode_btn.setText("Chat Mode")
+            self._mode_btn.setStyleSheet("""
+                QPushButton {
+                    background: rgba(138,43,226,80); color: #fff; border: none;
+                    border-radius: 8px; font-size: 10px;
+                }
+                QPushButton:hover { background: rgba(158,63,246,100); }
+            """)
+        else:
+            self._mode_btn.setText("Desktop Mode")
+            self._mode_btn.setStyleSheet("""
+                QPushButton {
+                    background: rgba(40,100,200,80); color: #fff; border: none;
+                    border-radius: 8px; font-size: 10px;
+                }
+                QPushButton:hover { background: rgba(60,120,220,100); }
+            """)
+
+    def _get_timestamp(self):
+        return datetime.datetime.now().strftime("[%H:%M:%S]")
+
     def append_message(self, sender: str, text: str):
+        ts = self._get_timestamp()
         tag = "You" if sender == "user" else "MOSO"
         color = "#8A2BE2" if sender == "assistant" else "#3b82f6"
-        line = f'<b style="color:{color}">{tag}:</b> {text}'
+        
+        feedback_html = ""
+        if sender == "assistant":
+            # Very basic URL encoding to avoid breaking the href
+            import urllib.parse
+            encoded = urllib.parse.quote(text[:200]) # only encode first 200 chars to avoid huge URLs
+            feedback_html = f'&nbsp;&nbsp;<a href="feedback:good:{encoded}" style="text-decoration:none;">👍</a> <a href="feedback:bad:{encoded}" style="text-decoration:none;">👎</a>'
+            
+        line = f'<span style="color:#666; font-size:10px;">{ts}</span> <b style="color:{color}">{tag}:</b> {text}{feedback_html}'
         self._display.append(line)
         self._scroll_to_bottom()
         self._start_auto_hide()
+
+    def log_step_start(self, text: str):
+        ts = self._get_timestamp()
+        self._display.append(f'<span style="color:#666; font-size:10px;">{ts}</span> <span style="color:#f59e0b; margin-left: 10px;">▶ Starting: {text}</span>')
+        self._scroll_to_bottom()
+
+    def log_step_done(self, text: str):
+        ts = self._get_timestamp()
+        self._display.append(f'<span style="color:#666; font-size:10px;">{ts}</span> <span style="color:#22c55e; margin-left: 10px;">✓ Done: {text}</span>')
+        self._scroll_to_bottom()
+        
+    def log_step_failed(self, text: str):
+        ts = self._get_timestamp()
+        self._display.append(f'<span style="color:#666; font-size:10px;">{ts}</span> <span style="color:#ef4444; margin-left: 10px;">✗ Failed: {text}</span>')
+        self._scroll_to_bottom()
 
     def append_system(self, text: str, color: str = "#f59e0b"):
         line = f'<i style="color:{color}">⚡ {text}</i>'
@@ -207,7 +347,7 @@ class ConversationBubble(QFrame):
         self._status_label.setStyleSheet(f"color: {color}; font-size: 10px; background: transparent;")
 
     def _start_auto_hide(self):
-        self._auto_hide_timer.start(AUTO_HIDE_SECONDS * 1000)
+        pass # Disabled
 
     def clear(self):
         self._display.clear()

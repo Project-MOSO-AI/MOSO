@@ -11,11 +11,12 @@ from moso_core.memory.models import (
 
 
 class MemoryRetriever:
-    def __init__(self, episodic, semantic, procedural, preferences):
+    def __init__(self, episodic, semantic, procedural, preferences, knowledge=None):
         self._episodic = episodic
         self._semantic = semantic
         self._procedural = procedural
         self._preferences = preferences
+        self._knowledge = knowledge
 
     def search_all(
         self,
@@ -67,8 +68,19 @@ class MemoryRetriever:
         max_events: int = 3,
         max_facts: int = 5,
         max_procedures: int = 3,
+        max_knowledge: int = 5,
     ) -> str:
         parts: list[str] = []
+        
+        if self._knowledge:
+            try:
+                knowledge_results = self._knowledge.search_hybrid(query, limit=max_knowledge)
+                if knowledge_results:
+                    parts.append("## Retrieved Knowledge Base Documents")
+                    for entry, score in knowledge_results:
+                        parts.append(f"[{entry.metadata.get('category', 'general')}/{entry.metadata.get('source', 'unknown')}] {entry.text}")
+            except Exception as e:
+                pass
 
         events = self._episodic.search(query, owner_id=owner_id, limit=max_events)
         if events:

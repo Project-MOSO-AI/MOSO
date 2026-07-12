@@ -12,6 +12,7 @@ except ImportError:
 from moso_core.pipelines.base import Pipeline, PipelineResult
 from moso_core.pipelines.text.pipeline import TextPipeline
 from moso_core.safety.guardrails import OutputGuard, PromptGuard
+from moso_core.runtime_manager import RuntimeManager, Service
 
 if TYPE_CHECKING:
     from moso_core.agents.manager import AgentManager
@@ -89,6 +90,7 @@ class Orchestrator:
         self._risk: Optional[RiskManager] = None
         self._realtime: Optional[RealtimeManager] = None
         self._llm: Optional[LLMManager] = None
+        self._runtime = RuntimeManager()
 
     # ----- Core processing -----
 
@@ -397,6 +399,10 @@ class Orchestrator:
     @property
     def llm(self) -> Optional[LLMManager]:
         return self._llm
+
+    @property
+    def runtime(self) -> RuntimeManager:
+        return self._runtime
 
     def llm_complete(self, prompt: str, system_prompt: str = "") -> str:
         if self._llm is None:

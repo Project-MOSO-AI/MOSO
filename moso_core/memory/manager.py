@@ -18,6 +18,7 @@ from moso_core.memory.procedural import ProceduralStore
 from moso_core.memory.retrieval import MemoryRetriever
 from moso_core.memory.semantic import SemanticStore
 from moso_core.memory.summarizer import MemorySummarizer
+from moso_core.memory.vector_store import VectorStore
 
 logger = logging.getLogger(__name__)
 
@@ -37,7 +38,8 @@ class MemoryManager:
         self._semantic = SemanticStore(self)
         self._procedural = ProceduralStore(self)
         self._preferences = PreferenceStore(self)
-        self._retriever = MemoryRetriever(self._episodic, self._semantic, self._procedural, self._preferences)
+        self._knowledge = VectorStore(os.path.join(os.path.dirname(self._db_path), "vector_store.db"))
+        self._retriever = MemoryRetriever(self._episodic, self._semantic, self._procedural, self._preferences, self._knowledge)
         self._summarizer = MemorySummarizer(self._episodic, self._semantic)
         logger.info("MemoryManager initialized at %s", db_path)
 
@@ -74,6 +76,10 @@ class MemoryManager:
     @property
     def retriever(self) -> MemoryRetriever:
         return self._retriever
+        
+    @property
+    def knowledge(self) -> VectorStore:
+        return self._knowledge
 
     @property
     def summarizer(self) -> MemorySummarizer:

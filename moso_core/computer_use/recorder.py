@@ -102,7 +102,7 @@ class WorkflowRecorder:
         self._events.clear()
         return sequence
 
-    def start_recording(self, duration: float = 10.0, record_keyboard: bool = True) -> ComputerUseResult:
+    def start_recording(self, duration: float = 10.0, record_keyboard: bool = True, blocking: bool = True) -> ComputerUseResult:
         self._recording = True
         self._events.clear()
         threads = []
@@ -122,15 +122,21 @@ class WorkflowRecorder:
             t2 = Thread(target=run_keyboard)
             t2.start()
             threads.append(t2)
+            
+            if blocking:
+                for th in threads:
+                    th.join()
+                self._recording = False
+                return ComputerUseResult(True, "start_recording", {"mouse": str(mouse_result[0]), "keyboard": str(kb_result[0]) if kb_result else "none"})
+            else:
+                return ComputerUseResult(True, "start_recording", {"status": "recording_async"})
+
+        if blocking:
             for th in threads:
                 th.join()
             self._recording = False
-            return ComputerUseResult(True, "start_recording", {"mouse": str(mouse_result[0]), "keyboard": str(kb_result[0]) if kb_result else "none"})
-
-        for th in threads:
-            th.join()
-        self._recording = False
-        return ComputerUseResult(True, "start_recording", {"mouse": str(mouse_result[0])})
+            return ComputerUseResult(True, "start_recording", {"mouse": str(mouse_result[0])})
+        return ComputerUseResult(True, "start_recording", {"status": "recording_async"})
 
     def stop_recording(self) -> ComputerUseResult:
         self._recording = False

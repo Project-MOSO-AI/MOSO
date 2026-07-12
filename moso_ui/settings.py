@@ -19,6 +19,15 @@ class AuraSettings:
         self.temperature: float = 0.7
         self.bubble_auto_hide: int = 0
         self.always_on_top: bool = True
+        # LLM provider settings
+        self.provider: str = "local"  # local | openai | anthropic | ollama | custom
+        self.api_key: str = ""
+        self.api_base_url: str = ""
+        self.api_model: str = ""
+        # Runtime settings
+        self.auto_install_deps: bool = True
+        self.auto_restart_services: bool = True
+        self.run_diagnostics_on_startup: bool = True
         self.load()
 
     def load(self):

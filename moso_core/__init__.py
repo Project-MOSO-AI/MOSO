@@ -6,7 +6,7 @@ The core inference engine supporting:
 - ONNX Runtime (cross-platform)
 """
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 
 from moso_core.inference.base import GenerationResult, GenerationStats, InferenceConfig, ModelBackend
 
@@ -17,7 +17,7 @@ except ImportError:
 
 try:
     from moso_core.inference.onnx_runtime.backend import OnnxRuntimeBackend
-except ImportError:
+except (ImportError, Exception):
     OnnxRuntimeBackend = None  # noqa: F811
 
 from moso_core.orchestration.orchestrator import Modality, Orchestrator
@@ -127,6 +127,14 @@ try:
 except ImportError:
     LLM_AVAILABLE = False
 
+# Infrastructure modules — always available
+from moso_core.diagnostics import DiagnosticReport, HealthStatus, run_diagnostics
+from moso_core.dependency_installer import DependencyInstaller
+from moso_core.model_manager import ModelManager, SystemResources
+from moso_core.runtime_manager import RuntimeManager, Service, ServiceStatus
+from moso_core.download_manager import DownloadManager
+from moso_core.benchmarks import BenchmarkReport, run_all_benchmarks
+
 __all__ = [
     "InferenceConfig",
     "ModelBackend",
@@ -160,4 +168,17 @@ __all__ = [
     "LlamaServer",
     "REALTIME_AVAILABLE",
     "RealtimeManager",
+    # Infrastructure
+    "run_diagnostics",
+    "DiagnosticReport",
+    "HealthStatus",
+    "DependencyInstaller",
+    "ModelManager",
+    "SystemResources",
+    "RuntimeManager",
+    "Service",
+    "ServiceStatus",
+    "DownloadManager",
+    "BenchmarkReport",
+    "run_all_benchmarks",
 ]

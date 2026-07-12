@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+import time
 from typing import Optional
 
 from moso_core.computer_use.models import ComputerUseResult
@@ -49,7 +50,34 @@ class WindowManager:
             wins = self._pygetwindow.getWindowsWithTitle(title)
             if not wins:
                 return ComputerUseResult(False, "focus_window", error=f"No window found matching '{title}'")
-            wins[0].activate()
+            # Rank by match quality — prefer title starts with term, or term dominates the title
+            title_lower = title.lower()
+            def _match_score(w):
+                t = w.title.lower()
+                if t.startswith(title_lower):
+                    return 0  # best: title starts with search term
+                ratio = len(title_lower) / max(len(t), 1)
+                return 1 - ratio  # lower = better (shorter title relative to search term)
+            wins.sort(key=_match_score)
+            win = wins[0]
+            # pygetwindow.activate() fails on Chrome/Electron — use Win32 + click fallback
+            try:
+                import ctypes
+                hwnd = win._hWnd
+                user32 = ctypes.windll.user32
+                user32.ShowWindow(hwnd, 9)  # SW_RESTORE
+                time.sleep(0.15)
+                user32.SetForegroundWindow(hwnd)
+                time.sleep(0.3)
+                # Verify it worked; if not, click the window center
+                if not win.isActive:
+                    import pyautogui
+                    cx = win.left + win.width // 2
+                    cy = win.top + win.height // 2
+                    pyautogui.click(cx, cy)
+                    time.sleep(0.3)
+            except Exception:
+                pass
             return ComputerUseResult(True, "focus_window", {"title": title})
         except Exception as e:
             return ComputerUseResult(False, "focus_window", error=str(e))

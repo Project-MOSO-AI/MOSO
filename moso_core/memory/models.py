@@ -70,7 +70,13 @@ class SemanticMemory:
 @dataclass
 class ProceduralMemory:
     task_name: str
-    steps: list[str] = field(default_factory=list)
+    steps: list[dict] = field(default_factory=list)
+    app_category: str = "other"
+    app_name: str = "unknown"
+    trigger_phrases: list[str] = field(default_factory=list)
+    variables: list[str] = field(default_factory=list)
+    success_count: int = 0
+    failure_count: int = 0
     success_rate: float = 0.0
     times_used: int = 0
     last_used: Optional[str] = None
@@ -82,25 +88,31 @@ class ProceduralMemory:
         d = asdict(self)
         d["steps"] = json.dumps(self.steps) if isinstance(self.steps, list) else self.steps
         d["tags"] = json.dumps(self.tags) if isinstance(self.tags, list) else self.tags
+        d["trigger_phrases"] = json.dumps(self.trigger_phrases) if isinstance(self.trigger_phrases, list) else self.trigger_phrases
+        d["variables"] = json.dumps(self.variables) if isinstance(self.variables, list) else self.variables
         return d
 
     @classmethod
     def from_row(cls, row: dict) -> ProceduralMemory:
-        steps = row.get("steps", "[]")
-        if isinstance(steps, str):
-            steps = json.loads(steps) if steps else []
-        tags = row.get("tags", "[]")
-        if isinstance(tags, str):
-            tags = json.loads(tags) if tags else []
+        def _parse_list(val):
+            if isinstance(val, str):
+                return json.loads(val) if val else []
+            return val or []
         return cls(
             memory_id=row["id"],
             task_name=row["task_name"],
-            steps=steps,
+            steps=_parse_list(row.get("steps", "[]")),
+            app_category=row.get("app_category", "other"),
+            app_name=row.get("app_name", "unknown"),
+            trigger_phrases=_parse_list(row.get("trigger_phrases", "[]")),
+            variables=_parse_list(row.get("variables", "[]")),
+            success_count=row.get("success_count", 0),
+            failure_count=row.get("failure_count", 0),
             success_rate=row.get("success_rate", 0.0),
             times_used=row.get("times_used", 0),
             last_used=row.get("last_used"),
             owner_id=row.get("owner_id", "default"),
-            tags=tags,
+            tags=_parse_list(row.get("tags", "[]")),
         )
 
 

@@ -19,6 +19,85 @@ SERVER_BINARY_NAME = "llama-server.exe"
 MODEL_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "models")
 
 
+class DirectLlama:
+    """Fallback backend using llama-cpp-python directly (no server binary needed)."""
+    def __init__(self, config: Optional[LLMConfig] = None):
+        self._config = config or LLMConfig(model_path="")
+        self._model = None
+
+    @property
+    def config(self) -> LLMConfig:
+        return self._config
+
+    @property
+    def is_running(self) -> bool:
+        return self._model is not None
+
+    def start(self) -> bool:
+        if self._model is not None:
+            return True
+        model_path = self._config.model_path
+        if not model_path or not os.path.isfile(model_path):
+            logger.error("Model not found: %s", model_path)
+            return False
+        try:
+            from llama_cpp import Llama
+            self._model = Llama(
+                model_path=model_path,
+                n_ctx=self._config.n_ctx,
+                n_gpu_layers=self._config.n_gpu_layers,
+                verbose=self._config.verbose,
+            )
+            logger.info("DirectLlama loaded model: %s", model_path)
+            return True
+        except Exception as e:
+            logger.error("Failed to load model directly: %s", e)
+            return False
+
+    def complete(self, request: LLMRequest) -> LLMResponse:
+        if self._model is None:
+            if not self.start():
+                return LLMResponse(text="", success=False, error="Model not loaded")
+        try:
+            start = time.perf_counter()
+            response = self._model(
+                request.prompt,
+                max_tokens=request.max_tokens,
+                temperature=request.temperature,
+                top_p=request.top_p,
+                stop=["<|im_end|>", "<|end|>"],
+                echo=False,
+            )
+            elapsed = (time.perf_counter() - start) * 1000
+            text = response.get("choices", [{}])[0].get("text", "")
+            tokens = response.get("usage", {}).get("total_tokens", 0)
+            text = text.strip()
+            # Strip Qwen think tags
+            think_start = text.find("<think>")
+            if think_start != -1:
+                think_end = text.find("</think>", think_start)
+                if think_end != -1:
+                    text = text[think_end + 8:].strip()
+                else:
+                    # Incomplete think — strip from start
+                    text = ""
+            return LLMResponse(text=text.strip(), tokens_generated=tokens, elapsed_ms=elapsed)
+        except Exception as e:
+            logger.error("Direct completion failed: %s", e)
+            return LLMResponse(text="", success=False, error=str(e))
+
+    def stop(self):
+        self._model = None
+        logger.info("DirectLlama stopped")
+
+    def __enter__(self):
+        self.start()
+        return self
+
+    def __exit__(self, *args):
+        self.stop()
+
+
 class LlamaServer:
     def __init__(self, config: Optional[LLMConfig] = None):
         self._config = config or LLMConfig(model_path="")
@@ -29,8 +108,16 @@ class LlamaServer:
     def config(self) -> LLMConfig:
         return self._config
 
+    def __init__(self, config: Optional[LLMConfig] = None):
+        self._config = config or LLMConfig(model_path="")
+        self._process: Optional[subprocess.Popen] = None
+        self._direct: Optional[DirectLlama] = None
+        self._base_url = f"http://{self._config.server_host}:{self._config.server_port}"
+
     @property
     def is_running(self) -> bool:
+        if self._direct is not None:
+            return self._direct.is_running
         if self._process is None:
             return False
         return self._process.poll() is None
@@ -60,8 +147,9 @@ class LlamaServer:
             return False
         binary = self._find_server_binary()
         if not os.path.isfile(binary):
-            logger.error("Server binary not found: %s. Run download_models first.", binary)
-            return False
+            logger.warning("Server binary not found: %s. Falling back to DirectLlama (llama-cpp-python).", binary)
+            self._direct = DirectLlama(self._config)
+            return self._direct.start()
         cmd = [
             binary,
             "--model", model_path,
@@ -99,6 +187,8 @@ class LlamaServer:
         return False
 
     def complete(self, request: LLMRequest) -> LLMResponse:
+        if self._direct is not None:
+            return self._direct.complete(request)
         if not self.is_running:
             if not self.start():
                 return LLMResponse(text="", success=False, error="Server not running")
@@ -134,6 +224,9 @@ class LlamaServer:
             return LLMResponse(text="", success=False, error=str(e))
 
     def stop(self):
+        if self._direct is not None:
+            self._direct.stop()
+            self._direct = None
         if self._process is not None:
             try:
                 self._process.terminate()

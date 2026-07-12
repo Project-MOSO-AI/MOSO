@@ -293,12 +293,85 @@ Say **"Hey MOSO"** followed by your question or command.
 | **Agent System** | ✅ V1.1 | Template-based planning + retry + dependencies + dry-run preview |
 | **Tool Engine** | ✅ V1 | File ops, apps, browser, terminal — structured tool execution |
 | **Computer Use** | ✅ V1 | Mouse, keyboard, screen capture, window management, automation, recorder |
+| **Desktop Agent** | ✅ V1 | Vision-planned perception→reason→act→verify loop with world model, smart controllers, action executor, and desktop memory |
 | **Screen Vision** | ✅ V1 | Screenshot OCR, active window detection, screen context generation |
 | **System Intelligence** | ✅ V1 | Hardware, software, network, storage, security — live system understanding, diagnostics, explainer, inventory snapshots |
-| **LLM Integration** | ✅ V1 | llama.cpp server binary — subprocess HTTP backend, chat, completion |
-| **Aura UI** | ✅ V2 | Floating desktop orb — PySide6, always-on-top, 8 states (idle/listening/thinking/analyzing/executing/speaking/warning/error), tray, conversation bubble, streaming display |
+| **LLM Integration** | ✅ V2 | Provider abstraction (local/OpenAI/Anthropic/Ollama) + llama.cpp server binary — subprocess HTTP backend |
+| **Model Manager** | ✅ V1 | GGUF model discovery, install, delete, disk/RAM monitoring |
+| **Runtime Manager** | ✅ V1 | Service lifecycle, health monitoring, crash recovery with auto-restart |
+| **Download Manager** | ✅ V1 | Model file downloads with progress tracking, ETA, SHA-256 integrity verification |
+| **Dependency Installer** | ✅ V1 | Auto-detect and install missing pip packages, system tools (pip/winget/choco) |
+| **Diagnostics** | ✅ V1 | Self-check system scanning all modules, dependencies, and runtime health |
+| **Benchmarks** | ✅ V1 | Performance measurement for all subsystems (memory, vector store, retrieval, LLM) |
+| **Aura UI** | ✅ V2 | Floating desktop orb — PySide6, always-on-top, 8 states, tray, conversation bubble, streaming display |
 | **Risk & Privacy Engine** | ✅ V1 | Pre-execution risk scoring, network reputation, credential exposure, data privacy analysis — blocks HIGH/CRITICAL actions |
 | **Unified Integration** | ✅ V1 | All modules wired into Aura UI via Orchestrator — Memory · System Intelligence · Tools · Risk Engine · Agents · Vision · Computer Use · Realtime Research · Identity — live at startup |
+
+---
+
+## ✧ What is MOSO?
+
+**MOSO (M0S0)** is a **privacy-first**, **local-first** adaptive AI assistant that runs entirely on your device. It is built in sixteen layers:
+
+1. **Voice Pipeline** — Talk to MOSO hands-free: wake word detection, speaker verification, speech-to-text, LLM reasoning, text-to-speech with optional voice cloning
+2. **Identity Engine** — MOSO knows who you are using 5 weighted signals (voice, liveness, behavior, device, history). Replay/synthetic audio is rejected. Confidence scoring determines permission levels from guest to full owner
+3. **Memory Engine** — MOSO remembers across sessions: past conversations (episodic), facts about you (semantic), how to do things (procedural), and your preferences. All stored locally in SQLite
+4. **Resource Manager** — MOSO understands its environment: CPU usage, RAM available, storage space, battery level, network speeds, and running processes. This lets it answer "can I run X?" before attempting a task
+5. **Tool Engine** — MOSO can act: open applications, create and read files, search the web, and run terminal commands. Every action is permission-gated, audit-logged, risk-checked, and remembered. Dry-run mode lets you preview before executing. App controllers provide per-app intelligence
+6. **Agent Planner** — MOSO can plan: decompose goals into sequential tasks using template matching (python project, folder, app, web search, file read/write), execute via Tool Engine, verify each task, retry on failure, check dependencies, and persist history to SQLite
+7. **Computer Use** — MOSO can operate desktop software like a human: move mouse, click buttons, type text, press keyboard shortcuts, capture screenshots, focus windows, execute action sequences, and record workflows
+8. **Desktop Agent** — MOSO can autonomously navigate desktop applications using a vision-planned perceive→reason→act→verify loop. A world model tracks continuous desktop state, smart controllers provide per-app intelligence, and an action executor dispatches to real functions with verification
+9. **Screen Vision** — MOSO can see your screen: OCR text extraction, text region detection, active window identification, and screen context assembly — all observation-only, no clicking or ML
+10. **LLM Integration** — MOSO connects to local or cloud LLMs via a pluggable provider abstraction. Supports local llama.cpp server, OpenAI, Anthropic, and Ollama backends. Model manager handles GGUF model discovery, installation, and monitoring
+11. **Aura UI V2** — MOSO lives on your desktop as a floating orb with 8 animated states (idle, listening, thinking, analyzing, executing, speaking, warning, error). System tray, conversation bubble with streaming text display, risk warnings, and module status indicators. All modules are wired at startup and accessible through natural conversation
+12. **System Intelligence** — MOSO understands your entire computer: CPU model, GPU, motherboard, installed software, services, startup items, network connections, DNS, VPN, storage usage, firewall status, antivirus state, pending updates. It explains technical concepts in plain language, runs diagnostics with severity-ranked issues and suggestions, and tracks changes over time with SQLite-based inventory snapshots
+13. **Risk & Privacy Engine** — MOSO protects your system: pre-execution risk scoring scans network destinations, file paths, credential exposure, and data privacy implications. The reputation checker evaluates domains/IPs against a built-in blocklist and heuristic scoring. HIGH and CRITICAL risk actions are blocked automatically with explanation
+14. **Real-Time Intelligence** — MOSO researches the web on your behalf: risk-assessment-driven source selection, content fetching with redirect chain tracking and TLS verification, cross-source verification with duplicate detection and conflict resolution, keyword and LLM-based analysis, and transparent summarization. Embeddings power vector search across memory. A Knowledge Graph tracks entities, relationships, events, and concepts with confidence scoring and temporal awareness. An optional Playwright-based Research Browser provides autonomous page extraction with stealth mode, metadata parsing, and PDF download
+15. **Runtime Infrastructure** — Model manager (GGUF discovery, install, delete, disk/RAM monitoring), runtime manager (service lifecycle, health monitoring, crash recovery with auto-restart), download manager (progress tracking, ETA, SHA-256 integrity verification), dependency installer (auto-detect and install missing pip packages, system tools), diagnostics (self-check system scanning all modules, dependencies, and runtime health), and benchmarks (subsystem performance measurement)
+16. **Unified Integration** — All modules connected through the Orchestrator. Aura UI starts every module automatically. Intent detection routes queries to the right engine: system questions → System Intelligence, research → Realtime, multi-step goals → Agent Planner, screen queries → Vision, general chat → LLM + Tools. Every action is risk-checked before execution. Memory stores conversations, tool results, and research findings
+
+Everything runs locally — no cloud dependency, no data leaves your device.
+
+---
+
+---
+
+## ✧ Project Structure
+
+```
+MOSO/
+├── moso_core/              # Core AI engine
+│   ├── agents/             # Template-based agent planner & executor
+│   ├── computer_use/       # Desktop automation (mouse, keyboard, screen, windows, agent)
+│   ├── desktop/            # Desktop Agent (perception, world model, vision planner, smart controllers, verifier)
+│   ├── identity/           # Multi-signal identity engine (voice, behavior, device)
+│   ├── inference/          # Model backends (llama.cpp, ONNX Runtime)
+│   ├── llm/                # LLM integration (server, chat, completion, provider abstraction)
+│   │   └── providers/      # Pluggable providers (local, OpenAI, Anthropic, Ollama)
+│   ├── memory/             # Persistent memory (episodic, semantic, procedural, vector store, corrections, ingest)
+│   ├── orchestration/      # Dynamic pipeline composition
+│   ├── pipelines/          # Modality processing pipelines
+│   ├── realtime/           # Real-Time Intelligence Engine (research, knowledge graph, browser)
+│   ├── resources/          # Local resource monitoring (CPU, RAM, storage, network)
+│   ├── risk/               # Risk & Privacy Engine (reputation, scoring, privacy checks)
+│   ├── tools/              # Tool engine (file, app controllers, context manager, browser, terminal)
+│   ├── vision/             # Screen vision & OCR
+│   ├── voice/              # Voice pipeline (STT, TTS, speaker verification, cloning)
+│   ├── benchmarks.py       # Subsystem performance benchmarks
+│   ├── dependency_installer.py  # Auto-detect & install missing dependencies
+│   ├── diagnostics.py      # Self-check system health scanner
+│   ├── download_manager.py # Model download with progress, ETA, integrity verification
+│   ├── model_manager.py    # GGUF model discovery, install, delete, monitoring
+│   └── runtime_manager.py  # Service lifecycle, health monitoring, crash recovery
+├── moso_ui/                # Desktop UI (Aura floating orb)
+├── docs/                   # Documentation & architecture specs
+├── models/                 # Local GGUF model storage
+├── tests/                  # Test suite (249 tests)
+├── scripts/                # Utility scripts
+├── run.py                  # Application entry point
+├── README.md               # This file
+└── llms.txt                # LLM context summary
+```
 
 ---
 
@@ -434,19 +507,26 @@ The foundational runtime that powers all AI inference across platforms with mult
 | **Safety** | Prompt injection detection, output sanitization | Content filtering and guardrails |
 | **Voice** | Input, VAD, wake word, speaker verify, STT, TTS, cloning | Full voice interaction pipeline |
 | **Identity** | Voice (35%), Liveness (20%), Behavior (20%), Device (15%), History (10%) | Multi-signal owner verification engine |
-| **Memory** | Episodic, Semantic, Procedural, Preferences | SQLite-persistent cross-session memory |
+| **Memory** | Episodic, Semantic, Procedural, Preferences, Corrections, Ingest | SQLite-persistent cross-session memory + RAG ingest + feedback learning |
 | **Resources** | CPU, RAM, Storage, Battery, Network, Processes | psutil-based local resource monitoring |
-| **Tools** | File, Apps, Browser, Terminal | Permission-gated OS actions with audit logging + dry-run |
+| **Tools** | File, App Controllers, Context Manager, Browser, Terminal | Permission-gated OS actions with audit logging + dry-run |
 | **Agents** | Planner, Executor, Verifier, History | Template-based goal decomposition with retry + dependencies + dry-run |
-| **Computer Use** | Mouse, Keyboard, Screen, Windows, Automation, Recorder | Desktop automation — pyautogui, mss, pygetwindow |
+| **Computer Use** | Mouse, Keyboard, Screen, Windows, Automation, Recorder, Agent | Desktop automation with vision-planned agent loop |
+| **Desktop Agent** | Perception, World Model, Vision Planner, Smart Controllers, Verifier, Desktop Memory | Autonomous desktop interaction — observe→reason→act→verify loop |
 | **Screen Vision** | OCR, Text Regions, Window Detection, Context | Screenshot OCR — pytesseract, mss, pygetwindow |
-| **System Intelligence** | Hardware, Software, Network, Storage, Security, Diagnostics, Inventory, Explainer | Live system understanding — psutil, winreg, subprocess
-| **Risk & Privacy Engine** | Network Reputation, File Impact, Credential Check, Privacy Analysis | Pre-execution risk scoring blocks HIGH/CRITICAL actions — built-in blocklist + heuristic scoring
+| **System Intelligence** | Hardware, Software, Network, Storage, Security, Diagnostics, Inventory, Explainer | Live system understanding — psutil, winreg, subprocess |
+| **Risk & Privacy Engine** | Network Reputation, File Impact, Credential Check, Privacy Analysis | Pre-execution risk scoring blocks HIGH/CRITICAL actions |
 | **Real-Time Intelligence** | Multi-Source Fetcher, Cache, Risk Engine, Privacy Check, Reputation, Source Verifier, Analyzer, Summarizer | Web research pipeline — risk-aware source selection, content fetching, cross-source verification, LLM/keyword analysis, transparent summaries |
 | **Vector Store** | SQLite FTS5 + cosine similarity | Embedding-aware storage with hybrid search — FTS5 keyword, semantic cosine, weighted combination |
 | **Knowledge Graph** | NetworkX + SQLite | Entity, relationship, event, and concept tracking with confidence scoring, source attribution, and timeline queries |
 | **Research Browser** | Playwright (headless Chromium) | Optional autonomous page fetching with stealth mode, content extraction, metadata parsing, screenshot, PDF download |
-| **LLM Integration** | Server, Chat, Completion | llama.cpp server binary — subprocess HTTP backend |
+| **LLM Integration** | Provider abstraction (local/OpenAI/Anthropic/Ollama), Server, Chat, Completion | Pluggable backends — llama.cpp subprocess HTTP, OpenAI API, Anthropic API, Ollama |
+| **Model Manager** | GGUF discovery, install, delete, disk/RAM monitoring | Local model lifecycle management |
+| **Runtime Manager** | Service lifecycle, health monitoring, crash recovery | Auto-restart on failure, health checks |
+| **Download Manager** | Progress tracking, ETA, SHA-256 integrity | Model file downloads with verification |
+| **Dependency Installer** | pip, winget, choco, manual | Auto-detect and install missing dependencies |
+| **Diagnostics** | Module scan, dependency check, runtime health | Self-check system — health status per module |
+| **Benchmarks** | Memory, vector store, retrieval, LLM | Subsystem performance measurement |
 | **Aura UI** | Floating Orb, Conversation Bubble, Tray | Desktop overlay — PySide6 |
 
 ---
@@ -1582,7 +1662,21 @@ Without explicit written permission, you may NOT:
   <sub>© 2024-2026 MOSO AI. All rights reserved. Source available under MOSO Source Available License.</sub>
 </p>
 
-<!-- Style block for animations -->
+## ✧ Recent Updates
+
+- **Desktop Agent (V1)**: Autonomous desktop interaction via vision-planned perceive→reason→act→verify loop. World model tracks continuous state, smart controllers provide per-app intelligence, action executor dispatches to real functions with verification, and desktop memory persists context
+- **LLM Provider Abstraction (V2)**: Pluggable provider system supporting local llama.cpp, OpenAI, Anthropic, and Ollama backends. Unified `LLMProvider` interface with streaming support
+- **Model Manager**: GGUF model discovery, installation, deletion, and disk/RAM monitoring
+- **Runtime Manager**: Service lifecycle management with health monitoring, crash detection, and auto-restart
+- **Download Manager**: Model file downloads with progress tracking, ETA, and SHA-256 integrity verification
+- **Dependency Installer**: Auto-detect and install missing pip packages and system tools via pip/winget/choco
+- **Diagnostics**: Self-check system scanning all modules, dependencies, and runtime health with severity-ranked status
+- **Benchmarks**: Subsystem performance measurement for memory, vector store, retrieval, and LLM
+- **App Controllers & Context Manager**: Per-app intelligence (Notepad++, VS Code, Chrome, File Explorer) with app state tracking
+- **Memory Enhancements**: Corrections manager (feedback-driven learning from 👍/👎), RAG document ingest with chunking, preference extractor (auto-extract preferences from chat)
+- **Interactive Feedback**: Inline 👍/👎 buttons in the chat interface. Negative feedback triggers automated correction learning
+
+<!-- Invisible style block for animations -->
 <style>
   @keyframes greenPulse {
     0%, 100% { box-shadow: 0 0 5px rgba(0, 255, 65, 0.3); border-color: #00ff41; }
