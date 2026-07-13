@@ -1,0 +1,49 @@
+name: Docker Build & Publish to GHCR
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels)
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/project-moso-ai/moso
+          tags: |
+            type=raw,value=latest
+            type=sha,prefix=
+          labels: |
+            org.opencontainers.image.source=https://github.com/Project-MOSO-AI/MOSO
+            org.opencontainers.image.description=MOSO: Privacy-First Adaptive AI Assistant
+            org.opencontainers.image.title=MOSO AI
+            org.opencontainers.image.vendor=Project-MOSO-AI
+            org.opencontainers.image.url=https://github.com/Project-MOSO-AI/MOSO
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

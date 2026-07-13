@@ -1,0 +1,89 @@
+version: "3.9"
+
+services:
+  moso-core:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: moso-core
+    image: moso-ai:latest
+    restart: unless-stopped
+    ports:
+      - "8000:8000"  # FastAPI backend
+    environment:
+      PYTHONUNBUFFERED: "1"
+      MOSO_HOME: /app/.moso
+      MODELS_PATH: /app/models
+      LOG_LEVEL: info
+    volumes:
+      # Mount for persistent memory & config (SQLite, settings, audit logs)
+      - moso-data:/app/.moso
+      # Mount for model storage (GGUF files, large artifacts)
+      - moso-models:/app/models
+      # Optional: bind mount for local model files
+      - ./models:/app/models:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - moso-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # Optional: Redis for caching & sessions
+  redis:
+    image: redis:7-alpine
+    container_name: moso-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - moso-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # Optional: PostgreSQL for data persistence
+  postgres:
+    image: postgres:16-alpine
+    container_name: moso-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: moso
+      POSTGRES_PASSWORD: moso-dev
+      POSTGRES_DB: moso_ai
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - moso-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U moso"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  moso-data:
+    driver: local
+  moso-models:
+    driver: local
+  redis-data:
+    driver: local
+  postgres-data:
+    driver: local
+
+networks:
+  moso-network:
+    driver: bridge
