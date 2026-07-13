@@ -273,6 +273,38 @@ Say **"Hey MOSO"** followed by your question or command.
 
 ---
 
+## ✧ Docker
+
+MOSO is automatically built and published to GitHub Container Registry (GHCR) on every push to `main`. The multi-stage Dockerfile produces a minimal production image with the FastAPI backend.
+
+**Pull the image:**
+```bash
+docker pull ghcr.io/project-moso-ai/moso:latest
+```
+
+**Run the container:**
+```bash
+docker run -d -p 8000:8000 --name moso ghcr.io/project-moso-ai/moso:latest
+```
+
+**Run with Redis and PostgreSQL (full stack):**
+```bash
+docker compose up -d
+```
+
+**Verify it's running:**
+```bash
+curl http://localhost:8000/health
+```
+
+**How it works:**
+- Every push to `main` triggers `.github/workflows/docker.yml`
+- The workflow builds a multi-stage Docker image, tags it as `latest`, and pushes to `ghcr.io/project-moso-ai/moso`
+- Docker layer caching via GitHub Actions cache keeps rebuilds fast
+- The image runs as a non-root `moso` user on port 8000
+
+---
+
 ## ✧ Build Status
 
 | Component | Status | Description |
