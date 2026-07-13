@@ -447,21 +447,98 @@ Before any action, MOSO calculates a risk score:
 
 ---
 
-## Docker
+## Deploy with Docker
+
+### Option 1: Pull from GHCR (recommended)
 
 ```bash
-# Pull the image
+# Pull the latest image
 docker pull ghcr.io/project-moso-ai/moso:latest
 
-# Run it
-docker run -d -p 8000:8000 --name moso ghcr.io/project-moso-ai/moso:latest
+# Run with your models directory mounted
+docker run -d \
+  -p 8000:8000 \
+  -v ./models:/models:ro \
+  -v moso-data:/data/moso \
+  --name moso \
+  ghcr.io/project-moso-ai/moso:latest
 
-# Verify
+# Verify it's running
+curl http://localhost:8000/health
+```
+
+### Option 2: Docker Compose (development)
+
+```bash
+# Build and run locally with hot-reload
+docker compose -f docker-compose.dev.yml up --build
+
+# Or use the default compose (builds from source)
+docker compose up --build
+```
+
+### Option 3: Docker Compose (production)
+
+```bash
+# Pull from GHCR, persistent volumes
+docker compose -f docker-compose.prod.yml up -d
+
+# Check status
+docker compose -f docker-compose.prod.yml ps
+docker compose -f docker-compose.prod.yml logs moso
+```
+
+### API Endpoints
+
+Once running, MOSO exposes these endpoints:
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/health` | GET | Health check + module status |
+| `/chat` | POST | Send a message, get a response |
+| `/execute` | POST | Execute a tool (file, app, browser, terminal) |
+| `/plan` | POST | Create and execute a multi-step plan |
+| `/memory/store` | POST | Store a memory (episodic, semantic, procedural) |
+| `/memory/search` | POST | Search memories |
+| `/memory/recent` | GET | Get recent memories |
+| `/skills` | GET | List learned skills |
+| `/system` | GET | System resource status |
+| `/system/diagnostics` | GET | Run system diagnostics |
+| `/identity` | GET | Identity verification status |
+
+### Example API calls
+
+```bash
+# Health check
 curl http://localhost:8000/health
 
-# Full stack with Redis
-docker compose up -d
+# Chat
+curl -X POST http://localhost:8000/chat \
+  -H "Content-Type: application/json" \
+  -d '{"message": "Hello, what can you do?"}'
+
+# Execute a tool
+curl -X POST http://localhost:8000/execute \
+  -H "Content-Type: application/json" \
+  -d '{"tool_name": "file_tool", "parameters": {"action": "read_file", "path": "README.md"}}'
+
+# Store a memory
+curl -X POST http://localhost:8000/memory/store \
+  -H "Content-Type: application/json" \
+  -d '{"content": "User prefers dark mode", "memory_type": "semantic", "category": "preference"}'
+
+# System status
+curl http://localhost:8000/system
 ```
+
+### Environment Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `MOSO_MODEL_PATH` | `""` | Path to GGUF model file |
+| `MOSO_N_CTX` | `2048` | LLM context size |
+| `MOSO_HOME` | `~/.moso` | Data directory (memory, settings, logs) |
+| `LOG_LEVEL` | `info` | Logging level (debug, info, warning, error) |
 
 ---
 

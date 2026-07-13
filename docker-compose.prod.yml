@@ -1,25 +1,22 @@
 version: "3.9"
 
+# Production: pull from GHCR, persistent volumes, no local build
 services:
   moso:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ghcr.io/project-moso-ai/moso:latest
     container_name: moso
-    restart: unless-stopped
+    restart: always
     ports:
       - "8000:8000"
     environment:
       PYTHONUNBUFFERED: "1"
       MOSO_HOME: /data/moso
       MOSO_MODEL_PATH: /models
-      MOSO_N_CTX: "2048"
-      LOG_LEVEL: info
+      MOSO_N_CTX: "4096"
+      LOG_LEVEL: warning
     volumes:
-      # Persistent memory & config (SQLite, settings, audit logs)
       - moso-data:/data/moso
-      # Models mounted from host
-      - ./models:/models:ro
+      - moso-models:/models
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 30s
@@ -28,14 +25,20 @@ services:
       start_period: 60s
     networks:
       - moso-network
+    deploy:
+      resources:
+        limits:
+          memory: 8G
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
-        max-file: "3"
+        max-file: "5"
 
 volumes:
   moso-data:
+    driver: local
+  moso-models:
     driver: local
 
 networks:
