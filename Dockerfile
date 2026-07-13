@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     gfortran \
     && rm -rf /var/lib/apt/lists/*
 
-COPY moso_core/requirements.txt ./
+COPY moso_core/requirements-docker.txt ./
 
 RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
@@ -20,7 +20,7 @@ ENV PATH="/opt/venv/bin:$PATH"
 RUN pip install --upgrade pip setuptools wheel
 
 # Core dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements-docker.txt
 
 # API server
 RUN pip install --no-cache-dir fastapi uvicorn[standard]
