@@ -1,0 +1,8 @@
+{
+  "servers": {
+    "MOSO Docs": {
+      "type": "sse",
+      "url": "https://gitmcp.io/Project-MOSO-AI/MOSO"
+    }
+  }
+}
