@@ -151,7 +151,9 @@ User Goal → Brain (plan) → Muscles (act) → Eyes (verify) → Memory (learn
                     └──────────┘
 ```
 
-**Seven modules. No app-specific code. No cloud dependency.**
+**Seven organs. No app-specific code. No cloud dependency.**
+
+> **Full architecture:** See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for complete organ interfaces, database schemas, event flow, and migration plan.
 
 | Module | What It Does | Key Files |
 |--------|-------------|-----------|
@@ -159,7 +161,7 @@ User Goal → Brain (plan) → Muscles (act) → Eyes (verify) → Memory (learn
 | **Eyes** | Sees your screen | `vision/` (OCR, screenshots, window detection) |
 | **Muscles** | Acts on your system | `tools/` + `computer_use/` (mouse, keyboard, files, terminal) |
 | **Memory** | Remembers everything | `memory/` (episodic, semantic, procedural, vector search) |
-| **Learner** | Turns experience into skills | `learner/` (skill builder, optimizer) |
+| **Learning** | Self-improvement engine | `learning/` (experience, reflection, skill builder, generalization, optimizer, curriculum, evaluation) |
 | **Safety** | Blocks dangerous actions | `risk/` (permissions, privacy, risk scoring) |
 | **UI** | Desktop orb + conversation | `moso_ui/` (PySide6 floating orb) |
 
@@ -480,7 +482,8 @@ docker compose up -d
 | 11 | Risk & Privacy | ✅ |
 | 12 | Real-Time Intelligence | ✅ |
 | 13 | Knowledge Graph | ✅ |
-| 14 | Learning Engine | 🔄 In Progress |
+| 14 | Learning Engine (7 sub-engines) | 🔄 In Progress |
+| 15 | Architecture v2 (7-organ redesign) | 📋 Planned |
 
 ---
 
