@@ -1,0 +1,44 @@
+version: "3.9"
+
+# Development: build locally, bind-mount code, verbose logs
+services:
+  moso:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: builder
+    container_name: moso-dev
+    command: uvicorn backend.api.main:app --host 0.0.0.0 --port 8000 --reload --log-level debug
+    ports:
+      - "8000:8000"
+    environment:
+      PYTHONUNBUFFERED: "1"
+      MOSO_HOME: /app/.moso
+      MOSO_MODEL_PATH: /app/models
+      MOSO_N_CTX: "2048"
+      LOG_LEVEL: debug
+    volumes:
+      # Hot-reload: mount source code
+      - ./moso_core:/app/moso_core
+      - ./backend:/app/backend
+      - ./moso_ui:/app/moso_ui
+      # Models from host
+      - ./models:/app/models:ro
+      # Persistent data
+      - moso-data-dev:/app/.moso
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - moso-dev-network
+
+volumes:
+  moso-data-dev:
+    driver: local
+
+networks:
+  moso-dev-network:
+    driver: bridge

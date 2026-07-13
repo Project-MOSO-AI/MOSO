@@ -1,16 +1,14 @@
-# .dockerignore — exclude unnecessary files from build context
-# Significantly reduces build context size
+# .dockerignore — exclude everything not needed in the image
 
 # Version control
 .git/
-.gitignore
 .github/
+.gitignore
 
 # Development
 .venv/
 .env
-.env.local
-.env.*.local
+.env.*
 __pycache__/
 *.pyc
 *.pyo
@@ -26,45 +24,40 @@ htmlcov/
 .idea/
 *.swp
 *.swo
-*~
 .DS_Store
-*.sublime-project
-*.sublime-workspace
 
-# Documentation (keep llms.txt for context)
-docs/
-README.md
-LICENSE
-SECURITY.md
-
-# Tests & fixtures (exclude but keep test runner config if needed)
-tests/
-test_*.py
-pytest.ini
-conftest.py
-
-# Models (store in volume, not image)
+# Models (mounted as external volume)
 models/
 *.gguf
 *.bin
 *.pth
 
-# Temporary/build artifacts
-*.log
+# User data (mounted as external volume)
+.moso/
 *.db
 *.sqlite
-*.tmp
-tmp/
-temp/
-logs/
+
+# Tests
+tests/
+test_*.py
+conftest.py
+pytest.ini
+
+# Documentation
+docs/
+README.md
+LICENSE
+SECURITY.md
+llms.txt
 
 # Docker files
 Dockerfile
 .dockerignore
 docker-compose*.yml
 
-# CI/CD
-.github/
-.gitlab-ci.yml
-.circleci/
-.travis.yml
+# Temporary
+*.log
+*.tmp
+tmp/
+temp/
+logs/

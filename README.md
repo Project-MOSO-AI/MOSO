@@ -87,1643 +87,506 @@
 
 <br/>
 
-<!-- Animated Typing Effect (green) -->
-<img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=600&size=22&duration=3000&pause=1000&color=00FF41&center=true&vCenter=true&width=600&height=50&lines=LOCAL+INTELLIGENCE+%E2%97%86+ADAPTIVE+MEMORY+%E2%97%86+OFFLINE+FIRST" alt="MOSO AI Typing Animation"/>
+<!-- Status Badges -->
+<a href="#"><img src="https://img.shields.io/badge/Status-Development-00ff41?style=flat-square&labelColor=0a0a0a" alt="Status"/></a>
+<a href="LICENSE"><img src="https://img.shields.io/badge/License-Source_Available-00ff41?style=flat-square&labelColor=0a0a0a" alt="License"/></a>
+<a href="#"><img src="https://img.shields.io/badge/Version-0.2.0--dev-ffffff?style=flat-square&labelColor=0a0a0a" alt="Version"/></a>
 
 <br/>
 
-<!-- Green divider -->
-<img src="https://img.shields.io/badge/━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━-00ff41?style=for-the-badge&labelColor=000" width="100%"/>
-
-<br/>
-
-```yaml
-┌──────────────────────────────────────────────────────────┐
-│   ███╗   ███╗ ██████╗ ███████╗ ██████╗    █████╗ ██╗    │
-│   ████╗ ████║██╔═══██╗██╔════╝██╔═══██╗  ██╔══██╗██║    │
-│   ██╔████╔██║██║   ██║███████╗██║   ██║  ███████║██║    │
-│   ██║╚██╔╝██║██║   ██║╚════██║██║   ██║  ██╔══██║██║    │
-│   ██║ ╚═╝ ██║╚██████╔╝███████║╚██████╔╝  ██║  ██║██║    │
-│   ╚═╝     ╚═╝ ╚═════╝ ╚══════╝ ╚═════╝   ╚═╝  ╚═╝╚═╝    │
-└──────────────────────────────────────────────────────────┘
-```
-
-<br/>
-
-<!-- Status Badges - Green/Black Theme -->
-<a href="#"><img src="https://img.shields.io/badge/Status-Development-00ff41?style=flat-square&labelColor=0a0a0a&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjMDBmZjQxIj48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMCIvPjxwb2x5bGluZSBwb2ludHM9IjEyIDYgMTIgMTIgMTYgMTQiLz48L3N2Zz4=" alt="Status"/></a>
-<a href="LICENSE"><img src="https://img.shields.io/badge/License-MOSO%20Source-00ff41?style=flat-square&labelColor=0a0a0a&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjMDBmZjQxIj48cmVjdCB4PSIzIiB5PSIxMSIgd2lkdGg9IjE4IiBoZWlnaHQ9IjExIiByeD0iMiIgcnk9IjIiLz48cGF0aCBkPSJNNyAxMVY3YzAtMi43NiAyLjI0LTUgNS01czUgMi4yNCA1IDV2NCIvPjwvc3ZnPg==" alt="License"/></a>
-<a href="#"><img src="https://img.shields.io/badge/Version-0.2.0--dev-ffffff?style=flat-square&labelColor=0a0a0a&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZmZmIj48cG9seWdvbiBwb2ludHM9IjEyIDIgMTUgOSAyMiA5IDE2LjUgMTQuNSAxOSAyMiAxMiAxNyA1IDIyIDcuNSAxNC41IDIgOSA5IDkiLz48L3N2Zz4=" alt="Version"/></a>
-<a href="SECURITY.md"><img src="https://img.shields.io/badge/Security-Enforced-00ff41?style=flat-square&labelColor=0a0a0a&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjMDBmZjQxIj48cGF0aCBkPSJNMTIgMjJsLTctNC4xVjVjMC0zLjMgMi43LTYgNi02czYgMi43IDYgNnYxMi45TDcgMjJ6Ii8+PC9zdmc+" alt="Security"/></a>
-<a href="#"><img src="https://img.shields.io/badge/Voice-Pipeline%20Ready-00ff41?style=flat-square&labelColor=0a0a0a&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjMDBmZjQxIj48cGF0aCBkPSJNMTIgMWEzIDMgMCAwIDAtMyAzdjhhMyAzIDAgMCAwIDYgMFY0YTMgMyAwIDAgMC0zLTN6Ii8+PHBhdGggZD0iTTE5IDEwdjJhNyA3IDAgMCAxLTE0IDB2LTIiLz48bGluZSB4MT0iMTIiIHkxPSIxOSIgeDI9IjEyIiB5Mj0iMjMiLz48bGluZSB4MT0iOCIgeTE9IjIzIiB4Mj0iMTYiIHkyPSIyMyIvPjwvc3ZnPg==" alt="Voice"/></a>
-<a href="#"><img src="https://img.shields.io/badge/Identity-Multi--Signal-ffffff?style=flat-square&labelColor=0a0a0a&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZmZmIj48cGF0aCBkPSJNMTIgMjJsLTctNC4xVjVjMC0zLjMgMi43LTYgNi02czYgMi43IDYgNnYxMi45TDcgMjJ6Ii8+PC9zdmc+" alt="Identity"/></a>
-<a href="#"><img src="https://img.shields.io/badge/Memory-Persistent-00ff41?style=flat-square&labelColor=0a0a0a&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjMDBmZjQxIj48cmVjdCB4PSI0IiB5PSI2IiB3aWR0aD0iMTYiIGhlaWdodD0iMTIiIHJ4PSIyIi8+PHBhdGggZD0iTTIyIDEwSDJ2M2gyMGwwLTMiLz48bGluZSB4MT0iMTIiIHkxPSI2IiB4Mj0iMTIiIHkyPSIxOCIvPjwvc3ZnPg==" alt="Memory"/></a>
-<a href="#"><img src="https://img.shields.io/badge/Resources-Monitoring-ffffff?style=flat-square&labelColor=0a0a0a&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZmZmIj48cmVjdCB4PSI0IiB5PSI0IiB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHJ4PSIyIi8+PGxpbmUgeDE9IjkiIHkxPSIxMiIgeDI9IjE1IiB5Mj0iMTIiLz48bGluZSB4MT0iMTIiIHkxPSI5IiB4Mj0iMTIiIHkyPSIxNSIvPjwvc3ZnPg==" alt="Resources"/></a>
-<a href="#"><img src="https://img.shields.io/badge/Tools-Action%20Ready-00ff41?style=flat-square&labelColor=0a0a0a&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjMDBmZjQxIj48cGF0aCBkPSJNMTQgMkg2YTIgMiAwIDAgMC0yIDJ2MTZhMiAyIDAgMCAwIDIgMmgxMmEyIDIgMCAwIDAgMi0yVjh6Ii8+PHBvbHlsaW5lIHBvaW50cz0iMTQgMiAxNCA4IDIwIDgiLz48bGluZSB4MT0iMTIiIHkxPSIxMiIgeDI9IjEyIiB5Mj0iMTYiLz48bGluZSB4MT0iOSIgeTE9IjE0IiB4Mj0iMTUiIHkyPSIxNCIvPjwvc3ZnPg==" alt="Tools"/></a>
-
-<br/>
-<br/>
-
-<!-- IMPORTANT NOTICE - Green Glow Effect -->
-<blockquote style="border-left: 4px solid #00ff41; background: rgba(0, 255, 65, 0.03); padding: 16px; border-radius: 4px; box-shadow: 0 0 15px rgba(0, 255, 65, 0.15);">
-  <h3 align="center" style="color: #00ff41; margin: 0; text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);">
-    ⚠ VIEWING ACCESS DOES NOT GRANT USAGE RIGHTS ⚠
-  </h3>
-  <p align="center" style="margin: 8px 0 0; font-size: 0.9em; color: #888;">
-    This repository is source-available under the 
-    <a href="LICENSE" style="color: #00ff41; font-weight: bold; text-decoration: none;">MOSO Source Available License</a>.
-    Viewing the code does not grant permission to use, copy, modify, redistribute,
-    or train AI models with this code. Written permission required.
+<blockquote style="border-left: 4px solid #00ff41; background: rgba(0, 255, 65, 0.03); padding: 16px; border-radius: 4px;">
+  <p align="center" style="margin: 0; color: #888;">
+    Viewing access does not grant usage rights.
+    <a href="LICENSE" style="color: #00ff41;">MOSO Source Available License</a>.
+    Written permission required for use, modification, or distribution.
   </p>
 </blockquote>
 
-<br/>
-
-<!-- Feature Badges - Green Theme -->
-<table>
-  <tr>
-    <td align="center" width="200">
-      <img src="https://img.shields.io/badge/▸_PRIVACY_FIRST-000000?style=for-the-badge&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjMDBmZjQxIj48cGF0aCBkPSJNMTIgMjJsLTctNC4xVjVjMC0zLjMgMi43LTYgNi02czYgMi43IDYgNnYxMi45TDcgMjJ6Ii8+PC9zdmc+&labelColor=00ff41"/>
-    </td>
-    <td align="center" width="200">
-      <img src="https://img.shields.io/badge/▸_LOCAL_AI-000000?style=for-the-badge&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjMDBmZjQxIj48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMCIvPjxwb2x5bGluZSBwb2ludHM9IjEyIDYgMTIgMTIgMTYgMTQiLz48L3N2Zz4=&labelColor=00ff41"/>
-    </td>
-    <td align="center" width="200">
-      <img src="https://img.shields.io/badge/▸_ADAPTIVE_MEMORY-000000?style=for-the-badge&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjMDBmZjQxIj48cmVjdCB4PSI0IiB5PSI2IiB3aWR0aD0iMTYiIGhlaWdodD0iMTIiIHJ4PSIyIi8+PHBhdGggZD0iTTIyIDEwSDJ2M2gyMGwwLTMiLz48bGluZSB4MT0iMTIiIHkxPSI2IiB4Mj0iMTIiIHkyPSIxOCIvPjwvc3ZnPg=&labelColor=ffffff"/>
-    </td>
-    <td align="center" width="200">
-      <img src="https://img.shields.io/badge/▸_OFFLINE_FIRST-000000?style=for-the-badge&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjMDBmZjQxIj48cGF0aCBkPSJNMSAxMmw5LTl2NWMwIDYgMiAxMCA2IDEyczYtNiA2LTEyVjNsOSA5LTEyIDEyLTEyLTEyeiIvPjwvc3ZnPg=&labelColor=00ff41"/>
-    </td>
-  </tr>
-</table>
-
 </div>
 
-<br/>
+---
+
+## What is MOSO?
+
+**MOSO** is a **privacy-first, local-first AI assistant** that runs entirely on your device. It sees your screen, understands your system, and acts on your behalf — all without sending data to the cloud.
+
+```
+User Goal → Brain (plan) → Muscles (act) → Eyes (verify) → Memory (learn)
+```
 
 ---
 
-## ✧ What is MOSO?
+## Architecture
 
-**MOSO (M0S0)** is a **privacy-first**, **local-first** adaptive AI assistant that runs entirely on your device. It is built in twelve layers:
+```
+                    ┌──────────┐
+                    │  BRAIN   │  Goal understanding, planning, reasoning
+                    └────┬─────┘
+                         │
+          ┌──────────────┼──────────────┐
+          │              │              │
+          ▼              ▼              ▼
+       ┌──────┐    ┌──────────┐    ┌─────────┐
+       │ EYES │    │  MEMORY  │    │ MUSCLES │
+       │      │    │          │    │         │
+       │ OCR  │    │ Episodic │    │ Mouse   │
+       │ Screenshot│ │ Semantic│    │ Keyboard│
+       │ Window│    │ Procedural   │ Browser │
+       │ Detect│    │ Vector   │    │ Terminal│
+       └──────┘    └──────────┘    │ Files   │
+                                   └─────────┘
+          │              │              │
+          └──────────────┼──────────────┘
+                         │
+                    ┌────▼─────┐
+                    │ LEARNER  │  Skills from experience
+                    └────┬─────┘
+                         │
+                    ┌────▼─────┐
+                    │  SAFETY  │  Risk scoring, permissions
+                    └────┬─────┘
+                         │
+                    ┌────▼─────┐
+                    │    UI    │  Aura orb + chat
+                    └──────────┘
+```
 
-1. **Voice Pipeline** — Talk to MOSO hands-free: wake word detection, speaker verification, speech-to-text, LLM reasoning, text-to-speech with optional voice cloning
-2. **Identity Engine** — MOSO knows who you are using 5 weighted signals (voice, liveness, behavior, device, history). Replay/synthetic audio is rejected. Confidence scoring determines permission levels from guest to full owner
-3. **Memory Engine** — MOSO remembers across sessions: past conversations (episodic), facts about you (semantic), how to do things (procedural), and your preferences. All stored locally in SQLite
-4. **Resource Manager** — MOSO understands its environment: CPU usage, RAM available, storage space, battery level, network speeds, and running processes. This lets it answer "can I run X?" before attempting a task
-5. **Tool Engine** — MOSO can act: open applications, create and read files, search the web, and run terminal commands. Every action is permission-gated, audit-logged, risk-checked, and remembered. Dry-run mode lets you preview before executing
-6. **Agent Planner** — MOSO can plan: decompose goals into sequential tasks using template matching (python project, folder, app, web search, file read/write), execute via Tool Engine, verify each task, retry on failure, check dependencies, and persist history to SQLite
-7. **Computer Use** — MOSO can operate desktop software like a human: move mouse, click buttons, type text, press keyboard shortcuts, capture screenshots, focus windows, execute action sequences, and record workflows
-8. **Screen Vision** — MOSO can see your screen: OCR text extraction, text region detection, active window identification, and screen context assembly — all observation-only, no clicking or ML
-9. **LLM Integration** — MOSO connects to a local llama.cpp server binary for text generation and chat. Download a GGUF model and start reasoning
-10. **Aura UI V2** — MOSO lives on your desktop as a floating orb with 8 animated states (idle, listening, thinking, analyzing, executing, speaking, warning, error). System tray, conversation bubble with streaming text display, risk warnings, and module status indicators. All 11 modules are wired at startup and accessible through natural conversation
-11. **System Intelligence** — MOSO understands your entire computer: CPU model, GPU, motherboard, installed software, services, startup items, network connections, DNS, VPN, storage usage, firewall status, antivirus state, pending updates. It explains technical concepts in plain language, runs diagnostics with severity-ranked issues and suggestions, and tracks changes over time with SQLite-based inventory snapshots
-12. **Risk & Privacy Engine** — MOSO protects your system: pre-execution risk scoring scans network destinations, file paths, credential exposure, and data privacy implications. The reputation checker evaluates domains/IPs against a built-in blocklist and heuristic scoring. HIGH and CRITICAL risk actions are blocked automatically with explanation
-13. **Real-Time Intelligence** — MOSO researches the web on your behalf: risk-assessment-driven source selection, content fetching with redirect chain tracking and TLS verification, cross-source verification with duplicate detection and conflict resolution, keyword and LLM-based analysis, and transparent summarization. Embeddings power vector search across memory. A Knowledge Graph tracks entities, relationships, events, and concepts with confidence scoring and temporal awareness. An optional Playwright-based Research Browser provides autonomous page extraction with stealth mode, metadata parsing, and PDF download
-14. **Unified Integration** — All modules connected through the Orchestrator. Aura UI starts every module automatically. Intent detection routes queries to the right engine: system questions → System Intelligence, research → Realtime, multi-step goals → Agent Planner, screen queries → Vision, general chat → LLM + Tools. Every action is risk-checked before execution. Memory stores conversations, tool results, and research findings
+**Seven organs. No app-specific code. No cloud dependency.**
 
-Everything runs locally — no cloud dependency, no data leaves your device.
+> **Full architecture:** See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for complete organ interfaces, database schemas, event flow, and migration plan.
+
+| Module | What It Does | Key Files |
+|--------|-------------|-----------|
+| **Brain** | Plans, reasons, reflects | `agents/` (planner, executor, verifier) |
+| **Eyes** | Sees your screen | `vision/` (OCR, screenshots, window detection) |
+| **Muscles** | Acts on your system | `tools/` + `computer_use/` (mouse, keyboard, files, terminal) |
+| **Memory** | Remembers everything | `memory/` (episodic, semantic, procedural, vector search) |
+| **Learning** | Self-improvement engine | `learning/` (experience, reflection, skill builder, generalization, optimizer, curriculum, evaluation) |
+| **Safety** | Blocks dangerous actions | `risk/` (permissions, privacy, risk scoring) |
+| **UI** | Desktop orb + conversation | `moso_ui/` (PySide6 floating orb) |
 
 ---
 
-## ✧ Quick Start
+## Quick Start
+
+### Step 1: Install Python 3.12+
+
+```bash
+# Check your version
+python --version
+```
+
+### Step 2: Clone and install
+
+```bash
+git clone https://github.com/Project-MOSO-AI/MOSO.git
+cd MOSO
+
+# Create virtual environment
+python -m venv .venv
+
+# Activate it
+# Windows:
+.venv\Scripts\activate
+# macOS/Linux:
+source .venv/bin/activate
+
+# Install dependencies
+pip install -r moso_core/requirements.txt
+```
+
+### Step 3: Download a model
+
+```bash
+# Lightweight (~2.3 GB)
+python scripts/download_model.py phi3-mini
+
+# Or larger (~5.2 GB, better quality)
+python scripts/download_model.py qwen3-8b
+```
+
+### Step 4: Run MOSO
+
+```bash
+# Launch desktop UI (Aura orb)
+python run.py
+
+# Or run module demos
+python run.py demo
+
+# Or run tests
+python run.py test
+```
+
+---
+
+## Step-by-Step Usage
+
+### 1. Basic Chat
 
 ```python
 from moso_core.inference.base import InferenceConfig
 from moso_core.orchestration.orchestrator import Orchestrator
-from moso_core.tools.models import ToolRequest
 
-config = InferenceConfig(model_path="path/to/model.gguf")
+config = InferenceConfig(model_path="models/phi3-mini-3.8b-q4_k_m.gguf")
 orchestrator = Orchestrator(config)
 
-# Enable all engines
-orchestrator.enable_memory()      # SQLite at ~/.moso/memory.db
-orchestrator.enable_identity()    # Owner verification
-orchestrator.enable_resources()   # CPU, RAM, battery monitoring
-orchestrator.enable_tools()       # File, app, browser, terminal
-orchestrator.enable_risk_engine() # Risk & Privacy Engine (pre-execution scoring + blocking)
-
-# Talk to MOSO
-result = orchestrator.process("Hello, remember my name is Harsha")
+result = orchestrator.process("Hello, what can you do?")
 print(result.text)
+```
 
-# MOSO can now act on your behalf:
+### 2. Enable Memory
+
+```python
+orchestrator.enable_memory()
+
+# MOSO remembers across sessions
+orchestrator.process("My name is Alice")
+orchestrator.process("What's my name?")  # → "Alice"
+```
+
+### 3. Use Tools
+
+```python
+orchestrator.enable_tools()
+orchestrator.enable_identity()
+
+from moso_core.tools.models import ToolRequest
+
+# Launch an app
 req = ToolRequest(
     tool_name="app_tool",
     parameters={"action": "launch_application", "app_name": "code"},
 )
 result = orchestrator.tools.execute_tool(req, identity=orchestrator.identity_verifier)
-# → Launches VS Code, logged to memory + audit log
 
-req2 = ToolRequest(
+# Read a file
+req = ToolRequest(
     tool_name="file_tool",
     parameters={"action": "read_file", "path": "notes.txt"},
 )
-result = orchestrator.tools.execute_tool(req2)
-# → Returns file content
+result = orchestrator.tools.execute_tool(req)
+```
 
-# MOSO can plan and execute multi-step tasks:
-orchestrator.enable_agents()  # Agent Planner
+### 4. Automate Tasks
+
+```python
+orchestrator.enable_agents()
+
 summary = orchestrator.agents.plan_and_execute(
     "create a python project named my_app",
     requester="owner",
 )
 print(summary.overall_status)  # GoalStatus.COMPLETED
-
-# MOSO can automate your desktop:
-orchestrator.enable_computer_use()
-print(orchestrator.computer_use.dry_run_sequence([
-    {"action": "move_to", "x": 500, "y": 200},
-    {"action": "click"},
-    {"action": "type_text", "text": "Hello from MOSO"},
-]))
-
-# MOSO can see your screen:
-orchestrator.enable_vision()
-ctx = orchestrator.vision.build_context()
-print(f"Active window: {ctx.active_window}")
-print(f"Screen text: {ctx.text_content[:100]}...")
-print(ctx.summary())
-
-# MOSO can run a local LLM:
-orchestrator.enable_llm(model_path="models/qwen3-8b-q4_k_m.gguf")
-if orchestrator.llm and orchestrator.llm.start():
-    print(orchestrator.llm.chat("What is MOSO?"))
 ```
 
-**Desktop Aura UI:**
-```bash
-pip install PySide6
-python -m moso_ui.main
-```
-
-**Model Download:**
-```bash
-python scripts/download_model.py qwen3-8b      # ~5.2 GB
-python scripts/download_model.py phi3-mini      # ~2.3 GB (lightweight)
-```
-
-**Voice Mode:**
-```bash
-python -m scripts.model-download.download_voice_models
-python -m scripts.enroll_voice
-python -m scripts.run_voice --model path/to/model.gguf
-```
-Say **"Hey MOSO"** followed by your question or command.
-
----
-
-## ✧ Docker
-
-MOSO is automatically built and published to GitHub Container Registry (GHCR) on every push to `main`. The multi-stage Dockerfile produces a minimal production image with the FastAPI backend.
-
-**Pull the image:**
-```bash
-docker pull ghcr.io/project-moso-ai/moso:latest
-```
-
-**Run the container:**
-```bash
-docker run -d -p 8000:8000 --name moso ghcr.io/project-moso-ai/moso:latest
-```
-
-**Run with Redis and PostgreSQL (full stack):**
-```bash
-docker compose up -d
-```
-
-**Verify it's running:**
-```bash
-curl http://localhost:8000/health
-```
-
-**How it works:**
-- Every push to `main` triggers `.github/workflows/docker.yml`
-- The workflow builds a multi-stage Docker image, tags it as `latest`, and pushes to `ghcr.io/project-moso-ai/moso`
-- Docker layer caching via GitHub Actions cache keeps rebuilds fast
-- The image runs as a non-root `moso` user on port 8000
-
----
-
-## ✧ Build Status
-
-| Component | Status | Description |
-|-----------|--------|-------------|
-| **Core Inference** | ✅ Complete | llama.cpp + ONNX Runtime backends |
-| **Voice Pipeline** | ✅ Complete | Wake word → Speaker verify → STT → LLM → TTS |
-| **Identity Engine** | ✅ Complete | 5-signal owner verification (voice, liveness, behavior, device, history) |
-| **Memory Engine** | ✅ Complete | Episodic, semantic, procedural, preferences — SQLite persistent storage |
-| **Resource Manager** | ✅ Complete | CPU, RAM, storage, battery, network, process monitoring via psutil |
-| **Retrieval** | ✅ V1 | Keyword search, recent memory, type filtering |
-| **Summarization** | ✅ V1 | Event-to-fact extraction, activity summaries |
-| **Orchestrator Integration** | ✅ Complete | Memory context injection, auto-event logging, resource awareness |
-| **Embeddings / Vector Search** | ✅ V2 | ModelBackend.embed() + VectorStore (SQLite FTS5 + cosine similarity) |
-| **Real-Time Intelligence** | ✅ V1 | Multi-source web research with risk/privacy checks, verification, analysis, summarization |
-| **Research Browser** | 🔄 V1 | Playwright headless browser with stealth, content extraction, screenshot, PDF (optional) |
-| **Knowledge Graph** | ✅ V1 | NetworkX + SQLite — entities, relationships, events, concepts with confidence scoring and timeline |
-| **GPU Monitoring** | 🔄 V2 | pynvml integration planned |
-| **Agent System** | ✅ V1.1 | Template-based planning + retry + dependencies + dry-run preview |
-| **Tool Engine** | ✅ V1 | File ops, apps, browser, terminal — structured tool execution |
-| **Computer Use** | ✅ V1 | Mouse, keyboard, screen capture, window management, automation, recorder |
-| **Desktop Agent** | ✅ V1 | Vision-planned perception→reason→act→verify loop with world model, smart controllers, action executor, and desktop memory |
-| **Screen Vision** | ✅ V1 | Screenshot OCR, active window detection, screen context generation |
-| **System Intelligence** | ✅ V1 | Hardware, software, network, storage, security — live system understanding, diagnostics, explainer, inventory snapshots |
-| **LLM Integration** | ✅ V2 | Provider abstraction (local/OpenAI/Anthropic/Ollama) + llama.cpp server binary — subprocess HTTP backend |
-| **Model Manager** | ✅ V1 | GGUF model discovery, install, delete, disk/RAM monitoring |
-| **Runtime Manager** | ✅ V1 | Service lifecycle, health monitoring, crash recovery with auto-restart |
-| **Download Manager** | ✅ V1 | Model file downloads with progress tracking, ETA, SHA-256 integrity verification |
-| **Dependency Installer** | ✅ V1 | Auto-detect and install missing pip packages, system tools (pip/winget/choco) |
-| **Diagnostics** | ✅ V1 | Self-check system scanning all modules, dependencies, and runtime health |
-| **Benchmarks** | ✅ V1 | Performance measurement for all subsystems (memory, vector store, retrieval, LLM) |
-| **Aura UI** | ✅ V2 | Floating desktop orb — PySide6, always-on-top, 8 states, tray, conversation bubble, streaming display |
-| **Risk & Privacy Engine** | ✅ V1 | Pre-execution risk scoring, network reputation, credential exposure, data privacy analysis — blocks HIGH/CRITICAL actions |
-| **Unified Integration** | ✅ V1 | All modules wired into Aura UI via Orchestrator — Memory · System Intelligence · Tools · Risk Engine · Agents · Vision · Computer Use · Realtime Research · Identity — live at startup |
-
----
-
-## ✧ What is MOSO?
-
-**MOSO (M0S0)** is a **privacy-first**, **local-first** adaptive AI assistant that runs entirely on your device. It is built in sixteen layers:
-
-1. **Voice Pipeline** — Talk to MOSO hands-free: wake word detection, speaker verification, speech-to-text, LLM reasoning, text-to-speech with optional voice cloning
-2. **Identity Engine** — MOSO knows who you are using 5 weighted signals (voice, liveness, behavior, device, history). Replay/synthetic audio is rejected. Confidence scoring determines permission levels from guest to full owner
-3. **Memory Engine** — MOSO remembers across sessions: past conversations (episodic), facts about you (semantic), how to do things (procedural), and your preferences. All stored locally in SQLite
-4. **Resource Manager** — MOSO understands its environment: CPU usage, RAM available, storage space, battery level, network speeds, and running processes. This lets it answer "can I run X?" before attempting a task
-5. **Tool Engine** — MOSO can act: open applications, create and read files, search the web, and run terminal commands. Every action is permission-gated, audit-logged, risk-checked, and remembered. Dry-run mode lets you preview before executing. App controllers provide per-app intelligence
-6. **Agent Planner** — MOSO can plan: decompose goals into sequential tasks using template matching (python project, folder, app, web search, file read/write), execute via Tool Engine, verify each task, retry on failure, check dependencies, and persist history to SQLite
-7. **Computer Use** — MOSO can operate desktop software like a human: move mouse, click buttons, type text, press keyboard shortcuts, capture screenshots, focus windows, execute action sequences, and record workflows
-8. **Desktop Agent** — MOSO can autonomously navigate desktop applications using a vision-planned perceive→reason→act→verify loop. A world model tracks continuous desktop state, smart controllers provide per-app intelligence, and an action executor dispatches to real functions with verification
-9. **Screen Vision** — MOSO can see your screen: OCR text extraction, text region detection, active window identification, and screen context assembly — all observation-only, no clicking or ML
-10. **LLM Integration** — MOSO connects to local or cloud LLMs via a pluggable provider abstraction. Supports local llama.cpp server, OpenAI, Anthropic, and Ollama backends. Model manager handles GGUF model discovery, installation, and monitoring
-11. **Aura UI V2** — MOSO lives on your desktop as a floating orb with 8 animated states (idle, listening, thinking, analyzing, executing, speaking, warning, error). System tray, conversation bubble with streaming text display, risk warnings, and module status indicators. All modules are wired at startup and accessible through natural conversation
-12. **System Intelligence** — MOSO understands your entire computer: CPU model, GPU, motherboard, installed software, services, startup items, network connections, DNS, VPN, storage usage, firewall status, antivirus state, pending updates. It explains technical concepts in plain language, runs diagnostics with severity-ranked issues and suggestions, and tracks changes over time with SQLite-based inventory snapshots
-13. **Risk & Privacy Engine** — MOSO protects your system: pre-execution risk scoring scans network destinations, file paths, credential exposure, and data privacy implications. The reputation checker evaluates domains/IPs against a built-in blocklist and heuristic scoring. HIGH and CRITICAL risk actions are blocked automatically with explanation
-14. **Real-Time Intelligence** — MOSO researches the web on your behalf: risk-assessment-driven source selection, content fetching with redirect chain tracking and TLS verification, cross-source verification with duplicate detection and conflict resolution, keyword and LLM-based analysis, and transparent summarization. Embeddings power vector search across memory. A Knowledge Graph tracks entities, relationships, events, and concepts with confidence scoring and temporal awareness. An optional Playwright-based Research Browser provides autonomous page extraction with stealth mode, metadata parsing, and PDF download
-15. **Runtime Infrastructure** — Model manager (GGUF discovery, install, delete, disk/RAM monitoring), runtime manager (service lifecycle, health monitoring, crash recovery with auto-restart), download manager (progress tracking, ETA, SHA-256 integrity verification), dependency installer (auto-detect and install missing pip packages, system tools), diagnostics (self-check system scanning all modules, dependencies, and runtime health), and benchmarks (subsystem performance measurement)
-16. **Unified Integration** — All modules connected through the Orchestrator. Aura UI starts every module automatically. Intent detection routes queries to the right engine: system questions → System Intelligence, research → Realtime, multi-step goals → Agent Planner, screen queries → Vision, general chat → LLM + Tools. Every action is risk-checked before execution. Memory stores conversations, tool results, and research findings
-
-Everything runs locally — no cloud dependency, no data leaves your device.
-
----
-
----
-
-## ✧ Project Structure
-
-```
-MOSO/
-├── moso_core/              # Core AI engine
-│   ├── agents/             # Template-based agent planner & executor
-│   ├── computer_use/       # Desktop automation (mouse, keyboard, screen, windows, agent)
-│   ├── desktop/            # Desktop Agent (perception, world model, vision planner, smart controllers, verifier)
-│   ├── identity/           # Multi-signal identity engine (voice, behavior, device)
-│   ├── inference/          # Model backends (llama.cpp, ONNX Runtime)
-│   ├── llm/                # LLM integration (server, chat, completion, provider abstraction)
-│   │   └── providers/      # Pluggable providers (local, OpenAI, Anthropic, Ollama)
-│   ├── memory/             # Persistent memory (episodic, semantic, procedural, vector store, corrections, ingest)
-│   ├── orchestration/      # Dynamic pipeline composition
-│   ├── pipelines/          # Modality processing pipelines
-│   ├── realtime/           # Real-Time Intelligence Engine (research, knowledge graph, browser)
-│   ├── resources/          # Local resource monitoring (CPU, RAM, storage, network)
-│   ├── risk/               # Risk & Privacy Engine (reputation, scoring, privacy checks)
-│   ├── tools/              # Tool engine (file, app controllers, context manager, browser, terminal)
-│   ├── vision/             # Screen vision & OCR
-│   ├── voice/              # Voice pipeline (STT, TTS, speaker verification, cloning)
-│   ├── benchmarks.py       # Subsystem performance benchmarks
-│   ├── dependency_installer.py  # Auto-detect & install missing dependencies
-│   ├── diagnostics.py      # Self-check system health scanner
-│   ├── download_manager.py # Model download with progress, ETA, integrity verification
-│   ├── model_manager.py    # GGUF model discovery, install, delete, monitoring
-│   └── runtime_manager.py  # Service lifecycle, health monitoring, crash recovery
-├── moso_ui/                # Desktop UI (Aura floating orb)
-├── docs/                   # Documentation & architecture specs
-├── models/                 # Local GGUF model storage
-├── tests/                  # Test suite (249 tests)
-├── scripts/                # Utility scripts
-├── run.py                  # Application entry point
-├── README.md               # This file
-└── llms.txt                # LLM context summary
-```
-
----
-
-## ✧ Architecture
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                        MOSO CORE                                │
-│                                                                 │
-│  ┌──────────┐  ┌──────────┐                                     │
-│  │ llama.cpp│  │  ONNX    │   Inference Backends                │
-│  │  (CPU)   │  │ (GPU/CPU)│                                     │
-│  └─────┬────┘  └────┬─────┘                                     │
-│        └──────┬─────┘                                            │
-│               ▼                                                  │
-│  ┌──────────────────────────────────────────────────────┐       │
-│  │              Aura UI (Desktop Orb)                    │       │
-│  │        Floating Circle  │  Tray  │  Bubble             │       │
-│  └──────────────────────────┬───────────────────────────┘       │
-│                             ▼                                    │
-│  ┌──────────────────────────────────────────────────────┐       │
-│  │              Pipeline Orchestrator                    │       │
-│  │         Text  →  Voice  →  Identity                   │       │
-│  └──────────────────────┬───────────────────────────────┘       │
-│                         ▼                                        │
-│  ┌──────────────────────────────────────────────────────────┐   │
-│  │                   LLM Integration                        │   │
-│  │  llama.cpp Server  │  Chat  │  Completion  │  Download   │   │
-│  └──────────────────────────┬───────────────────────────────┘   │
-│                             ▼                                    │
-│  ┌──────────────────────────────────────────────────────────┐   │
-│  │                   Agent Planner                           │   │
-│  └──────────────────────────┬───────────────────────────────┘   │
-│                         ▼                                        │
-│  ┌──────────────────────────────────────────────────────────┐   │
-│  │   Agents   │   Safety   │   Voice Engine   │   Identity  │   │
-│  └──────────────────────────┬───────────────────────────────┘   │
-│                         ▼                                        │
-│  ┌──────────────────────────────────────────────────────────┐   │
-│  │                   Memory Engine                           │   │
-│  │  Episodic  │  Semantic  │  Procedural  │  Preferences     │   │
-│  └──────────────────────────┬───────────────────────────────┘   │
-│                             ▼                                    │
-│  ┌──────────────────────────────────────────────────────────┐   │
-│  │                  Resource Manager                         │   │
-│  │  CPU  │  RAM  │  Storage  │  Battery  │  Network  │ Procs│   │
-│  └──────────────────────────┬───────────────────────────────┘   │
-│                             ▼                                    │
-│  ┌──────────────────────────────────────────────────────────┐   │
-│  │                   Screen Vision                           │   │
-│  │   OCR  │  Text Regions  │  Active Window  │  Context      │   │
-│  └──────────────────────────┬───────────────────────────────┘   │
-│                             ▼                                    │
-│  ┌──────────────────────────────────────────────────────────┐   │
-│  │                   Computer Use                            │   │
-│  │   Mouse  │  Keyboard  │  Screen  │  Windows  │ Recorder   │   │
-│  └──────────────────────────┬───────────────────────────────┘   │
-│                             ▼                                    │
-│  ┌──────────────────────────────────────────────────────────┐   │
-│  │               System Intelligence                         │   │
-│  │  Hardware │ Software │ Network │ Storage │ Security       │   │
-│  │  Diagnostics │ Inventory │ Explainer                      │   │
-│  └──────────────────────────┬───────────────────────────────┘   │
-│                             ▼                                    │
-│  ┌──────────────────────────────────────────────────────────┐   │
-│  │               Real-Time Intelligence                      │   │
-│  │  Multi-Source Fetcher │ Source Verifier │ Analyzer        │   │
-│  │  Risk Engine │ Privacy Check │ Reputation │ Summarizer    │   │
-│  │  Knowledge Graph │ Research Browser (Playwright)          │   │
-│  └──────────────────────────┬───────────────────────────────┘   │
-│                             ▼                                    │
-│  ┌──────────────────────────────────────────────────────────┐   │
-│  │               Risk & Privacy Engine                       │   │
-│  │  Network Reputation │ File Impact │ Credential Check      │   │
-│  │  Privacy Analysis │ Permission Check │ Resource Impact    │   │
-│  │  Pre-execution Scoring → Blocks HIGH/CRITICAL             │   │
-│  └──────────────────────────┬───────────────────────────────┘   │
-│                             ▼                                    │
-│  ┌──────────────────────────────────────────────────────────┐   │
-│  │                   Tool Engine                             │   │
-│  │  File │  Apps  │  Browser  │  Terminal  │  Audit Logger    │   │
-│  └──────────────────────────┬───────────────────────────────┘   │
-│                             ▼                                    │
-│  ┌──────────────────────────────────────────────────────────┐   │
-│  │   SQLite (WAL)  │  psutil  │  File System  │  Audio I/O   │   │
-│  └──────────────────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────────────────┘
-```
-
----
-
-## ✧ Project Structure
-
-```
-MOSO/
-├── moso_core/              # Core AI engine
-│   ├── agents/             # Template-based agent planner & executor
-│   ├── computer_use/       # Desktop automation (mouse, keyboard, screen, windows)
-│   ├── identity/           # Multi-signal identity engine (voice, behavior, device)
-│   ├── inference/          # Model backends (llama.cpp, ONNX Runtime)
-│   ├── memory/             # Persistent memory (episodic, semantic, procedural, vector store)
-│   ├── orchestration/      # Dynamic pipeline composition
-│   ├── pipelines/          # Modality processing pipelines
-│   ├── realtime/           # Real-Time Intelligence Engine (research, knowledge graph, browser)
-│   ├── resources/          # Local resource monitoring (CPU, RAM, storage, network)
-│   ├── risk/               # Risk & Privacy Engine (reputation, scoring, privacy checks)
-│   ├── tools/              # Tool engine (file, app, browser, terminal)
-│   ├── vision/             # Screen vision & OCR
-│   └── voice/              # Voice pipeline (STT, TTS, speaker verification, cloning)
-├── moso_ui/                # Desktop UI (Aura floating orb)
-├── backend/                # Backend server
-├── tests/                  # Test suite (249 tests)
-├── scripts/                # Utility scripts
-├── run.py                  # Application entry point
-├── README.md               # This file
-└── llms.txt                # LLM context summary
-```
-
----
-
-## ✧ Core Components
-
-### MOSO Core — AI Inference Runtime
-
-The foundational runtime that powers all AI inference across platforms with multiple backend support.
-
-| Module | Backends | Purpose |
-|--------|----------|---------|
-| **Inference** | llama.cpp, ONNX Runtime | Unified model loading & execution |
-| **Pipelines** | Text, Voice, Identity | Modality-specific processing chains |
-| **Orchestration** | Modality routing, backend abstraction, memory injection | Dynamic pipeline composition |
-| **Agents** | Goal decomposition, tool use, self-reflection | Autonomous task execution |
-| **Safety** | Prompt injection detection, output sanitization | Content filtering and guardrails |
-| **Voice** | Input, VAD, wake word, speaker verify, STT, TTS, cloning | Full voice interaction pipeline |
-| **Identity** | Voice (35%), Liveness (20%), Behavior (20%), Device (15%), History (10%) | Multi-signal owner verification engine |
-| **Memory** | Episodic, Semantic, Procedural, Preferences, Corrections, Ingest | SQLite-persistent cross-session memory + RAG ingest + feedback learning |
-| **Resources** | CPU, RAM, Storage, Battery, Network, Processes | psutil-based local resource monitoring |
-| **Tools** | File, App Controllers, Context Manager, Browser, Terminal | Permission-gated OS actions with audit logging + dry-run |
-| **Agents** | Planner, Executor, Verifier, History | Template-based goal decomposition with retry + dependencies + dry-run |
-| **Computer Use** | Mouse, Keyboard, Screen, Windows, Automation, Recorder, Agent | Desktop automation with vision-planned agent loop |
-| **Desktop Agent** | Perception, World Model, Vision Planner, Smart Controllers, Verifier, Desktop Memory | Autonomous desktop interaction — observe→reason→act→verify loop |
-| **Screen Vision** | OCR, Text Regions, Window Detection, Context | Screenshot OCR — pytesseract, mss, pygetwindow |
-| **System Intelligence** | Hardware, Software, Network, Storage, Security, Diagnostics, Inventory, Explainer | Live system understanding — psutil, winreg, subprocess |
-| **Risk & Privacy Engine** | Network Reputation, File Impact, Credential Check, Privacy Analysis | Pre-execution risk scoring blocks HIGH/CRITICAL actions |
-| **Real-Time Intelligence** | Multi-Source Fetcher, Cache, Risk Engine, Privacy Check, Reputation, Source Verifier, Analyzer, Summarizer | Web research pipeline — risk-aware source selection, content fetching, cross-source verification, LLM/keyword analysis, transparent summaries |
-| **Vector Store** | SQLite FTS5 + cosine similarity | Embedding-aware storage with hybrid search — FTS5 keyword, semantic cosine, weighted combination |
-| **Knowledge Graph** | NetworkX + SQLite | Entity, relationship, event, and concept tracking with confidence scoring, source attribution, and timeline queries |
-| **Research Browser** | Playwright (headless Chromium) | Optional autonomous page fetching with stealth mode, content extraction, metadata parsing, screenshot, PDF download |
-| **LLM Integration** | Provider abstraction (local/OpenAI/Anthropic/Ollama), Server, Chat, Completion | Pluggable backends — llama.cpp subprocess HTTP, OpenAI API, Anthropic API, Ollama |
-| **Model Manager** | GGUF discovery, install, delete, disk/RAM monitoring | Local model lifecycle management |
-| **Runtime Manager** | Service lifecycle, health monitoring, crash recovery | Auto-restart on failure, health checks |
-| **Download Manager** | Progress tracking, ETA, SHA-256 integrity | Model file downloads with verification |
-| **Dependency Installer** | pip, winget, choco, manual | Auto-detect and install missing dependencies |
-| **Diagnostics** | Module scan, dependency check, runtime health | Self-check system — health status per module |
-| **Benchmarks** | Memory, vector store, retrieval, LLM | Subsystem performance measurement |
-| **Aura UI** | Floating Orb, Conversation Bubble, Tray | Desktop overlay — PySide6 |
-
----
-
-### M0S0 Assistant — Adaptive Personality
-
-- **Voice-First Interaction** — Natural conversation with wake word, speaker verification, STT, and TTS with voice cloning
-- **Identity Engine** — Continuous multi-signal owner verification (voice, liveness, behavior, device, history) with confidence scoring
-- **Contextual Awareness** — Remembers past conversations and preferences
-
----
-
-### Identity Engine
-
-The MOSO Identity Engine continuously determines who is interacting with the system using multiple weighted authentication signals.
-
-```
-Audio / Text Input
-    ↓
-┌────────────────────────────────────────────────┐
-│              Identity Verifier                  │
-│                                                  │
-│  ┌──────────┐  ┌──────────┐  ┌──────────────┐  │
-│  │ Voice    │  │ Liveness │  │ Behavioral   │  │
-│  │ (35%)    │  │ (20%)    │  │ (20%)         │  │
-│  │ ECAPA-   │  │ spectral │  │ vocabulary,  │  │
-│  │ TDNN     │  │ analysis │  │ cadence,     │  │
-│  │ embedding│  │ anti-    │  │ timing       │  │
-│  │ compare  │  │ spoofing │  │              │  │
-│  └────┬─────┘  └────┬─────┘  └──────┬───────┘  │
-│       └─────────┬───┴─────────┬─────┘           │
-│                 ▼             ▼                  │
-│  ┌──────────┐  ┌─────────────────────────────┐  │
-│  │ Device   │  │   Identity Scorer           │  │
-│  │ (15%)    │  │   Weighted: 0-100 score     │  │
-│  │ BT/WiFi  │  │   Owner 95+, Likely 80-94,  │  │
-│  │ presence │  │   Guest 60-79, Unknown <60  │  │
-│  └────┬─────┘  └──────────────┬──────────────┘  │
-│       │                       │                   │
-│  ┌────┴─────┐  ┌──────────────┴──────────────┐  │
-│  │Historical│  │   Permission Resolver        │  │
-│  │ (10%)    │  │   Full / Standard / Limited  │  │
-│  │ patterns │  │   / Guest Only               │  │
-│  └──────────┘  └─────────────────────────────┘  │
-└────────────────────────────────────────────────┘
-    ↓
-[IdentityState] session, confidence, level, permissions
-```
-
-| Signal | Weight | Model | Method |
-|--------|--------|-------|--------|
-| **Voice Biometrics** | 35% | ECAPA-TDNN | Embedding cosine similarity vs enrolled voiceprint |
-| **Liveness Detection** | 20% | Spectral + energy analysis | Replay/synthetic audio detection |
-| **Behavioral Biometrics** | 20% | Statistical models | Vocabulary, speaking cadence, command timing |
-| **Device Presence** | 15% | Bluetooth/WiFi scan | Trusted device proximity detection |
-| **Historical Context** | 10% | Pattern matching | Time-of-day, conversation continuity, usage patterns |
-
----
-
-### Voice System
-
-The MOSO voice pipeline provides a complete hands-free interaction system with owner recognition and optional voice cloning.
-
-```
-Microphone
-    ↓
-[Audio Stream] ─── VAD (Voice Activity Detection)
-    ↓
-[Wake Word Detector]  ←  "Hey MOSO", "Hello MOSO", "OK MOSO"
-    ↓
-[Speaker Verification]  ←  ECAPA-TDNN embedding comparison
-    ├── Owner (>95% match) → Full access
-    └── No match → Guest mode (limited)
-    ↓
-[Whisper STT]  ─── Speech-to-Text transcription
-    ↓
-[MOSO Orchestrator / LLM]  ─── AI processing
-    ↓
-[Text-to-Speech]  ─── Piper TTS (fast) / XTTS-v2 (cloned voice)
-    ↓
-        Speaker
-```
-
-| Component | Model | Purpose |
-|-----------|-------|---------|
-| **VAD** | webrtcvad | Voice activity detection, silence trimming |
-| **Wake Word** | openWakeWord / keyword spotting | "Hey MOSO" activation |
-| **Speaker Verification** | SpeechBrain ECAPA-TDNN | Owner recognition (192-dim embeddings) |
-| **Speech-to-Text** | Whisper (tiny→large) | Local transcription, language detection |
-| **Text-to-Speech** | Piper TTS (fast) + XTTS-v2 (clone) | Voice output with optional voice cloning |
-| **Continuous Auth** | ECAPA + cosine similarity | Periodic re-verification during sessions |
-| **Voice Cloning** | XTTS-v2 fine-tuning | Clone owner's voice (30min–5hr dataset) |
-
----
-
-### Memory Engine
-
-MOSO Memory Engine provides persistent, cross-session memory using four specialized stores backed by SQLite:
-
-```
-User Interaction
-    ↓
-┌──────────────────────────────────────────────────────────────┐
-│                    MemoryManager                              │
-│                                                               │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────────┐   │
-│  │  Episodic    │  │   Semantic   │  │   Procedural     │   │
-│  │  "What did   │  │   "Facts     │  │   "How to do    │   │
-│  │   I do?"     │  │    about me" │  │    things"       │   │
-│  │              │  │              │  │                  │   │
-│  │  - Events    │  │  - Owner pre-│  │  - Workflows    │   │
-│  │  - Convos    │  │    ferences  │  │  - Skills       │   │
-│  │  - Projects  │  │  - Projects  │  │  - Success rate │   │
-│  └──────┬───────┘  └──────┬───────┘  └────────┬─────────┘   │
-│         └────────┬──────────┴──────────┬───────┘             │
-│                  ▼                     ▼                      │
-│  ┌──────────────────────────────────────────────────────┐    │
-│  │  Preferences                      Retrieval          │    │
-│  │  - editor, language, voice  ←───  keyword + recent   │    │
-│  │  - confidence weighted           + type filtering    │    │
-│  └──────────────────────────────────────────────────────┘    │
-│                         │                                     │
-│                         ▼                                     │
-│  ┌──────────────────────────────────────────────────────┐    │
-│  │  SQLite (WAL mode)  —  ~/.moso/memory.db              │    │
-│  │  4 tables: episodic, semantic, procedural, prefs     │    │
-│  └──────────────────────────────────────────────────────┘    │
-└──────────────────────────────────────────────────────────────┘
-    ↓
-[MemoryContext] injected into LLM prompt on verified owner
-```
-
-| Store | Table | Key Methods | Search |
-|-------|-------|-------------|--------|
-| **Episodic** | `episodic_memory` | `store(title, desc, tags)`, `list_recent()`, `search(query)` | `LIKE` on title/description, tag filter, recent sort |
-| **Semantic** | `semantic_memory` | `store(fact, confidence, category)`, `list_by_category()`, `search(query)` | `LIKE` on fact, category filter, confidence sort |
-| **Procedural** | `procedural_memory` | `store(task, steps, tags)`, `record_use()`, `search(query)` | `LIKE` on task/tags, success rate sort |
-| **Preferences** | `preferences` | `set_value(category, value)`, `list_all()` | Exact match by `(category, owner_id)` |
-
-**Context Injection:** When the owner is verified, `build_context()` retrieves relevant events, facts, procedures, and preferences for the current query and injects them into the LLM prompt as `[Memory]` context.
-
-**Summarization:** `extract_facts_from_events()` scans recent episodic memories and derives semantic facts (e.g., "Owner has created X", "Owner uses Y"). These are stored for long-term recall.
-
-**Orchestrator Integration:**
-```python
-orchestrator = Orchestrator(config)
-orchestrator.enable_memory()                # SQLite at ~/.moso/memory.db
-orchestrator.enable_identity()              # Owner verification
-orchestrator.process("what was my last project?")
-# → Memory context auto-injected, conversation auto-logged as event
-```
-
----
-
-### Resource Manager
-
-MOSO Resource Manager monitors local machine resources so MOSO can make intelligent decisions about task execution.
-
-```
-┌──────────────────────────────────────────────────────────────┐
-│                     ResourceManager                           │
-│                                                               │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌─────────────┐  │
-│  │   CPU    │  │   RAM    │  │ Storage  │  │   Battery   │  │
-│  │ usage %  │  │ total/   │  │ per mount│  │ plugged_in  │  │
-│  │ cores/   │  │ avail/   │  │ total/   │  │ percent     │  │
-│  │ threads  │  │ used     │  │ used/free│  │ time_remain │  │
-│  └────┬─────┘  └────┬─────┘  └────┬─────┘  └──────┬──────┘  │
-│       └────────┬─────┴────────┬────┴─────────┬─────┘          │
-│                ▼              ▼               ▼                │
-│  ┌──────────┐  ┌──────────┐  ┌──────────────────────────┐    │
-│  │ Network  │  │Processes │  │     SystemStatus          │    │
-│  │ up/down  │  │ top CPU  │  │   snapshot + summary()   │    │
-│  │ bytes    │  │ top mem  │  │   → LLM-friendly string  │    │
-│  └──────────┘  └──────────┘  └──────────────────────────┘    │
-└──────────────────────────────────────────────────────────────┘
-```
-
-| Monitor | Class | Key Methods | Source |
-|---------|-------|-------------|--------|
-| **CPU** | `CPUMonitor` | `get_usage()`, `get_temperature()` | psutil |
-| **RAM** | `RAMMonitor` | `get_usage()` — total, available, used, percent | psutil |
-| **Storage** | `StorageMonitor` | `get_usage()` — per physical mount, skips pseudo-fs | psutil + shutil |
-| **Battery** | `BatteryMonitor` | `get_status()` — returns desktop fallback if no battery | psutil |
-| **Network** | `NetworkMonitor` | `get_usage()` — bytes (lifetime) + speed (delta since last call) | psutil |
-| **Processes** | `ProcessMonitor` | `top_cpu(n)`, `top_memory(n)`, `find_by_name(name)` | psutil |
-
-**Orchestrator Integration:**
-```python
-orchestrator.enable_resources()
-status = orchestrator.resources.get_system_status()
-print(status.summary())
-# CPU: 23% (6C/12T) | RAM: 8.1GB/32GB (25%) | Storage: 72% free | Battery: 85% (plugged) | Network: ↑0KB/s ↓1.2MB/s
-
-# Or individual queries:
-orchestrator.resources.get_ram().available       # bytes free
-orchestrator.resources.get_battery().percent      # 85.0
-orchestrator.resources.get_top_cpu_processes(5)   # top 5 CPU hogs
-```
-
-**Future GPU Support:** `ResourceManager.__init__()` accepts `gpu=None` — adding NVIDIA GPU monitoring via pynvml later requires no API change.
-
----
-
-### Tool Engine
-
-**MOSO Tool Engine** provides a secure, structured framework for MOSO to interact with your operating system:
-
-- **FileTool** — Read, create, find, list, move, and delete files
-- **AppTool** — Launch, close, and list running applications
-- **BrowserTool** — Open URLs and search the web
-- **TerminalTool** — Execute terminal commands with timeout and output capture
-
-**Every action is permission-gated:**
-
-| Tool | Guest | Trusted | Owner |
-|------|:-----:|:-------:|:-----:|
-| **FileTool** — read, list, find | ✅ | ✅ | ✅ |
-| **FileTool** — create, move | — | ✅ | ✅ |
-| **FileTool** — delete | — | — | ✅ |
-| **AppTool** — list | ✅ | ✅ | ✅ |
-| **AppTool** — launch | — | ✅ | ✅ |
-| **AppTool** — close | — | — | ✅ |
-| **BrowserTool** — all | ✅ | ✅ | ✅ |
-| **TerminalTool** — execute | — | — | ✅ |
-
-**Before running, MOSO checks:**
-
-```
-Request → Permission Check → Validation → [Dry Run?] → Execute → Audit Log → Memory
-```
-
-**Dry-run mode** lets you preview without executing:
-```python
-request = ToolRequest(
-    tool_name="file_tool",
-    dry_run=True,
-    parameters={"action": "delete_file", "path": "/downloads"},
-)
-# → "[DRY RUN] Would execute: file_tool: delete_file -> /downloads"
-```
-
-**Orchestrator Integration:**
-```python
-orchestrator.enable_tools()
-orchestrator.enable_memory()
-orchestrator.enable_identity()
-
-req = ToolRequest(
-    tool_name="app_tool",
-    parameters={"action": "launch_application", "app_name": "code"},
-)
-result = orchestrator.tools.execute_tool(req, identity=orchestrator.identity_verifier)
-# → Launches VS Code, logged to audit + memory with tags: [tool, app_tool, app, launch_application, code]
-
-req2 = ToolRequest(
-    tool_name="browser_tool",
-    parameters={"action": "search_web", "query": "Python async tutorial"},
-)
-result = orchestrator.tools.execute_tool(req2)
-# → Opens DuckDuckGo in browser
-
-req3 = ToolRequest(
-    tool_name="terminal_tool",
-    parameters={"action": "execute_command", "command": "python --version"},
-)
-result = orchestrator.tools.execute_tool(req3, identity=orchestrator.identity_verifier)
-# → Owner verified → returns "Python 3.11.5"
-```
-
-**Architecture:**
-```
-┌─────────────────────────────────────────────────────┐
-│                    Tool Engine                       │
-│                                                      │
-│  ┌──────────────────────────────────────────────┐   │
-│  │               ToolRegistry                    │   │
-│  │  register  │  lookup  │  execute  │  list     │   │
-│  └──────┬────────────────────────────────┬───────┘   │
-│         │                                │            │
-│  ┌──────▼──────┐  ┌──────────────────────▼───────┐   │
-│  │    Tools     │  │         AuditLogger          │   │
-│  │             │  │  ~/.moso/tools-audit.log     │   │
-│  │  FileTool   │  │  JSON lines, rotate-ready    │   │
-│  │  AppTool    │  └──────────────────────────────┘   │
-│  │  BrowserTool│                                      │
-│  │  TerminalTool│                                     │
-│  └─────────────┘                                      │
-│                                                      │
-│  Integrations: Identity → Permission Check           │
-│                Memory → Tagged Event Logging         │
-└─────────────────────────────────────────────────────┘
-```
-
----
-
-### Computer Use
-
-**MOSO Computer Use** provides local desktop automation — MOSO can operate software like a human:
-
-```
-Agent Planner / Orchestrator
-    ↓
-┌─────────────────────────────────────────────────────┐
-│                   AutomationEngine                   │
-│                                                      │
-│  ┌──────────────────────────────────────────────┐   │
-│  │              Permissions                      │   │
-│  │   guest: screenshot / list_windows            │   │
-│  │   trusted: + focus / screen analysis          │   │
-│  │   owner: + mouse / keyboard / automation      │   │
-│  └──────────────────┬───────────────────────────┘   │
-│                     ▼                                │
-│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌────────┐ │
-│  │   Mouse  │ │ Keyboard │ │  Screen  │ │ Windows│ │
-│  │ pyautogui│ │ pyautogui│ │ mss+PIL  │ │pygetwin│ │
-│  │          │ │          │ │          │ │        │ │
-│  │ moveTo() │ │ typewrite│ │ .grab()  │ │.activate││
-│  │ click()  │ │ press()  │ │ region() │ │.close() │ │
-│  │ drag()   │ │ hotkey() │ │ .save()  │ │listTitl│ │
-│  │ scroll() │ │ ctrl_c   │ │          │ │        │ │
-│  └──────────┘ └──────────┘ └──────────┘ └────────┘ │
-│                                                     │
-│  ┌──────────────────────────────────────────────┐   │
-│  │            WorkflowRecorder                   │   │
-│  │  record_mouse(duration)                      │   │
-│  │  record_keyboard(duration)                   │   │
-│  │  export_sequence() → AutomationSequence      │   │
-│  └──────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────┘
-```
-
-**Permission Model:**
-
-| Level | Actions |
-|-------|---------|
-| **Guest** | `screenshot`, `list_windows` |
-| **Trusted** | Above + `focus_window`, `get_active_window`, `screen analysis` |
-| **Owner** | Above + `move_mouse`, `click`, `double_click`, `right_click`, `drag`, `scroll`, `type_text`, `press_key`, `hotkey`, `record_mouse`, `record_keyboard`, `execute_sequence` |
-
-**Controllers:**
-
-| Controller | Library | Functions |
-|-----------|---------|-----------|
-| **MouseController** | pyautogui | `move_to(x, y)`, `click(x, y)`, `double_click(x, y)`, `right_click(x, y)`, `drag(sx, sy, ex, ey)`, `scroll(amount)` |
-| **KeyboardController** | pyautogui | `type_text(text)`, `press(key)`, `hotkey(*keys)`, `ctrl_c()`, `ctrl_v()`, `alt_tab()`, `win_r()`, `enter()`, `escape()` |
-| **ScreenCapturer** | mss + Pillow | `capture_screen()`, `capture_region(l, t, w, h)`, `save_screenshot(path)` |
-| **WindowManager** | pygetwindow | `list_windows()`, `get_active_window()`, `focus_window(title)`, `close_window(title)` |
-
-**Automation Engine:**
-
-Execute single actions or full sequences with identity + resource checks:
+### 5. Control Your Desktop
 
 ```python
 orchestrator.enable_computer_use()
 
-# Single action
+# Take a screenshot
+result = orchestrator.computer_use.execute_action({"action": "capture_screen"})
+
+# Type text
 result = orchestrator.computer_use.execute_action(
-    {"action": "move_to", "x": 500, "y": 300}
+    {"action": "type_text", "text": "Hello from MOSO"}
 )
-# → ComputerUseResult(success=True, action="move_to", result={"x": 500, "y": 300})
 
-# Sequence with dry-run
-seq = [
+# Execute a sequence
+results = orchestrator.computer_use.execute_sequence([
     {"action": "move_to", "x": 500, "y": 200},
     {"action": "click"},
     {"action": "type_text", "text": "MOSO AI"},
-    {"action": "press", "key": "enter"},
-]
-print(orchestrator.computer_use.dry_run_sequence(seq))
-# → Shows plan without executing
-
-results = orchestrator.computer_use.execute_sequence(seq)
-# → Executes, stops on first failure
+])
 ```
 
-**Workflow Recorder:**
-
-```python
-# Record a workflow
-recorder = WorkflowRecorder()
-recorder.start_recording(duration=5.0, record_keyboard=True)
-# ... perform actions ...
-recorder.stop_recording()
-sequence = recorder.export_sequence(description="Open Chrome and search")
-# → Saved to ~/.moso/workflows/workflow_20260619_120000.json
-```
-
-**Dry Run Required:**
-
-Before any automation execution, MOSO always shows the plan:
-
-```
-Computer Use Plan:
-  1. move_to -> 500, 200
-  2. click
-  3. type_text -> MOSO AI
-  4. press -> enter
-
-No actions executed.
-Proceed?
-```
-
-Execution only proceeds after confirmation.
-
-**Orchestrator Integration:**
-```python
-orchestrator = Orchestrator(config)
-orchestrator.enable_identity()
-orchestrator.enable_memory()
-orchestrator.enable_resources()
-orchestrator.enable_tools()
-orchestrator.enable_agents()
-orchestrator.enable_computer_use()
-
-# MOSO can now see your screen and control your desktop
-screenshot = orchestrator.computer_use.execute_action(
-    {"action": "capture_screen"}
-)
-windows = orchestrator.computer_use.execute_action(
-    {"action": "list_windows"}
-)
-```
-
----
-
-### Agent Planner
-
-**MOSO Agent Planner** provides autonomous goal decomposition and execution using template matching (no LLM calls needed):
-
-```
-User Goal: "create a python project named test_app"
-    ↓
-┌──────────────────────────────────────────────┐
-│              Planner                          │
-│  Matches goal against 7 templates:           │
-│  - python_project (score: 3) ← best match    │
-│  - create_folder (score: 1)                  │
-│  - create_file (score: 1)                    │
-│  - open_app / search_web / read_file (0)     │
-│  - desktop_automation (score: 3)             │
-└──────────────────┬───────────────────────────┘
-                   ↓
-┌──────────────────────────────────────────────┐
-│              Plan                             │
-│  Goal: "create a python project test_app"    │
-│  Tasks:                                       │
-│    1. file.create_folder → test_app/         │
-│    2. file.create_file  → test_app/__init__  │
-│    3. file.create_file  → test_app/main.py   │
-└──────────────────┬───────────────────────────┘
-                   ↓
-┌──────────────────────────────────────────────┐
-│              Executor                         │
-│  Sequential execution with:                  │
-│  - ToolRequest → ToolRegistry.execute()      │
-│  - Per-task verification                      │
-│    (file_exists, folder_exists, exit_code)   │
-│  - Error handling (skip/fail on failure)     │
-└──────────────────┬───────────────────────────┘
-                   ↓
-┌──────────────────────────────────────────────┐
-│              History                          │
-│  SQLite at ~/.moso/plans.db                  │
-│  goals + tasks tables (FK cascade)           │
-│  List recent plans, replay past executions   │
-└──────────────────────────────────────────────┘
-```
-
-**7 Built-in Templates:**
-
-| Template | Keywords | Tasks Generated |
-|----------|----------|----------------|
-| **python_project** | python, project, create, app | Create folder + `__init__.py` + `main.py` |
-| **create_folder** | folder, directory, mkdir, create | Create folder, verify existence |
-| **open_app** | open, launch, start, run, app, chrome, browser | Launch app, verify process running |
-| **search_web** | search, find, web, browse, google | Search DuckDuckGo or browse URL |
-| **read_file** | read, file, view, show, display, cat | Read file, verify content not empty |
-| **create_file** | create, file, make, write | Create file with optional content, verify existence |
-| **desktop_automation** | click, mouse, type, screenshot, scroll, press, focus, desktop, screen | Generate computer_use tasks for desktop interaction |
-
-**Fallback:** Goals that don't match any template (score < 2) are executed as a single terminal command.
-
-**Verification Methods:**
-| Method | Description |
-|--------|-------------|
-| `file_exists` | Checks file existence on disk |
-| `folder_exists` | Checks directory existence |
-| `exit_code_zero` | Terminal exit code == 0 |
-| `process_running` | psutil process name match |
-| `content_not_empty` | Tool result has content |
-
-**Orchestrator Integration:**
-```python
-orchestrator.enable_memory()
-orchestrator.enable_identity()
-orchestrator.enable_resources()
-orchestrator.enable_tools()
-orchestrator.enable_agents()
-
-# Create and execute a plan
-summary = orchestrator.agents.plan_and_execute(
-    "create a python project named my_app",
-    requester="owner",
-)
-print(summary.overall_status)  # GoalStatus.COMPLETED
-
-# List available templates
-for t in orchestrator.agents.list_templates():
-    print(t["name"], t["description"])
-
-# View execution history
-for plan in orchestrator.agents.get_recent_plans(5):
-    print(plan["goal"]["description"])  # Past goals
-```
-
-**Architecture:**
-```
-┌─────────────────────────────────────────────────────┐
-│                  AgentManager                        │
-│                                                      │
-│  ┌──────────────────────────────────────────────┐   │
-│  │               Planner                         │   │
-│  │  7 x PlanTemplate + keyword scoring + regex   │   │
-│  └──────────────────┬───────────────────────────┘   │
-│                     ▼                                │
-│  ┌──────────────────────────────────────────────┐   │
-│  │               Executor                        │   │
-│  │  Sequential task loop + ToolRegistry calls    │   │
-│  └──────────────────┬───────────────────────────┘   │
-│                     ▼                                │
-│  ┌──────────────────────────────────────────────┐   │
-│  │               Verifier                        │   │
-│  │  file_exists / folder_exists / process check  │   │
-│  └──────────────────┬───────────────────────────┘   │
-│                     ▼                                │
-│  ┌──────────────────────────────────────────────┐   │
-│  │               History (SQLite)                │   │
-│  │  ~/.moso/plans.db — goals + tasks tables     │   │
-│  └──────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────┘
-```
-
-**Key Points:**
-- **No LLM calls** — template matching is purely keyword/regex-based
-- **Owner-only execution** — all tasks are submitted as `requester="owner"`
-- **Persistent history** — every plan and task is stored in `~/.moso/plans.db`
-- **Per-task verification** — each completed task is verified before the next begins
-- **First failure stops execution** — failed tasks halt the remaining sequence
-
----
-
-### Screen Vision
-
-**MOSO Screen Vision** provides observation-only screen analysis — MOSO can see what's on your screen without clicking or manipulating anything:
-
-```
-Agent Planner / Orchestrator (via VisionManager)
-    ↓
-┌─────────────────────────────────────────────────────┐
-│                   VisionManager                      │
-│                                                      │
-│  ┌──────────────────────────────────────────────┐   │
-│  │              Permissions                      │   │
-│  │   guest: ❌ (denied)                         │   │
-│  │   trusted: ✅ screenshot + OCR + window info  │   │
-│  │   owner: ✅ screenshot + OCR + window info    │   │
-│  │   no identity: ✅ (headless fallback)        │   │
-│  └──────────────────┬───────────────────────────┘   │
-│                     ▼                                │
-│  ┌──────────────────────────────────────────────┐   │
-│  │               build_context()                 │   │
-│  │  1. Capture screenshot (via ScreenCapturer)   │   │
-│  │  2. Extract text via OCR (pytesseract)        │   │
-│  │  3. Detect text regions (bounding boxes)      │   │
-│  │  4. List windows (via WindowManager)          │   │
-│  │  5. Identify active window                    │   │
-│  │  6. Assemble ScreenContext                    │   │
-│  └──────────────────┬───────────────────────────┘   │
-│                     ▼                                │
-│  ┌──────────────────────────────────────────────┐   │
-│  │              ScreenContext                    │   │
-│  │  ┌──────────────────┐  ┌──────────────────┐  │   │
-│  │  │  text_content    │  │  ocr_results     │  │   │
-│  │  │  "All visible    │  │  [OCRResult, ...]│  │   │
-│  │  │   text on screen"│  │  text + conf +   │  │   │
-│  │  │                  │  │  bounding_box    │  │   │
-│  │  └──────────────────┘  └──────────────────┘  │   │
-│  │  ┌──────────────────┐  ┌──────────────────┐  │   │
-│  │  │  windows[]       │  │  active_window   │  │   │
-│  │  │  ["Chrome",      │  │  "Chrome"        │  │   │
-│  │  │   "Terminal"]    │  │                  │  │   │
-│  │  └──────────────────┘  └──────────────────┘  │   │
-│  └──────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────┘
-```
-
-**Supported Features:**
-
-| Feature | Method | Output |
-|---------|--------|--------|
-| **Text Extraction** | `extract_text()` via pytesseract | `str` — all visible text |
-| **Text Region Detection** | `extract_text_regions()` via pytesseract | `list[OCRResult]` — text + confidence + bounding box |
-| **Screenshot Capture** | `ScreenCapturer.capture_screen()` via mss | Image file + resolution |
-| **Window Listing** | `WindowManager.list_windows()` via pygetwindow | `list[str]` — open window titles |
-| **Active Window** | `WindowManager.get_active_window()` via pygetwindow | `str` — focused window title |
-| **Context Assembly** | `build_context()` | `ScreenContext` — full screen state |
-
-**Permission Model:**
-
-| Level | Access |
-|-------|--------|
-| **Guest** | Access denied — no screen data returned |
-| **Trusted** | Full access — capture, OCR, window info |
-| **Owner** | Full access — capture, OCR, window info |
-| **No Identity** | Full access — fallback for headless/dev |
-
-**Resource Protection:**
-- When CPU > 90% **and** RAM > 90%, VisionManager skips OCR to avoid system overload
-- OCR results are cleared (text becomes `""`, regions become `[]`) under high load
-- Screenshot + window listing still proceed (low cost)
-
-**Usage:**
+### 6. See Your Screen
 
 ```python
 orchestrator.enable_vision()
 
-# Full screen analysis
 ctx = orchestrator.vision.build_context()
-print(ctx.summary())
-# Active Window: Chrome
-# Open Windows: Chrome, Terminal
-# Resolution: 1920x1080
-# Visible Text: ... (all extracted text)
-
-# Just the text
-text = orchestrator.vision.get_screen_text()
-print(text)  # "Welcome to MOSO AI\n..."
-
-# Just the active window
-title = orchestrator.vision.get_active_window()
-print(title)  # "Google Chrome"
-
-# One-shot capture + analyze
-result = orchestrator.vision.capture_and_analyze()
-print(result["text_content"])
+print(f"Active window: {ctx.active_window}")
+print(f"Text on screen: {ctx.text_content[:200]}")
 ```
 
-**Architecture:**
-```
-┌─────────────────────────────────────────────────────┐
-│                  VisionManager                       │
-│                                                      │
-│  ┌──────────────────────────────────────────────┐   │
-│  │            Vision Package                     │   │
-│  │                                              │   │
-│  │  ┌─────────────┐  ┌─────────────────────┐   │   │
-│  │  │ ocr.py      │  │ screenshot_         │   │   │
-│  │  │ extract_    │  │ analysis.py         │   │   │
-│  │  │ text()      │  │ analyze_            │   │   │
-│  │  │ extract_    │  │ screenshot()        │   │   │
-│  │  │ text_       │  │                     │   │   │
-│  │  │ regions()   │  │ image + OCR +       │   │   │
-│  │  └─────────────┘  │ windows + metadata  │   │   │
-│  │                    └─────────────────────┘   │   │
-│  │  ┌─────────────┐  ┌─────────────────────┐   │   │
-│  │  │ context.py  │  │ models.py           │   │   │
-│  │  │ build_      │  │ BoundingBox         │   │   │
-│  │  │ context()   │  │ OCRResult           │   │   │
-│  │  │ → Screen    │  │ WindowInfo          │   │   │
-│  │  │   Context   │  │ ScreenContext       │   │   │
-│  │  └─────────────┘  └─────────────────────┘   │   │
-│  └──────────────────┬──────────────────────────┘   │
-│                     ▼                                │
-│  ┌──────────────────────────────────────────────┐   │
-│  │             Dependencies                      │   │
-│  │  pytesseract  → OCR engine                   │   │
-│  │  mss          → Screen capture               │   │
-│  │  Pillow       → Image processing             │   │
-│  │  pygetwindow  → Window management            │   │
-│  └──────────────────────────────────────────────┘   │
-│                                                      │
-│  Memory Integration: capture_and_analyze() logs      │
-│  events to memory with tags: [vision, screen_capture]│
-└─────────────────────────────────────────────────────┘
-```
-
-**V1 Limitations (deferred to V2):**
-- No UI element detection (buttons, search boxes, menus, links)
-- No layout analysis (positional relationships between elements)
-- No multimodal LLM integration
-- No Computer Use integration (Vision finds button → CU clicks)
-- No self-healing automation
-
----
-
-### LLM Integration
-
-**MOSO LLM Integration** connects a local llama.cpp server binary for text generation:
-
-```
-┌─────────────────────────────────────────────────────┐
-│                   LLMManager                         │
-│                                                      │
-│  ┌──────────────────────────────────────────────┐   │
-│  │               LlamaServer                     │   │
-│  │                                               │   │
-│  │  start() → launches llama-server.exe         │   │
-│  │  complete() → POST /completion               │   │
-│  │  chat() → chat context builder + complete     │   │
-│  │  stop() → terminates server                   │   │
-│  └──────────────────┬───────────────────────────┘   │
-│                     ▼                                │
-│  ┌──────────────────────────────────────────────┐   │
-│  │           llama-server.exe (subprocess)       │   │
-│  │  HTTP API at http://127.0.0.1:8081           │   │
-│  │  /health  →  health check                     │   │
-│  │  /completion  →  text generation              │   │
-│  └──────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────┘
-```
-
-**Setup:**
-
-1. Download a GGUF model:
-```
-python scripts/download_model.py qwen3-8b
-```
-
-2. Use via Orchestrator:
-```python
-orchestrator.enable_llm(model_path="models/qwen3-8b-q4_k_m.gguf")
-orchestrator.llm.start()
-response = orchestrator.llm.chat("What is MOSO?")
-print(response)
-```
-
-Or standalone:
-```python
-from moso_core.llm import LLMManager, LLMConfig
-mgr = LLMManager(LLMConfig(model_path="models/model.gguf"))
-mgr.start()
-print(mgr.complete("Hello!").text)
-```
-
-**Supported Models:** Any GGUF format model (Qwen 3 8B, Llama 3.1 8B, Gemma 3 12B, Phi-3 Mini, etc.)
-
----
-
-### System Intelligence
-
-**MOSO System Intelligence** understands your entire computer — hardware, software, network, storage, and security — and explains findings in plain language.
-
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│                      SystemIntelligenceManager                       │
-│                                                                      │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐            │
-│  │ Hardware │  │ Software │  │ Network  │  │ Storage  │            │
-│  │          │  │          │  │          │  │          │            │
-│  │ CPU model│  │ Installed│  │ Adapters │  │ Disk     │            │
-│  │ GPU      │  │ apps     │  │ DNS      │  │ usage    │            │
-│  │ Motherbrd│  │ Services │  │ VPN      │  │ Large    │            │
-│  │ RAM      │  │ Startups │  │ Connects │  │ files    │            │
-│  │ OS ver   │  │ Processes│  │ Ports    │  │ Health   │            │
-│  └────┬─────┘  └────┬─────┘  └────┬─────┘  └────┬─────┘            │
-│       └────────┬─────┴────────┬────┴─────────┬────┘                 │
-│                ▼              ▼              ▼                       │
-│  ┌──────────┐  ┌──────────┐  ┌──────────────────────────────┐     │
-│  │ Security │  │Diagnostic│  │  Explainer + Inventory        │     │
-│  │          │  │          │  │                               │     │
-│  │ Firewall │  │ Critical │  │  "What is RAM?" → education   │     │
-│  │ Antivirus│  │ Warning  │  │  Snapshot → compare → diff    │     │
-│  │ Updates  │  │ Info     │  │  SQLite history               │     │
-│  │ Startups │  │ Sugest   │  │                               │     │
-│  └──────────┘  └──────────┘  └───────────────────────────────┘     │
-└─────────────────────────────────────────────────────────────────────┘
-```
-
-| Engine | Class | Key Methods | Source |
-|--------|-------|-------------|--------|
-| **Hardware** | `HardwareIntelligence` | `get_summary()` — CPU model, GPU, motherboard, RAM, OS | platform, psutil, wmic |
-| **Software** | `SoftwareIntelligence` | `get_installed_apps()`, `get_services()`, `get_startup_items()` | winreg, sc query, PowerShell |
-| **Network** | `NetworkIntelligence` | `get_config()` — adapters, DNS, VPN, connections, ports | psutil, ipconfig, PowerShell |
-| **Storage** | `StorageIntelligence` | `find_large_files()`, `find_large_folders()`, `get_drive_health()` | os.walk, psutil, wmic |
-| **Security** | `SecurityIntelligence` | `get_status()` — firewall, antivirus, updates, startup risks | netsh, PowerShell, winreg |
-| **Diagnostics** | `DiagnosticsEngine` | `run_full_diagnostics()`, `run_performance_check()` | All engines + ResourceManager |
-| **Inventory** | `InventoryEngine` | `capture_snapshot()`, `compare_with_last_snapshot()`, `list_snapshots()` | SQLite (~/.moso/inventory.db) |
-| **Explainer** | `ExplainerEngine` | `explain(topic)` — CPU, GPU, RAM, storage, network, battery, firewall, OS | Templates + live state |
-
-**Natural Language Responses:**
-
-Every summary method returns an educational paragraph — never raw data:
+### 7. Ask About Your System
 
 ```python
-si = orchestrator.system_intelligence
-
-si.get_hardware_summary()
-# "You have an Intel Core i7-12700H with 14 cores and 20 threads.
-#  Your GPU is NVIDIA RTX 3060. You have 16.0 GB of SODIMM RAM.
-#  Motherboard: ASUS ROG Z690. You are running Windows 11 23H2."
-
-si.explain("RAM")
-# "RAM (Random Access Memory) is your computer's short-term memory.
-#  It temporarily stores data that your CPU needs to access quickly.
-#  Unlike your hard drive, RAM is fast but volatile...
-#  You have 16.0 GB installed. Currently 12.5 GB is in use (78%)."
-
-si.get_diagnostics_summary()
-# "Found 1 warning(s). 
-#  - Storage: Your drive C:\ is 92% full. Only 24.5 GB remaining.
-#    Suggestion: Use storage.find_large_files() to identify cleanup candidates."
-```
-
-**Inventory Change Tracking:**
-
-MOSO remembers what changed between sessions:
-
-```python
-# First session:
-orchestrator.system_intelligence.capture_snapshot()
-# → "System snapshot captured at 2026-06-19T20:30:00."
-
-# Later, after installing new software:
-diff = orchestrator.system_intelligence.compare_with_last_snapshot()
-# → "New software installed: Firefox, Discord. Software removed: OldApp."
-```
-
-**Orchestrator Integration:**
-```python
-orchestrator = Orchestrator(config)
-orchestrator.enable_resources()
 orchestrator.enable_system_intelligence()
 
-# All summaries → natural language
 print(orchestrator.system_intelligence.get_hardware_summary())
-print(orchestrator.system_intelligence.get_software_summary())
-print(orchestrator.system_intelligence.get_network_summary())
-print(orchestrator.system_intelligence.get_storage_summary())
-print(orchestrator.system_intelligence.get_security_summary())
-
-# Diagnostics with severity
-issues = orchestrator.system_intelligence.run_diagnostics()
-for issue in issues:
-    print(f"[{issue.severity.upper()}] {issue.component}: {issue.explanation}")
-    print(f"  → Suggestion: {issue.suggestion}")
-
-# Educational explanations
-print(orchestrator.system_intelligence.explain("what is a GPU"))
-print(orchestrator.system_intelligence.explain("how does my firewall work"))
-
-# Change tracking
-orchestrator.system_intelligence.capture_snapshot()
+print(orchestrator.system_intelligence.explain("what is RAM"))
 ```
 
-**Permissions:**
-
-| Level | Access |
-|-------|--------|
-| **Guest** | All summaries, explanations, diagnostics |
-| **Owner** | Above + snapshot capture, inventory comparison |
-
-**Design Principles:**
-- **Read-only** — never modifies system state
-- **Privacy-first** — all data stays local in SQLite (~/.moso/inventory.db)
-- **Graceful fallback** — every WMI/powerShell/subprocess call is wrapped in try/except
-- **Composable** — uses existing `ResourceManager` for live counters
-- **Educational** — never dumps raw data when explanation is possible
-
----
-
-### Aura UI
-
-**MOSO Aura UI** is a floating desktop orb that gives MOSO a visible presence:
-
-```
-┌─────────────────────────────────────────────────────┐
-│                   AuraApp                            │
-│                                                      │
-│  ┌──────────────────┐  ┌────────────────────────┐  │
-│  │    AuraOrb        │  │   ConversationBubble    │  │
-│  │                   │  │                        │  │
-│  │   ⚪ Idle         │  │  ┌──────────────────┐ │  │
-│  │   🔵 Listening    │  │  │ MOSO says...     │ │  │
-│  │   🟢 Thinking     │  │  │                  │ │  │
-│  │   🟣 Speaking     │  │  │  [X] close       │ │  │
-│  │   🟡 Executing    │  │  └──────────────────┘ │  │
-│  │   🔴 Error        │  │                        │  │
-│  └──────────────────┘  └────────────────────────┘  │
-│                                                      │
-│  ┌──────────────────┐  ┌────────────────────────┐  │
-│  │   SystemTray      │  │   AuraSettings         │  │
-│  │  Show Orb         │  │  orb position          │  │
-│  │  Settings         │  │  model path            │  │
-│  │  Quit             │  │  server config         │  │
-│  └──────────────────┘  └────────────────────────┘  │
-└─────────────────────────────────────────────────────┘
-```
-
-**Orb States:**
-
-| State | Color | Animation | Description |
-|-------|-------|-----------|-------------|
-| **Idle** | Gray | Static | Waiting |
-| **Listening** | Blue | Rotating gradient + glow | Capturing audio/input |
-| **Thinking** | Green | Pulsing + orbiting dots | LLM generating |
-| **Speaking** | Purple | Expanding rings | TTS playing |
-| **Executing** | Yellow | Spinning arc | Tool/action running |
-| **Error** | Red | X icon | Something failed |
-
-**Usage:**
+### 8. Research the Web
 
 ```python
+orchestrator.enable_realtime()
+
+response = orchestrator.research("latest Python 3.13 features")
+print(response.formatted_report)
+```
+
+### 9. Launch Desktop UI
+
+```bash
+# Install PySide6 first
+pip install PySide6
+
+# Launch the Aura orb
 python -m moso_ui.main
 ```
 
-Or from your own code:
+The floating orb gives you:
+- **Click** to open chat
+- **Drag** to reposition
+- **System tray** for settings
+
+---
+
+## Enable Everything at Once
+
 ```python
-from moso_ui.main import AuraApp
-app = AuraApp()
-app.run()
-```
+config = InferenceConfig(model_path="models/qwen3-8b-q4_k_m.gguf")
+orchestrator = Orchestrator(config)
+orchestrator.enable_all(model_path="models/qwen3-8b-q4_k_m.gguf")
 
-**Features:**
-- 100px transparent circle, always-on-top
-- Draggable — click and drag to reposition
-- Double-click or right-click to open conversation bubble
-- System tray icon with Show/Settings/Quit
-- Position persists between sessions (~/.moso/aura_settings.json)
-- Settings dialog for model path, server port, context size
-
----
-
-## ✧ Tech Stack
-
-| Layer | Technology | Version | Purpose |
-|-------|-----------|---------|---------|
-| **AI Runtime** | llama.cpp | b3024+ | CPU-optimized LLM inference |
-| | ONNX Runtime | 1.17+ | Cross-platform model execution |
-| **Memory** | SQLite | 3.45+ | Conversation & state storage |
-| **Identity & Voice** | SpeechBrain ECAPA-TDNN | 0.5.15+ | Speaker verification (192-dim embeddings) |
-| | Whisper / Piper TTS / XTTS-v2 | v3 / v1.0+ / v2.0+ | Speech-to-text & text-to-speech |
-| | scipy / silero-vad | 1.12+ / 4.0+ | Anti-spoofing & liveness detection |
-| **Resources** | psutil | 5.9+ | CPU, RAM, storage, battery, network, process monitoring |
-| **Models** | Phi-3 Mini / Gemma 2B / Llama 3.2 | Quantized GGUF | On-device LLM |
-| | Whisper | v3 | Speech-to-text |
-| | XTTS-v2 / Piper | v2.0+ / v1.0+ | Text-to-speech with voice cloning |
-
----
-
-## ✧ Repository Structure
-
-```
-moso-core/                  # AI runtime, voice, identity, memory
-├── inference/              # Model backends
-│   ├── llama-cpp/          # CPU-optimized GGUF inference
-│   └── onnx-runtime/       # Cross-platform ONNX execution
-├── pipelines/              # Modality processing pipelines
-│   └── text/               # Chat conversation pipeline
-├── voice/                  # Voice interaction pipeline
-│   ├── input.py            # Audio capture, VAD, wake word
-│   ├── speaker.py          # ECAPA-TDNN speaker verification
-│   ├── stt.py              # Whisper speech-to-text
-│   ├── tts.py              # Piper/Coqui text-to-speech
-│   ├── cloner.py           # XTTS-v2 voice cloning
-│   └── pipeline.py         # Full voice orchestration
-├── identity/               # Multi-signal identity engine
-│   ├── verifier.py         # Identity orchestrator
-│   ├── voice_biometrics.py # ECAPA embedding (35%)
-│   ├── anti_spoof.py       # Liveness detection (20%)
-│   ├── behavior.py         # Behavioral biometrics (20%)
-│   ├── device_presence.py  # BT/WiFi proximity (15%)
-│   ├── historical_context.py # Usage patterns (10%)
-│   ├── scoring.py          # Weighted confidence calculator
-│   ├── permissions.py      # Permission resolver
-│   └── session.py          # Identity session manager
-├── memory/                 # Persistent memory engine
-│   ├── manager.py          # MemoryManager facade
-│   ├── episodic.py         # Event & conversation store
-│   ├── semantic.py         # Fact & knowledge store
-│   ├── procedural.py       # Workflow & skill store
-│   ├── preferences.py      # User preference store
-│   ├── retrieval.py        # Unified keyword + recent search
-│   ├── summarizer.py       # Event-to-fact extraction
-│   └── models.py           # Memory dataclasses
-├── risk/                   # Risk & Privacy Engine
-│   ├── models.py           # RiskLevel, RiskAssessment, PrivacyAssessment, RiskReport
-│   ├── reputation.py       # Local-only blocklist + heuristic domain/IP scoring
-│   ├── network_analysis.py # TLS port check, data size, upload/download direction
-│   ├── risk_engine.py      # Pre-execution scoring: network, file, credential, permission, resource
-│   ├── privacy_engine.py   # Data exposure analysis: read-only vs external write, user data access
-│   ├── verification.py     # verify(action, tool, params) → RiskReport
-│   ├── manager.py          # RiskManager facade with assess(), check_and_block()
-│   └── __init__.py         # Exports + RISK_AVAILABLE flag
-├── realtime/               # Real-Time Intelligence Engine
-│   ├── manager.py          # RealtimeManager — full research pipeline
-│   ├── models.py           # SourceInfo, FetchResult, AnalysisResult, SourceVerification, RealtimeResponse, ResearchReport
-│   ├── cache.py            # ResponseCache — SQLite TTL cache
-│   ├── fetcher.py          # Fetcher — async multi-source HTTP fetching
-│   ├── sources.py          # SourceDefinition, PREDEFINED_SOURCES (27 sources), category detection, tier system
-│   ├── risk_engine.py      # WebRiskEngine — URL risk assessment
-│   ├── privacy_check.py    # WebPrivacyChecker — privacy exposure analysis
-│   ├── reputation.py       # WebReputationChecker — domain/IP blocklist + heuristics
-│   ├── verifier.py         # SourceVerifier — cross-source verification, dedup, conflict detection
-│   ├── analyzer.py         # Analyzer — keyword + LLM analysis, deep 15-point format
-│   ├── summarizer.py       # Summarizer — transparent report generation
-│   ├── research_browser.py # ResearchBrowser — Playwright headless browser (optional)
-│   ├── knowledge_graph.py  # KnowledgeGraph — NetworkX + SQLite, entities/relationships/events/concepts
-│   └── __init__.py         # Exports + REALTIME_AVAILABLE + RESEARCH_BROWSER_AVAILABLE flags
-├── resources/              # Local resource monitoring
-│   ├── manager.py          # ResourceManager facade
-│   ├── cpu.py              # CPUMonitor (usage, freq, temp)
-│   ├── ram.py              # RAMMonitor (total, avail, used)
-│   ├── storage.py          # StorageMonitor (per mount)
-│   ├── battery.py          # BatteryMonitor (plugged, %)
-│   ├── network.py          # NetworkMonitor (bytes, speed)
-│   ├── processes.py        # ProcessMonitor (top CPU/mem)
-│   └── models.py           # Resource dataclasses
-├── tools/                  # Tool engine — OS actions
-│   ├── registry.py         # ToolRegistry — register, lookup, execute
-│   ├── base.py             # Tool ABC with permission_level support
-│   ├── models.py           # ToolResult, ToolRequest (with dry_run), AuditEntry
-│   ├── audit.py            # AuditLogger — JSON lines at ~/.moso/tools-audit.log
-│   ├── file_tool.py        # FileTool — read, create, find, list, move, delete
-│   ├── app_tool.py         # AppTool — launch, close, list running apps
-│   ├── browser_tool.py     # BrowserTool — open URLs, search web
-│   └── terminal_tool.py    # TerminalTool — commands with timeout + output cap
-├── orchestration/          # Dynamic pipeline composition
-├── vision/                 # Screen vision — observation-only OCR
-│   ├── models.py           # BoundingBox, OCRResult, WindowInfo, ScreenContext
-│   ├── ocr.py              # extract_text(), extract_text_regions() (pytesseract)
-│   ├── screenshot_analysis.py # capture + OCR + window metadata
-│   ├── context.py          # build_context() → ScreenContext
-│   ├── manager.py          # VisionManager — permission + resource + memory integration
-│   └── __init__.py         # Exports + VISION_AVAILABLE flag
-├── computer_use/           # Desktop automation layer
-│   ├── mouse.py            # Move, click, drag, scroll (pyautogui)
-│   ├── keyboard.py         # Type, press, hotkey (pyautogui)
-│   ├── screen.py           # Capture screen/region (mss + Pillow)
-│   ├── windows.py          # List, focus, close windows (pygetwindow)
-│   ├── automation.py       # Action execution + sequence engine
-│   ├── recorder.py         # Workflow recorder (mouse + keyboard)
-│   ├── permissions.py      # 3-tier permission model
-│   ├── models.py           # ComputerUse dataclasses
-│   └── __init__.py         # Exports + COMPUTER_USE_AVAILABLE flag
-├── agents/                 # Autonomous agent system
-│   ├── planner.py          # Template-based goal → task decomposition (7 templates)
-│   ├── executor.py         # Sequential task execution with verification
-│   ├── verifier.py         # Per-task verification (file/process/exit code checks)
-│   ├── history.py          # SQLite plan storage at ~/.moso/plans.db
-│   ├── manager.py          # AgentManager facade — plan, execute, list templates
-│   ├── models.py           # Goal, Task, Plan, ExecutionSummary dataclasses
-│   └── __init__.py         # Exports + AGENTS_AVAILABLE flag
-├── llm/                    # Local LLM integration
-│   ├── backend.py          # LlamaServer — subprocess llama-server.exe wrapper
-│   ├── manager.py          # LLMManager — chat, complete, lifecycle
-│   ├── models.py           # LLMConfig, LLMRequest, LLMResponse dataclasses
-│   └── __init__.py         # Exports + LLM_AVAILABLE flag
-└── safety/                 # Guardrails & content filtering
-```
-
-```
-moso_ui/                    # Desktop overlay — Aura UI
-├── aura_orb.py             # Floating transparent orb (PySide6)
-├── conversation.py         # Speech bubble overlay
-├── states.py               # OrbState + StatusColor enums
-├── tray.py                 # System tray icon + menu
-├── settings.py             # Persistent settings (~/.moso/aura_settings.json)
-├── main.py                 # App entry point
-└── __init__.py             # Exports
+# Now MOSO can: chat, remember, see, act, plan, research, and understand your system
 ```
 
 ---
 
-## ✧ Branch Strategy
+## Project Structure
 
 ```
-main        ─── Production (ruleset protected)
-feature/*   ─── New features (branched from main, PR to merge)
+MOSO/
+├── moso_core/                # Core AI engine
+│   ├── agents/               # Brain — planning, execution, verification
+│   ├── computer_use/         # Muscles — mouse, keyboard, screen, windows
+│   ├── desktop/              # Desktop agent — perceive→reason→act→verify loop
+│   ├── identity/             # Owner verification (voice, behavior, device)
+│   ├── inference/            # Model backends (llama.cpp, ONNX Runtime)
+│   ├── llm/                  # LLM integration (local, OpenAI, Anthropic, Ollama)
+│   ├── learner/              # Learning engine — skills from experience
+│   ├── memory/               # Memory — episodic, semantic, procedural, vector
+│   ├── orchestration/        # Central hub — connects all modules
+│   ├── realtime/             # Web research — fetch, verify, analyze, summarize
+│   ├── resources/            # System monitoring — CPU, RAM, storage, network
+│   ├── risk/                 # Safety — risk scoring, privacy, permissions
+│   ├── tools/                # Tools — file, app, browser, terminal
+│   ├── vision/               # Eyes — OCR, screenshots, window detection
+│   └── voice/                # Voice pipeline — STT, TTS, speaker verify
+├── moso_ui/                  # Desktop UI — Aura floating orb
+├── backend/                  # FastAPI backend
+├── tests/                    # Test suite (249 tests)
+├── scripts/                  # Utility scripts
+├── models/                   # Local GGUF model storage
+├── run.py                    # Entry point
+└── llms.txt                  # LLM context summary
 ```
-
-- `main` is protected via GitHub ruleset: requires PR with 1 approval, blocks force pushes & deletions, enforces linear history
-- Owner can bypass ruleset for emergency recovery
 
 ---
 
-## ✧ Roadmap
+## Key Concepts
+
+### Experience → Skill Loop
+
+Every action MOSO takes is recorded:
+
+```
+Screen Before → Action → Screen After → Success/Fail
+```
+
+When the same sequence succeeds multiple times, MOSO extracts a **skill**:
+
+```
+"Play {song_name} on Spotify"
+Variables: song_name
+Success rate: 95%
+```
+
+Skills are stored in procedural memory and reused for future tasks.
+
+### Risk Scoring
+
+Before any action, MOSO calculates a risk score:
+
+| Score | Level | What Happens |
+|-------|-------|-------------|
+| < 0.2 | LOW | Allowed |
+| 0.2–0.5 | MEDIUM | Allowed with review |
+| 0.5–0.8 | HIGH | Blocked |
+| ≥ 0.8 | CRITICAL | Blocked |
+
+### Identity Levels
+
+| Level | Score | Permissions |
+|-------|-------|-------------|
+| Owner | 95+ | Full access |
+| Likely | 80–94 | Standard access |
+| Guest | 60–79 | Limited |
+| Unknown | < 60 | Read-only |
+
+---
+
+## Tech Stack
+
+| Component | Technology | Why |
+|-----------|-----------|-----|
+| Language | Python 3.12 | Huge AI ecosystem |
+| Inference | llama.cpp | Best local inference |
+| Memory | SQLite + WAL | Plenty for local AI |
+| Vision | pytesseract + mss | Stable OCR |
+| Automation | pyautogui + pygetwindow | Desktop control |
+| UI | PySide6 | Native desktop |
+| API | FastAPI | Fast, simple |
+| Config | Pydantic | Clean settings |
+| Testing | pytest | Standard |
+
+---
+
+## Deploy with Docker
+
+### Option 1: Pull from GHCR (recommended)
+
+```bash
+# Pull the latest image
+docker pull ghcr.io/project-moso-ai/moso:latest
+
+# Run with your models directory mounted
+docker run -d \
+  -p 8000:8000 \
+  -v ./models:/models:ro \
+  -v moso-data:/data/moso \
+  --name moso \
+  ghcr.io/project-moso-ai/moso:latest
+
+# Verify it's running
+curl http://localhost:8000/health
+```
+
+### Option 2: Docker Compose (development)
+
+```bash
+# Build and run locally with hot-reload
+docker compose -f docker-compose.dev.yml up --build
+
+# Or use the default compose (builds from source)
+docker compose up --build
+```
+
+### Option 3: Docker Compose (production)
+
+```bash
+# Pull from GHCR, persistent volumes
+docker compose -f docker-compose.prod.yml up -d
+
+# Check status
+docker compose -f docker-compose.prod.yml ps
+docker compose -f docker-compose.prod.yml logs moso
+```
+
+### API Endpoints
+
+Once running, MOSO exposes these endpoints:
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/health` | GET | Health check + module status |
+| `/chat` | POST | Send a message, get a response |
+| `/execute` | POST | Execute a tool (file, app, browser, terminal) |
+| `/plan` | POST | Create and execute a multi-step plan |
+| `/memory/store` | POST | Store a memory (episodic, semantic, procedural) |
+| `/memory/search` | POST | Search memories |
+| `/memory/recent` | GET | Get recent memories |
+| `/skills` | GET | List learned skills |
+| `/system` | GET | System resource status |
+| `/system/diagnostics` | GET | Run system diagnostics |
+| `/identity` | GET | Identity verification status |
+
+### Example API calls
+
+```bash
+# Health check
+curl http://localhost:8000/health
+
+# Chat
+curl -X POST http://localhost:8000/chat \
+  -H "Content-Type: application/json" \
+  -d '{"message": "Hello, what can you do?"}'
+
+# Execute a tool
+curl -X POST http://localhost:8000/execute \
+  -H "Content-Type: application/json" \
+  -d '{"tool_name": "file_tool", "parameters": {"action": "read_file", "path": "README.md"}}'
+
+# Store a memory
+curl -X POST http://localhost:8000/memory/store \
+  -H "Content-Type: application/json" \
+  -d '{"content": "User prefers dark mode", "memory_type": "semantic", "category": "preference"}'
+
+# System status
+curl http://localhost:8000/system
+```
+
+### Environment Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `MOSO_MODEL_PATH` | `""` | Path to GGUF model file |
+| `MOSO_N_CTX` | `2048` | LLM context size |
+| `MOSO_HOME` | `~/.moso` | Data directory (memory, settings, logs) |
+| `LOG_LEVEL` | `info` | Logging level (debug, info, warning, error) |
+
+---
+
+## Roadmap
 
 | Phase | Focus | Status |
 |-------|-------|--------|
-| **Phase 1** — Voice Pipeline | Wake word, speaker verify, STT, TTS, cloning | ✅ Complete |
-| **Phase 2** — Identity Engine | 5-signal owner verification, anti-spoof, permissions | ✅ Complete |
-| **Phase 3** — Memory Engine | Episodic + semantic + procedural + preferences, SQLite | ✅ Complete |
-| **Phase 4** — Resource Manager | CPU, RAM, storage, battery, network, process monitoring | ✅ Complete |
-| **Phase 5** — Tool Engine | File ops, apps, browser, terminal — permission-gated + audit-logged | ✅ Complete |
-| **Phase 6** — Intelligence | Embeddings + vector search, GPU monitoring, RAG | ✅ Complete |
-| **Phase 7** — Agent System | Template-based goal decomposition, task execution, retry, dependencies, dry-run | ✅ Complete |
-| **Phase 8** — Computer Use | Mouse, keyboard, screen capture, window management, automation, recorder | ✅ Complete |
-| **Phase 9** — Vision V1 | Screenshot OCR, text region detection, active window detection, screen context | ✅ Complete |
-| **Phase 10** — LLM + Aura UI | llama.cpp server binary integration, floating desktop orb with PySide6 | ✅ Complete |
-| **Phase 11** — Risk & Privacy Engine | Pre-execution risk scoring, network reputation, credential exposure, privacy analysis | ✅ Complete |
-| **Phase 12** — Real-Time Intelligence | Multi-source web research pipeline, risk/privacy-aware source selection, cross-source verification, analysis (keyword + LLM), summarization, transparent audit trail | ✅ Complete |
-| **Phase 13** — Knowledge Graph | Entity/relationship/event/concept tracking, NetworkX in-memory + SQLite persistence, confidence scoring, timeline queries, subgraph export | ✅ Complete |
-| **Phase 14** — Research Browser | Playwright headless browser, stealth mode, content extraction, metadata parsing, screenshot, PDF download | 🔄 Optional (requires playwright) |
+| 1 | Voice Pipeline | ✅ |
+| 2 | Identity Engine | ✅ |
+| 3 | Memory Engine | ✅ |
+| 4 | Resource Manager | ✅ |
+| 5 | Tool Engine | ✅ |
+| 6 | Agent System | ✅ |
+| 7 | Computer Use | ✅ |
+| 8 | Screen Vision | ✅ |
+| 9 | LLM Integration | ✅ |
+| 10 | Aura UI | ✅ |
+| 11 | Risk & Privacy | ✅ |
+| 12 | Real-Time Intelligence | ✅ |
+| 13 | Knowledge Graph | ✅ |
+| 14 | Learning Engine (7 sub-engines) | 🔄 In Progress |
+| 15 | Architecture v2 (7-organ redesign) | 📋 Planned |
 
 ---
 
-## ✧ License
+## Tests
+
+```bash
+# Run all tests
+python -m pytest tests/ -v
+
+# Run specific test file
+python -m pytest tests/test_risk.py -v
+```
+
+---
+
+## License
 
 **MOSO Source Available License v1.0**
 
 Copyright (c) 2024-2026 MOSO AI
 
-**Viewing access does not grant usage rights.**
-
-This repository is provided for **viewing, feedback, research, and community engagement only**.
-The source code is protected by the [MOSO Source Available License](LICENSE).
-
-Without explicit written permission, you may NOT:
-- Use, copy, modify, or distribute this code
-- Train AI models using this code
-- Create derivative works
-- Use this code for commercial purposes
+Viewing access does not grant usage rights. Written permission required for use, modification, or distribution.
 
 ---
 
 <p align="center">
-  <sub>
-    <strong>MOSO AI</strong> — Privacy-First Adaptive Artificial Intelligence<br/>
-    <a href="LICENSE">License</a>
-  </sub>
-  <br/><br/>
-  <sub>© 2024-2026 MOSO AI. All rights reserved. Source available under MOSO Source Available License.</sub>
+  <strong>MOSO AI</strong> — Privacy-First Adaptive Intelligence<br/>
+  <a href="LICENSE">License</a> · <a href="https://github.com/Project-MOSO-AI/MOSO">GitHub</a>
 </p>
-
-## ✧ Recent Updates
-
-- **Desktop Agent (V1)**: Autonomous desktop interaction via vision-planned perceive→reason→act→verify loop. World model tracks continuous state, smart controllers provide per-app intelligence, action executor dispatches to real functions with verification, and desktop memory persists context
-- **LLM Provider Abstraction (V2)**: Pluggable provider system supporting local llama.cpp, OpenAI, Anthropic, and Ollama backends. Unified `LLMProvider` interface with streaming support
-- **Model Manager**: GGUF model discovery, installation, deletion, and disk/RAM monitoring
-- **Runtime Manager**: Service lifecycle management with health monitoring, crash detection, and auto-restart
-- **Download Manager**: Model file downloads with progress tracking, ETA, and SHA-256 integrity verification
-- **Dependency Installer**: Auto-detect and install missing pip packages and system tools via pip/winget/choco
-- **Diagnostics**: Self-check system scanning all modules, dependencies, and runtime health with severity-ranked status
-- **Benchmarks**: Subsystem performance measurement for memory, vector store, retrieval, and LLM
-- **App Controllers & Context Manager**: Per-app intelligence (Notepad++, VS Code, Chrome, File Explorer) with app state tracking
-- **Memory Enhancements**: Corrections manager (feedback-driven learning from 👍/👎), RAG document ingest with chunking, preference extractor (auto-extract preferences from chat)
-- **Interactive Feedback**: Inline 👍/👎 buttons in the chat interface. Negative feedback triggers automated correction learning
-
-<!-- Invisible style block for animations -->
-<style>
-  @keyframes greenPulse {
-    0%, 100% { box-shadow: 0 0 5px rgba(0, 255, 65, 0.3); border-color: #00ff41; }
-    50% { box-shadow: 0 0 25px rgba(0, 255, 65, 0.6); border-color: #00ff41; }
-  }
-  @keyframes scanLine {
-    0% { transform: translateY(-100%); }
-    100% { transform: translateY(100vh); }
-  }
-  @keyframes glitch {
-    0% { transform: translate(0); }
-    20% { transform: translate(-2px, 2px); }
-    40% { transform: translate(2px, -1px); }
-    60% { transform: translate(-1px, -2px); }
-    80% { transform: translate(1px, 1px); }
-    100% { transform: translate(0); }
-  }
-</style>
