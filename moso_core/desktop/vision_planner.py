@@ -9,6 +9,7 @@ from enum import Enum
 from typing import Any, Optional, Callable
 
 from moso_core.desktop.perception import DesktopPerceiver, DesktopState
+from moso_core.desktop.perception_log import PerceptionLog
 from moso_core.desktop.world_model import WorldModel
 from moso_core.desktop.verifier import ActionVerifier, VerificationResult
 
@@ -156,6 +157,7 @@ class VisionPlanner:
         self._on_step: Optional[Callable[[PlanStep], None]] = None
         self._llm = None
         self._memory = None
+        self._perception_log = PerceptionLog()
 
     def set_llm(self, llm):
         self._llm = llm
@@ -710,6 +712,9 @@ Output a JSON array of steps:
             verification = self._verifier.verify(step.action, step.expected_outcome)
             step.verification = verification
 
+            # Log perception outcome
+            self._log_perception(step, pre_state, verification)
+
             if verification.success:
                 step.status = StepStatus.VERIFIED
                 logger.info("Step %d verified: %s", i, verification.details)
@@ -727,6 +732,9 @@ Output a JSON array of steps:
                 if verification and verification.success:
                     step.status = StepStatus.VERIFIED
                     step.result = "Retry succeeded: %s" % retry_result
+                    # Log the retry success
+                    retry_state = self._world.update()
+                    self._log_perception(step, retry_state, verification)
                     logger.info("Step %d retry succeeded", i)
                 else:
                     step.status = StepStatus.FAILED
@@ -752,6 +760,32 @@ Output a JSON array of steps:
                 self._on_step(step)
             except Exception:
                 pass
+
+    def _log_perception(self, step: PlanStep, state: DesktopState, verification: Optional[VerificationResult]):
+        """Log a perception-action-verification outcome for the learning loop."""
+        target = step.params.get("target", step.description)
+        # Try to find the element in pre-state for bbox
+        bbox = None
+        for elem in state.ui_elements:
+            if target.lower() in elem.text.lower():
+                bbox = (elem.x, elem.y, elem.width, elem.height)
+                break
+
+        try:
+            self._perception_log.log_outcome(
+                app_name=state.active_app,
+                element_text=target[:200],
+                element_role="unknown",
+                element_bbox=bbox,
+                screenshot_path=state.screenshot_path,
+                action_taken=step.action,
+                action_params=step.params,
+                success=verification.success if verification else False,
+                verification_details=verification.details if verification else "",
+                resolution=state.resolution,
+            )
+        except Exception as e:
+            logger.debug("Failed to log perception outcome: %s", e)
 
     def get_context(self) -> str:
         return self._world.get_context_string()
