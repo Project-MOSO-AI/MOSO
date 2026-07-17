@@ -238,7 +238,7 @@ class SmartChromeController(SmartController):
     def _search(self, target: str, state: DesktopState) -> str:
         if not target:
             return "What should I search for?"
-        return self._open_url(f"https://www.google.com/search?q={target}", state)
+        return self._open_url(f"https://duckduckgo.com/?q={target}", state)
 
     def _click_by_text(self, target: str, state: DesktopState) -> str:
         elem = self._find_element(state, target)

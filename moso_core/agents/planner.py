@@ -93,7 +93,7 @@ class SearchWebTemplate(PlanTemplate):
         search_match = re.search(r"(?:search|find|look up)\s+(.+?)(?:\.|$)", goal.description, re.IGNORECASE)
         query = search_match.group(1).strip() if search_match else goal.description
         return [
-            Task(goal_id=0, title="Search web", description=f"Search for {query}", tool_name="browser", parameters={"action": "search", "query": query}, order=0, verification_method="content_not_empty", verification_target=""),
+            Task(goal_id=0, title="Search web", description=f"Search for {query}", tool_name="browser", parameters={"action": "search_web", "query": query}, order=0, verification_method="content_not_empty", verification_target=""),
         ]
 
 

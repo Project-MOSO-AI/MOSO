@@ -10,6 +10,14 @@ from moso_core.tools.models import ToolRequest, ToolResult
 
 logger = logging.getLogger(__name__)
 
+# ponytail: planner uses short names ("file", "app", "browser"), registry uses "_tool" suffix
+_TOOL_NAME_MAP = {
+    "file": "file_tool",
+    "app": "app_tool",
+    "browser": "browser_tool",
+    "terminal": "terminal_tool",
+}
+
 
 class Executor:
     def __init__(self, tool_registry=None, identity=None, memory=None, resources=None, automation_engine=None):
@@ -193,7 +201,7 @@ class Executor:
             logger.error("Cannot execute task: no tool_registry available")
             return None
         request = ToolRequest(
-            tool_name=task.tool_name,
+            tool_name=_TOOL_NAME_MAP.get(task.tool_name, task.tool_name),
             parameters=task.parameters,
             requester=requester,
         )

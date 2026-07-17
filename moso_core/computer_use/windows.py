@@ -41,7 +41,11 @@ class WindowManager:
             win = self._pygetwindow.getActiveWindow()
             if win is None:
                 return ComputerUseResult(False, "get_active_window", error="No active window found")
-            return ComputerUseResult(True, "get_active_window", {"title": win.title, "size": (win.width, win.height)})
+            return ComputerUseResult(True, "get_active_window", {
+                "title": win.title,
+                "size": (win.width, win.height),
+                "bounds": (win.left, win.top, win.width, win.height),
+            })
         except Exception as e:
             return ComputerUseResult(False, "get_active_window", error=str(e))
 

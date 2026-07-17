@@ -104,9 +104,22 @@ class ToolRegistry:
                     error=f"Risk Engine blocked: {report.max_level.value} - {report.risk.recommendation}",
                 )
         except ImportError:
-            pass
+            if tool.permission_level != "guest":
+                return ToolResult(
+                    success=False,
+                    tool_name=tool.name,
+                    action=action,
+                    error="Risk engine unavailable — blocking non-guest tool",
+                )
         except Exception as e:
-            logger.warning("Risk check failed (non-blocking): %s", e)
+            if tool.permission_level != "guest":
+                logger.warning("Risk check failed (blocking): %s", e)
+                return ToolResult(
+                    success=False,
+                    tool_name=tool.name,
+                    action=action,
+                    error=f"Risk check failed — blocking: {e}",
+                )
 
         required_level = tool.get_permission_level(action)
         description = tool.describe_action(**params, _action_name=action)

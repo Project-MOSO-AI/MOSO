@@ -15,6 +15,8 @@ from moso_core.desktop.verifier import ActionVerifier, VerificationResult
 
 logger = logging.getLogger(__name__)
 
+SEARCH_PROVIDER = "https://duckduckgo.com"  # zero-API: no Google, no tracking
+
 
 class StepStatus(str, Enum):
     PENDING = "pending"
@@ -407,7 +409,7 @@ Output a JSON array of steps:
             steps.append(PlanStep(
                 action="open_url",
                 description=f"Navigate to Google",
-                params={"url": "https://www.google.com"},
+                params={"url": f"{SEARCH_PROVIDER}"},
             ))
             steps.append(PlanStep(
                 action="wait",
@@ -541,7 +543,7 @@ Output a JSON array of steps:
             steps.append(PlanStep(
                 action="open_url",
                 description=f"Search Google for: {query}",
-                params={"url": f"https://www.google.com/search?q={query}"},
+                params={"url": f"{SEARCH_PROVIDER}/?q={query}"},
             ))
             steps.append(PlanStep(
                 action="wait", description="Wait for results",
@@ -746,6 +748,14 @@ Output a JSON array of steps:
 
         plan.completed = not plan.failed
         self._world.set_task("")
+
+        # Auto-learning: generalize successful plans into procedural skills
+        if plan.completed and self._llm:
+            try:
+                self._auto_generalize(plan)
+            except Exception as e:
+                logger.debug("Auto-generalize failed: %s", e)
+
         return plan
 
     def plan_and_execute(self, goal: str) -> Plan:
@@ -786,6 +796,53 @@ Output a JSON array of steps:
             )
         except Exception as e:
             logger.debug("Failed to log perception outcome: %s", e)
+
+    def _auto_generalize(self, plan: Plan) -> None:
+        """Feed a successful plan into the generalization prompt and store as skill."""
+        from moso_core.llm.models import LLMRequest
+
+        steps_text = "\n".join(
+            f"  {i+1}. [{s.action}] {s.description}"
+            for i, s in enumerate(plan.steps)
+            if s.status == StepStatus.VERIFIED
+        )
+        if not steps_text:
+            return
+
+        prompt = (
+            f"Goal: {plan.goal.description}\n\n"
+            f"Steps that worked:\n{steps_text}\n\n"
+            "Generalize this into a reusable skill. Return ONLY valid JSON:\n"
+            '{"task_name": "short name", "steps": [{"action":"...", "params":{...}}], '
+            '"trigger_phrases": ["when user says..."], "app_category": "browser|text_editor|other"}'
+        )
+
+        response = self._llm.complete(LLMRequest(
+            prompt=prompt,
+            system_prompt="You are a skill generalizer for MOSO AI. Convert successful plans into reusable skills.",
+            max_tokens=512,
+            temperature=0.3,
+        ))
+        if not response.success:
+            return
+
+        try:
+            skill = json.loads(response.text.strip())
+            if not isinstance(skill, dict) or "task_name" not in skill:
+                return
+            # Store via memory if available
+            if self._memory and hasattr(self._memory, "procedural"):
+                self._memory.procedural.store(
+                    task_name=skill["task_name"],
+                    steps=json.dumps(skill.get("steps", [])),
+                    app_category=skill.get("app_category", "other"),
+                    app_name=plan.goal.description[:100],
+                    trigger_phrases=json.dumps(skill.get("trigger_phrases", [])),
+                    variables="[]",
+                )
+                logger.info("Auto-learned skill: %s", skill["task_name"])
+        except (json.JSONDecodeError, KeyError):
+            pass
 
     def get_context(self) -> str:
         return self._world.get_context_string()

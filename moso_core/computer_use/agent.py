@@ -204,7 +204,7 @@ class TaskPlanner:
                 Step("launch", {"app_name": "chrome"}, "Launch Chrome"),
                 Step("delay", {"seconds": 2.0}, "Wait for Chrome"),
                 Step("hotkey", {"keys": ["ctrl", "l"]}, "Focus address bar"),
-                Step("type_text_action", {"text": f"https://www.google.com/search?q={query}"}, f"Search '{query}'"),
+                Step("type_text_action", {"text": f"https://duckduckgo.com/?q={query}"}, f"Search '{query}'"),
                 Step("press_key", {"key": "enter"}, "Press Enter"),
             ]
 

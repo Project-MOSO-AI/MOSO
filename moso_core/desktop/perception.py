@@ -50,6 +50,7 @@ class DesktopState:
     dialogs: list[str] = field(default_factory=list)
     notifications: list[str] = field(default_factory=list)
     screenshot_path: str = ""
+    active_window_bounds: tuple[int, int, int, int] = (0, 0, 0, 0)  # x, y, w, h
 
     def to_dict(self) -> dict:
         return {
@@ -66,6 +67,7 @@ class DesktopState:
             "open_windows": self.open_windows,
             "dialogs": self.dialogs,
             "notifications": self.notifications,
+            "active_window_bounds": list(self.active_window_bounds),
         }
 
     def summary(self) -> str:
@@ -171,7 +173,7 @@ class DesktopPerceiver:
         state.resolution = resolution
 
         # 2. Get window info
-        state.active_app, state.window_title, state.open_windows = self._get_window_info()
+        state.active_app, state.window_title, state.open_windows, state.active_window_bounds = self._get_window_info()
 
         # 3. Run OCR
         if self._ocr and screenshot_path:
@@ -211,23 +213,25 @@ class DesktopPerceiver:
         res = tuple(r.get("resolution", (0, 0)))
         return path, res
 
-    def _get_window_info(self) -> tuple[str, str, list[str]]:
+    def _get_window_info(self) -> tuple[str, str, list[str], tuple[int, int, int, int]]:
         active_app = ""
         window_title = ""
         windows = []
+        bounds = (0, 0, 0, 0)
         if not self._wm or not self._wm.available:
-            return active_app, window_title, windows
+            return active_app, window_title, windows, bounds
         try:
             r = self._wm.get_active_window()
             if r.success and r.result:
                 window_title = r.result.get("title", "")
                 active_app = self._parse_app_name(window_title)
+                bounds = tuple(r.result.get("bounds", (0, 0, 0, 0)))
             r2 = self._wm.list_windows()
             if r2.success and r2.result:
                 windows = r2.result.get("windows", [])
         except Exception as e:
             logger.debug("Window info failed: %s", e)
-        return active_app, window_title, windows
+        return active_app, window_title, windows, bounds
 
     def _parse_app_name(self, title: str) -> str:
         if not title:

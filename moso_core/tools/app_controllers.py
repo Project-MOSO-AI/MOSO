@@ -333,7 +333,7 @@ class ChromeController(AppController):
     def _search(self, target: str = "") -> str:
         if not target:
             return "What should I search for?"
-        return self._open_url(f"https://www.google.com/search?q={target}")
+        return self._open_url(f"https://duckduckgo.com/?q={target}")
 
     def _close_tab(self, target: str = "") -> str:
         kb = self._kb()
