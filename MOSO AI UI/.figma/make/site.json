@@ -1,0 +1,10 @@
+{
+  "description": "Experience a premium AI assistant designed for seamless interaction, offering advanced task management, real-time insights, and personalized automation for professionals.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}

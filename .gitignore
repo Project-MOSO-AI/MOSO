@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.cache/
+*.log
+.env
+.env.*
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+*.egg-info/
+build/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+graphify-out/cache/
