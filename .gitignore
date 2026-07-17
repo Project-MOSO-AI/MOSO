@@ -10,6 +10,19 @@ build/
 *.db
 *.sqlite3
 
+# Node
+node_modules/
+.cache/
+.mypy_cache/
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.*
+.env.example
+
 # IDE
 .idea/
 .vscode/
@@ -24,5 +37,5 @@ Thumbs.db
 # MOSO user data
 .moso/
 
-# Previous artefacts
-.env.example
+# Graphify
+graphify-out/cache/
