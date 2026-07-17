@@ -1173,49 +1173,42 @@ Output ONLY valid JSON matching this exact schema:
 
     def _text_to_speech(self, text: str):
         def _speak():
-            import asyncio
             import tempfile
             import os
             try:
-                import edge_tts
-            except ImportError:
-                logger.error("edge-tts not installed")
-                return
+                from moso_core.voice.tts import PiperTTS
+                tts = PiperTTS()
+                result = tts.synthesize(text)
+                if not result.audio_bytes:
+                    return
 
-            try:
-                import pygame
-                if not pygame.mixer.get_init():
-                    pygame.mixer.init()
-            except ImportError:
-                pygame = None
+                try:
+                    import pygame
+                    if not pygame.mixer.get_init():
+                        pygame.mixer.init(frequency=result.sample_rate)
+                except ImportError:
+                    pygame = None
 
-            async def _do_tts():
-                # Split into sentences for pseudo-streaming if needed, but for now just speak the full string.
-                # Since edge_tts generates a file quickly, the latency is much lower than pyttsx3 loading
-                communicate = edge_tts.Communicate(text, "en-IN-NeerjaNeural", rate="+10%")
-                with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as fp:
+                with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as fp:
+                    fp.write(result.audio_bytes)
                     temp_path = fp.name
-                await communicate.save(temp_path)
-                
+
                 if pygame:
                     pygame.mixer.music.load(temp_path)
                     pygame.mixer.music.play()
                     while pygame.mixer.music.get_busy():
-                        await asyncio.sleep(0.1)
+                        import time
+                        time.sleep(0.05)
                     pygame.mixer.music.unload()
                 else:
-                    # Fallback
                     os.system(f'start /wait /min "" "{temp_path}"')
                 try:
                     os.remove(temp_path)
                 except Exception:
                     pass
-            try:
-                asyncio.run(_do_tts())
             except Exception as e:
-                logger.error("edge-tts playback error: %s", e)
+                logger.error("TTS error: %s", e)
 
-        # Run TTS in a background thread so it doesn't block the UI
         self._executor.submit(_speak)
 
     # ----- Cleanup -----
