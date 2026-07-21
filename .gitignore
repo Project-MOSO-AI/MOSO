@@ -36,6 +36,18 @@ Thumbs.db
 
 # MOSO user data
 .moso/
+.claude/
 
-# Graphify
-graphify-out/cache/
+# Generated artifacts
+graphify-out/
+
+# Large binaries
+*.gguf
+
+# Python venv
+.venv/
+
+# Generated files
+skills-lock.json
+tunnel-*.txt
+serve-log.txt
